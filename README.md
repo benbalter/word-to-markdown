@@ -29,12 +29,14 @@ doc.doc
 
 ## Supports
 
+* Paragraphs
 * Numbered lists
 * Unnumbered lists
 * Italic
 * Bold
 * Explicit headings (e.g., selected as "Heading 1" or "Heading 2")
-* Paragraphs
+* Implicit headings (e.g., text with a larger font size relative to paragraph text)
+* Images
 
 ## Future Support
 
