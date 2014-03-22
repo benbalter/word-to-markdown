@@ -6,12 +6,13 @@ A Ruby gem to liberate content from [the jail that is Word documents](http://ben
 
 *Link to blog post here*
 
-## Getting content out of Microsoft Word
+**[Demo](http://word-to-markdown.herokuapp.com/)**
+
+## Getting HTML content out of Microsoft Word
 
 1. Open the file in Microsoft Word
 2. Select "File" -> "Save as Web Page"
-3. Select "Formatting information only"
-4. Hit save
+3. Hit save
 
 ## Usage
 
@@ -45,3 +46,9 @@ doc.doc
 ## Testing
 
 `script/cibuild`
+
+## Server
+
+The development version of the gem contains a lightweight server for converting Word Documents as a service.
+
+To run the server, simply run `script/server` and open `localhost:9292` in your browser. The server can also be run on Heroku.
