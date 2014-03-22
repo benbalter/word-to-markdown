@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version = "0.0.1"
   s.authors = ["Ben Balter"]
   s.email = "ben.balter@github.com"
-  s.homepage = "https://github.com/benbalter/doc-to-markdown"
+  s.homepage = "https://github.com/benbalter/word-to-markdown"
   s.licenses = ["MIT"]
   s.files = [ "lib/word-to-markdown.rb" ]
   s.add_dependency("reverse_markdown","~> 0.4.7")
