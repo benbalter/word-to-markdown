@@ -3,8 +3,7 @@ require 'descriptive_statistics'
 
 class WordToMarkdown
 
-  attr_reader :doc
-  HEADING_DEPTH = 6
+  HEADING_DEPTH = 6 # Number of headings to guess, e.g., h6
   HEADING_STEP = 100/HEADING_DEPTH
   LI_SELECTORS = %w[
     MsoListParagraphCxSpFirst
@@ -12,8 +11,7 @@ class WordToMarkdown
     MsoListParagraphCxSpLast
   ]
 
-  attr_reader :path
-  attr_accessor :html, :doc
+  attr_reader :path, :doc, :html
 
   def initialize(path)
     @path = path
@@ -39,6 +37,7 @@ class WordToMarkdown
     string
   end
 
+  # Returns an array of Nokogiri nodes that are implicit headings
   def implicit_headings
     @implicit_headings ||= begin
       headings = []
@@ -49,6 +48,7 @@ class WordToMarkdown
     end
   end
 
+  # Returns an array of font-sizes for implicit headings in the document
   def font_sizes
     @font_sizes ||= begin
       sizes = []
@@ -57,6 +57,7 @@ class WordToMarkdown
     end
   end
 
+  # Given a Nokogiri node, guess what heading it represents, if any
   def guess_heading(node)
     return nil if node.font_size == nil
     [*1...HEADING_DEPTH].each do |heading|
@@ -65,6 +66,8 @@ class WordToMarkdown
     nil
   end
 
+  # Minimum font size required for a given heading
+  # e.g., H(2) would represent the minimum font size of an implicit h2
   def h(n)
     font_sizes.percentile ((HEADING_DEPTH-1)-n) * HEADING_STEP
   end
