@@ -1,0 +1,2 @@
+langauage: ruby
+script: "script/cibuild"
