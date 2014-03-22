@@ -1,9 +1,12 @@
 require 'word-to-markdown'
 require 'sinatra'
 require 'kramdown'
+require 'rack/coffee'
 
 module WordToMarkdownServer
   class App < Sinatra::Base
+
+    use Rack::Coffee, root: 'public', urls: '/assets/javascripts'
 
     get "/" do
       render_template :index, { :error => nil }

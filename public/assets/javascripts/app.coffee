@@ -1,0 +1,3 @@
+$ ->
+  $("#doc").change ->
+    $("#submit").click()

@@ -23,17 +23,33 @@
   </div>
   <div class="col-md-4">
     <h3>Step 2</h3>
-    <h4>Upload the resulting <code>.htm</code> or <code>.html</code> file</h4>
-    <p>(Screenshot here)</p>
+    <h4>Upload the resulting <code>.html</code> file</h4>
+    <a href="/export.gif">
+      <img src="/upload.gif" alt="Drag and drop the file to upload" id="upload" />
+    </a>
+    <p class="instructions">Drag-and-drop the file below to upload</p>
   </div>
   <div class="col-md-4">
     <h3>Step 3</h3>
     <h4>Get back crisp, clean Markdown</h4>
-    <p>(:boom: emoji here)</p>
+    <pre id="example-md">
+# H1
+
+Paragraph
+
+## H2
+
+Paragraph
+
+### H3
+
+Paragraph
+</pre>
+<p class="instructions">Use it on <a href="https://github.com">GitHub</a> or elsewhere</p>
   </div>
 </div>
 
-<form class="form" method="POST" enctype="multipart/form-data">
-  <input type="file" class="file" name="doc">
-  <input type="submit" class="btn btn-primary" value="Convert">
+<form class="form" method="POST" enctype="multipart/form-data" id="form">
+  <input type="file" class="file" name="doc" id="doc" value="FOO">
+  <input type="submit" class="btn btn-primary" value="Convert" id="submit">
 </form>

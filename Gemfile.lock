@@ -16,7 +16,12 @@ GEM
       tzinfo (~> 0.3.37)
     atomic (1.1.16)
     coderay (1.1.0)
+    coffee-script (2.2.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.7.0)
     descriptive_statistics (1.1.3)
+    execjs (2.0.2)
     i18n (0.6.9)
     json (1.8.1)
     kramdown (1.3.1)
@@ -31,6 +36,9 @@ GEM
       method_source (~> 0.8)
       slop (~> 3.4)
     rack (1.5.2)
+    rack-coffee (1.0.2)
+      coffee-script
+      rack
     rack-protection (1.5.2)
       rack
     rake (10.1.1)
@@ -61,6 +69,7 @@ DEPENDENCIES
   bundler
   kramdown
   pry
+  rack-coffee
   rake
   rdoc
   shoulda

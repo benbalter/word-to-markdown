@@ -4,3 +4,4 @@ gemspec
 
 gem 'sinatra'
 gem 'kramdown'
+gem 'rack-coffee'
