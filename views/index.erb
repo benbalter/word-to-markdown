@@ -1,0 +1,30 @@
+<h2>Converting a Word Document is as easy as 1, 2, 3...</h2>
+
+<% unless error.nil? %>
+  <div class="alert alert-danger">
+    <%= error %>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col-md-4">
+    <h3>Step 1</h3>
+    <h4>Export the Word Document as HTML</h4>
+    <p>(Screenshots here)</p>
+  </div>
+  <div class="col-md-4">
+    <h3>Step 2</h3>
+    <h4>Upload the resulting `.htm` or `.html` file</h4>
+    <p>(Screenshot here)</p>
+  </div>
+  <div class="col-md-4">
+    <h3>Step 3</h3>
+    <h4>Get back crisp, clean Markdown</h4>
+    <p>(:boom: emoji here)</p>
+  </div>
+</div>
+
+<form class="form" method="POST" enctype="multipart/form-data">
+  <input type="file" class="file" name="doc">
+  <input type="submit" class="btn btn-primary" value="Convert">
+</form>
