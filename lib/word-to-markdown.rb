@@ -4,8 +4,8 @@ require 'descriptive_statistics'
 class WordToMarkdown
 
   attr_reader :doc
-  FONT_SIZE_REGEX = /\bfont-size:\s?([0-9\.]+)pt;?\b/
-  H_STEP = 100/6
+  HEADING_DEPTH = 6
+  HEADING_STEP = 100/HEADING_DEPTH
   LI_SELECTORS = %w[
     MsoListParagraphCxSpFirst
     MsoListParagraphCxSpMiddle
@@ -22,9 +22,12 @@ class WordToMarkdown
     semanticize!
   end
 
-  def semanticize!
-    # Convert unnumbered list paragraphs to actual unnumbered lists
-    @doc.css(".#{LI_SELECTORS.join(",.")}").each { |node| node.node_name = "li" }
+  def inspect
+    "<WordToMarkdown path=\"#{@path}\">"
+  end
+
+  def to_s
+    @markdown ||= scrub_whitespace(ReverseMarkdown.parse(@doc.to_html))
   end
 
   def scrub_whitespace(string)
@@ -36,42 +39,61 @@ class WordToMarkdown
     string
   end
 
-  def to_s
-    @markdown ||= scrub_whitespace(ReverseMarkdown.parse(@doc.to_html))
+  def implicit_headings
+    @implicit_headings ||= begin
+      headings = []
+      @doc.css("[style]").each do |element|
+        headings.push element unless element.font_size.nil?
+      end
+      headings
+    end
   end
 
   def font_sizes
     @font_sizes ||= begin
       sizes = []
-      @doc.css("[style]").each do |element|
-        match = FONT_SIZE_REGEX.match element.attr("style")
-        sizes.push match[1].to_i unless match.nil?
-      end
+      implicit_headings.each { |element| sizes.push element.font_size }
       sizes
     end
   end
 
+  def guess_heading(node)
+    return nil if node.font_size == nil
+    [*1...HEADING_DEPTH].each do |heading|
+      return "h#{heading}" if node.font_size >= h(heading)
+    end
+    nil
+  end
+
   def h(n)
-    font_sizes.percentile (6-n) * H_STEP
+    font_sizes.percentile ((HEADING_DEPTH-1)-n) * HEADING_STEP
   end
 
-  def h1
-    h(1)
-  end
+  # Try to make semantic markup explicit where implied by the export
+  def semanticize!
+    # Convert unnumbered list paragraphs to actual unnumbered lists
+    @doc.css(".#{LI_SELECTORS.join(",.")}").each { |node| node.node_name = "li" }
 
-  def h2
-    h(2)
+    # Try to guess heading where implicit bassed on font size
+    implicit_headings.each do |element|
+      heading = guess_heading element
+      element.node_name = heading unless heading.nil?
+    end
   end
+end
 
-  def h3
-    h(3)
-  end
+module Nokogiri
+  module XML
+    class Element
 
-  def h4
-    h(4)
-  end
+      FONT_SIZE_REGEX = /\bfont-size:\s?([0-9\.]+)pt;?\b/
 
-  def h5
-    h(5)
+      def font_size
+        @font_size ||= begin
+          match = FONT_SIZE_REGEX.match attr("style")
+          match[1].to_i unless match.nil?
+        end
+      end
+    end
   end
 end

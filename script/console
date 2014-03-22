@@ -1,1 +1,1 @@
-bundle exec irb -r './lib/word-to-markdown.rb'
+bundle exec pry -r './lib/word-to-markdown.rb'

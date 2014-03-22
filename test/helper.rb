@@ -13,3 +13,11 @@ require 'shoulda'
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'word-to-markdown'
+
+def fixture_path(fixture="")
+  File.expand_path "fixtures/#{fixture}.htm", File.dirname(__FILE__)
+end
+
+def validate_fixture(fixture, expected)
+  assert_equal expected, WordToMarkdown.new(fixture_path(fixture)).to_s
+end

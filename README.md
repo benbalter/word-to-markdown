@@ -39,7 +39,6 @@ doc.doc
 ## Future Support
 
 * Nested lists
-* Implicit headings (e.g., larger font sizes)
 
 ## Testing
 
