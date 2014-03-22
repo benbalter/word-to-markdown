@@ -2,3 +2,4 @@ body {font-size: 2em;  padding: 25px 100px 25px 100px;}
 footer { position: absolute; bottom: 15px; right: 15px; }
 .moar {text-align: center; margin-top: 100px; }
 .rendered-preview { border: 1px solid #ccc; padding: 15px; }
+img {width: 100%}
