@@ -22,6 +22,11 @@ module WordToMarkdownServer
       render_template :display, { :md => md, :html => html, :filename => params['doc'][:filename].sub(/\.html?$/,"") }
     end
 
+    post "/raw" do
+      html = request.env["rack.request.form_vars"]
+      WordToMarkdown.new("<!-- Prevent arbitrary file reads -->#{html}").to_s
+    end
+
     def render_template(template, locals={})
       halt erb template, :layout => :layout, :locals => locals
     end
