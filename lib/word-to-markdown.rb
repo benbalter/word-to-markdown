@@ -13,9 +13,20 @@ class WordToMarkdown
 
   attr_reader :path, :doc, :html
 
-  def initialize(path)
-    @path = path
-    @html = File.open(@path).read.encode("UTF-8", :invalid => :replace, :replace => "")
+  # Create a new WordToMarkdown object
+  #
+  # input - a HTML string or path to an HTML file
+  #
+  # Returns the WordToMarkdown object
+  def initialize(input)
+    if File.exist?(input)
+      @html = File.open(input).read
+      @path = input
+    else
+      @path = String
+      @html = input
+    end
+    @html = @html.encode("UTF-8", :invalid => :replace, :replace => "")
     @doc = Nokogiri::HTML @html
     semanticize!
   end
