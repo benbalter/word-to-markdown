@@ -19,8 +19,8 @@ A Ruby gem to liberate content from [the jail that is Word documents](http://ben
 ## Usage
 
 ```ruby
-doc = WordToMarkdown.new("path/to/export.htm")
-=> <WordToMarkdown path="./path/to/export.htm">
+doc = WordToMarkdown.new("/path/to/export.htm")
+=> <WordToMarkdown path="/path/to/export.htm">
 
 doc.to_s
 => "# Test\n\n This is a test"

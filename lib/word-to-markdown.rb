@@ -19,9 +19,10 @@ class WordToMarkdown
   #
   # Returns the WordToMarkdown object
   def initialize(input)
-    if File.exist?(input)
-      @html = File.open(input).read
-      @path = input
+    path = File.expand_path input, Dir.pwd
+    if File.exist?(path)
+      @html = File.open(path).read
+      @path = path
     else
       @path = String
       @html = input
