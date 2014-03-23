@@ -20,11 +20,13 @@ A Ruby gem to liberate content from [the jail that is Word documents](http://ben
 
 ```ruby
 doc = WordToMarkdown.new("path/to/export.htm")
+=> <WordToMarkdown path="./test/fixtures/h1.htm">
+
 doc.to_s
 => "# Test\n\n This is a test"
 
 doc.html
-=> "<html><head>..."
+=> "<html>\n\n<head>..."
 
 doc.doc
 => <Nokogiri Document>
