@@ -20,7 +20,7 @@ A Ruby gem to liberate content from [the jail that is Word documents](http://ben
 
 ```ruby
 doc = WordToMarkdown.new("path/to/export.htm")
-=> <WordToMarkdown path="./test/fixtures/h1.htm">
+=> <WordToMarkdown path="./path/to/export.htm">
 
 doc.to_s
 => "# Test\n\n This is a test"
