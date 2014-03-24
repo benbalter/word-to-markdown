@@ -12,7 +12,7 @@ class WordToMarkdown
   ]
   MIN_HEADING_SIZE = 20
 
-  attr_reader :path, :doc, :html
+  attr_reader :path, :doc
 
   # Create a new WordToMarkdown object
   #
@@ -22,15 +22,22 @@ class WordToMarkdown
   def initialize(input)
     path = File.expand_path input, Dir.pwd
     if File.exist?(path)
-      @html = File.open(path).read
+      html = File.open(path).read
       @path = path
     else
       @path = String
-      @html = input.to_s
+      html = input.to_s
     end
-    @html = @html.force_encoding(encoding).encode("UTF-8", :invalid => :replace, :replace => "")
-    @doc = Nokogiri::HTML @html
+    @doc = Nokogiri::HTML normalize(html)
     semanticize!
+  end
+
+  # Perform pre-processing normalization
+  def normalize(html)
+    encoding = encoding(html)
+    html = html.force_encoding(encoding).encode("UTF-8", :invalid => :replace, :replace => "")
+    html.gsub! /\<\/?o:[^>]+>/, "" # Strip everything in the office namespace
+    html
   end
 
   def inspect
@@ -41,8 +48,12 @@ class WordToMarkdown
     @markdown ||= scrub_whitespace(ReverseMarkdown.parse(@doc.to_html))
   end
 
-  def encoding
-    match = @html.encode("UTF-8", :invalid => :replace, :replace => "").match(/charset=([^\"]+)/)
+  def html
+    @doc.to_html
+  end
+
+  def encoding(html)
+    match = html.encode("UTF-8", :invalid => :replace, :replace => "").match(/charset=([^\"]+)/)
     if match
       match[1].sub("macintosh", "MacRoman")
     else
