@@ -37,6 +37,7 @@ class WordToMarkdown
     encoding = encoding(html)
     html = html.force_encoding(encoding).encode("UTF-8", :invalid => :replace, :replace => "")
     html.gsub! /\<\/?o:[^>]+>/, "" # Strip everything in the office namespace
+    html.gsub! /\n|\r/," " #remove linebreaks
     html
   end
 
@@ -67,6 +68,8 @@ class WordToMarkdown
     string.gsub!(/\n\n \n\n/,"\n\n")                # Quadruple line breaks
     string.gsub!(/^([0-9]+)\.[[:space:]]*/,"\\1. ") # Numbered lists
     string.gsub!(/^-[[:space:]·]*/,"- ")            # Unnumbered lists
+    string.gsub!(/\u00A0/, "")                      # Unicode non-breaking spaces, injected as tabs
+    string.gsub!(/^ /, "")                          # Leading spaces
     string
   end
 
