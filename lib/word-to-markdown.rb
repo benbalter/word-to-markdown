@@ -6,7 +6,7 @@ class WordToMarkdown
   HEADING_DEPTH = 6 # Number of headings to guess, e.g., h6
   HEADING_STEP = 100/HEADING_DEPTH
   MIN_HEADING_SIZE = 20
-  
+
   LI_SELECTORS = %w[
     MsoListParagraphCxSpFirst
     MsoListParagraphCxSpMiddle
@@ -38,7 +38,9 @@ class WordToMarkdown
     encoding = encoding(html)
     html = html.force_encoding(encoding).encode("UTF-8", :invalid => :replace, :replace => "")
     html.gsub! /\<\/?o:[^>]+>/, "" # Strip everything in the office namespace
-    html.gsub! /\n|\r/," "         # remove linebreaks
+    html.gsub! /\n|\r/," "         # Remove linebreaks
+    html.gsub! /“|”/, '"'          # Straighten curly double quotes
+    html.gsub! /‘|’/, "'"          # Straighten curly single quotes
     html
   end
 

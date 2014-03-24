@@ -40,7 +40,18 @@ class TestWordToMarkdown < Test::Unit::TestCase
   end
 
   should "not mangle encoding" do
-    doc = WordToMarkdown.new "<span>’</span>"
-    assert_equal "’", doc.to_s
+    doc = WordToMarkdown.new "<span>…</span>"
+    assert_equal "…", doc.to_s
+  end
+
+  should "straighten double curly quotes" do
+    doc = WordToMarkdown.new "<span>“”</span>"
+    assert_equal '""', doc.to_s
+  end
+
+  should "straighten single curly quotes" do
+    doc = WordToMarkdown.new "<span>‘’</span>"
+    assert_equal "''", doc.to_s
+
   end
 end
