@@ -27,7 +27,7 @@ class WordToMarkdown
       @path = String
       @html = input
     end
-    @html = @html.encode("UTF-8", :invalid => :replace, :replace => "")
+    @html = @html.force_encoding('iso8859-1').encode("UTF-8", :invalid => :replace, :replace => "")
     @doc = Nokogiri::HTML @html
     semanticize!
   end
@@ -45,7 +45,7 @@ class WordToMarkdown
     string.sub!(/[[:space:]]+\z/,'')                # trailing whitespace
     string.gsub!(/\n\n \n\n/,"\n\n")                # Quadruple line breaks
     string.gsub!(/^([0-9]+)\.[[:space:]]*/,"\\1. ") # Numbered lists
-    string.gsub!(/^-[[:space:]]*/,"- ")             # Unnumbered lists
+    string.gsub!(/^-[[:space:]á]*/,"- ")             # Unnumbered lists
     string
   end
 
