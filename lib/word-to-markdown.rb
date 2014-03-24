@@ -1,5 +1,6 @@
 require 'reverse_markdown'
 require 'descriptive_statistics'
+require 'premailer'
 
 class WordToMarkdown
 
@@ -37,6 +38,7 @@ class WordToMarkdown
   def normalize(html)
     encoding = encoding(html)
     html = html.force_encoding(encoding).encode("UTF-8", :invalid => :replace, :replace => "")
+    html = Premailer.new(html, :with_html_string => true, :input_encoding => "UTF-8").to_inline_css
     html.gsub! /\<\/?o:[^>]+>/, "" # Strip everything in the office namespace
     html.gsub! /\n|\r/," "         # Remove linebreaks
     html.gsub! /“|”/, '"'          # Straighten curly double quotes

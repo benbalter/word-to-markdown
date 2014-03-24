@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.files = [ "lib/word-to-markdown.rb" ]
   s.add_dependency("reverse_markdown","~> 0.4.7")
   s.add_dependency('descriptive_statistics', "~> 1.1.3")
+  s.add_dependency( "premailer" )
   s.add_development_dependency( "rake" )
   s.add_development_dependency( "shoulda" )
   s.add_development_dependency( "rdoc" )
