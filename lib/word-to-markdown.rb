@@ -83,7 +83,7 @@ class WordToMarkdown
     @implicit_headings ||= begin
       headings = []
       doc.css("[style]").each do |element|
-        headings.push element unless element.font_size.nil? || element.font_size <= MIN_HEADING_SIZE
+        headings.push element unless element.font_size.nil? || element.font_size < MIN_HEADING_SIZE
       end
       headings
     end
