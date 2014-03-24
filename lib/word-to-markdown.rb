@@ -25,9 +25,9 @@ class WordToMarkdown
       @path = path
     else
       @path = String
-      @html = input
+      @html = input.to_s
     end
-    @html = @html.force_encoding('iso8859-1').encode("UTF-8", :invalid => :replace, :replace => "")
+    @html = @html.force_encoding(encoding).encode("UTF-8", :invalid => :replace, :replace => "")
     @doc = Nokogiri::HTML @html
     semanticize!
   end
@@ -40,12 +40,21 @@ class WordToMarkdown
     @markdown ||= scrub_whitespace(ReverseMarkdown.parse(@doc.to_html))
   end
 
+  def encoding
+    match = @html.encode("UTF-8", :invalid => :replace, :replace => "").match(/charset=([^\"]+)/)
+    if match
+      match[1].sub("macintosh", "MacRoman")
+    else
+      "UTF-8"
+    end
+  end
+
   def scrub_whitespace(string)
     string.sub!(/\A[[:space:]]+/,'')                # leading whitespace
     string.sub!(/[[:space:]]+\z/,'')                # trailing whitespace
     string.gsub!(/\n\n \n\n/,"\n\n")                # Quadruple line breaks
     string.gsub!(/^([0-9]+)\.[[:space:]]*/,"\\1. ") # Numbered lists
-    string.gsub!(/^-[[:space:]á]*/,"- ")             # Unnumbered lists
+    string.gsub!(/^-[[:space:]·]*/,"- ")            # Unnumbered lists
     string
   end
 
