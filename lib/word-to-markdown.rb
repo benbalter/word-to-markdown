@@ -37,7 +37,7 @@ class WordToMarkdown
     encoding = encoding(html)
     html = html.force_encoding(encoding).encode("UTF-8", :invalid => :replace, :replace => "")
     html.gsub! /\<\/?o:[^>]+>/, "" # Strip everything in the office namespace
-    html.gsub! /\n|\r/," " #remove linebreaks
+    html.gsub! /\n|\r/," "         # remove linebreaks
     html
   end
 
