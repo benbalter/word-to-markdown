@@ -5,12 +5,13 @@ class WordToMarkdown
 
   HEADING_DEPTH = 6 # Number of headings to guess, e.g., h6
   HEADING_STEP = 100/HEADING_DEPTH
+  MIN_HEADING_SIZE = 20
+  
   LI_SELECTORS = %w[
     MsoListParagraphCxSpFirst
     MsoListParagraphCxSpMiddle
     MsoListParagraphCxSpLast
   ]
-  MIN_HEADING_SIZE = 20
 
   attr_reader :path, :doc
 
