@@ -7,7 +7,7 @@ class TestWordToMarkdownImplicitHeadings < Test::Unit::TestCase
   end
 
   should "translate implicit headings" do
-    expected = "# Large text\n\nParagraph\n\n## Medium Text\n\nParagraph\n\n##### Small text\n\nParagraph"
+    expected = "# Large text\n\nParagraph\n\n## Medium Text\n\nParagraph\n\n### Small text\n\nParagraph"
     validate_fixture "small-medium-large", expected
   end
 
@@ -20,17 +20,17 @@ class TestWordToMarkdownImplicitHeadings < Test::Unit::TestCase
   end
 
   should "detect a document's font sizes" do
-    assert_equal [48, 36, 24], @doc.font_sizes
+    assert_equal [10,20,40,50], @doc.font_sizes
   end
 
   should "guess implied heading" do
     assert_equal "h1", @doc.guess_heading(@doc.implicit_headings[0])
     assert_equal "h2", @doc.guess_heading(@doc.implicit_headings[1])
-    assert_equal "h5", @doc.guess_heading(@doc.implicit_headings[2])
+    assert_equal "h3", @doc.guess_heading(@doc.implicit_headings[2])
   end
 
   should "ignore headings below minimum size" do
     doc = WordToMarkdown.new '<span style="font-size:18.0pt">Test</span>'
-    assert_equal [], doc.font_sizes
+    assert_equal [], doc.implicit_headings
   end
 end
