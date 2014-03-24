@@ -28,4 +28,9 @@ class TestWordToMarkdownImplicitHeadings < Test::Unit::TestCase
     assert_equal "h2", @doc.guess_heading(@doc.implicit_headings[1])
     assert_equal "h5", @doc.guess_heading(@doc.implicit_headings[2])
   end
+
+  should "ignore headings below minimum size" do
+    doc = WordToMarkdown.new '<span style="font-size:18.0pt">Test</span>'
+    assert_equal [], doc.font_sizes
+  end
 end
