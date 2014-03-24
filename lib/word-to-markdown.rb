@@ -46,7 +46,7 @@ class WordToMarkdown
   end
 
   def to_s
-    @markdown ||= scrub_whitespace(ReverseMarkdown.parse(@doc.to_html))
+    @markdown ||= scrub_whitespace(ReverseMarkdown.parse(html))
   end
 
   def html
