@@ -53,7 +53,7 @@ class WordToMarkdown
   end
 
   def html
-    @doc.to_html
+    doc.to_html
   end
 
   def encoding(html)
@@ -80,7 +80,7 @@ class WordToMarkdown
   def implicit_headings
     @implicit_headings ||= begin
       headings = []
-      @doc.css("[style]").each do |element|
+      doc.css("[style]").each do |element|
         headings.push element unless element.font_size.nil? || element.font_size < MIN_HEADING_SIZE
       end
       headings
@@ -114,7 +114,7 @@ class WordToMarkdown
   # Try to make semantic markup explicit where implied by the export
   def semanticize!
     # Convert unnumbered list paragraphs to actual unnumbered lists
-    @doc.css(".#{LI_SELECTORS.join(",.")}").each { |node| node.node_name = "li" }
+    doc.css(".#{LI_SELECTORS.join(",.")}").each { |node| node.node_name = "li" }
 
     # Try to guess heading where implicit bassed on font size
     implicit_headings.each do |element|
