@@ -39,5 +39,8 @@ class TestWordToMarkdown < Test::Unit::TestCase
     assert_equal "# Heading", WordToMarkdown.new("<h1>Heading</h1>").to_s
   end
 
-
+  should "not mangle encoding" do
+    doc = WordToMarkdown.new "<span>’</span>"
+    assert_equal "’", doc.to_s
+  end
 end
