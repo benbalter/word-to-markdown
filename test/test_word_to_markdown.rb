@@ -52,6 +52,5 @@ class TestWordToMarkdown < Test::Unit::TestCase
   should "straighten single curly quotes" do
     doc = WordToMarkdown.new "<span>‘’</span>"
     assert_equal "''", doc.to_s
-
   end
 end
