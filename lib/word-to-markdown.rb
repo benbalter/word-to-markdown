@@ -121,6 +121,9 @@ class WordToMarkdown
       heading = guess_heading element
       element.node_name = heading unless heading.nil?
     end
+
+    # Removes paragraphs from tables
+    doc.search("td p").each { |node| node.node_name = "span" }
   end
 end
 
