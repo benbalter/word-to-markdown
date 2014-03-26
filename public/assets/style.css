@@ -1,5 +1,5 @@
 body {font-size: 2em;  padding: 25px 100px 25px 100px; text-align: center; }
-footer { position: absolute; bottom: 15px; right: 15px; }
+footer { margin: 40px 0 20px; }
 .moar {text-align: center; margin-top: 100px; }
 .md-preview, pre { text-align: left; }
 .rendered-preview { border: 1px solid #ccc; padding: 15px; text-align: left; }

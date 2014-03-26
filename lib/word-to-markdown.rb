@@ -92,6 +92,7 @@ class WordToMarkdown
     string.gsub!(/^-[[:space:]·]*/,"- ")            # Unnumbered lists
     string.gsub!(/\u00A0/, "")                      # Unicode non-breaking spaces, injected as tabs
     string.gsub!(/^ /, "")                          # Leading spaces
+    string.gsub!(/^- (\d+)\./, "\\1.")              # OL's wrapped in UL's see http://bit.ly/1ivqxy8
     string
   end
 
