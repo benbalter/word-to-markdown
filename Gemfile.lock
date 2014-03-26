@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    word-to-markdown (0.0.3)
+    word-to-markdown (0.0.4)
       descriptive_statistics (~> 1.1.3)
       premailer
       reverse_markdown (~> 0.4.7)
