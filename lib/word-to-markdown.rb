@@ -1,6 +1,9 @@
 require 'reverse_markdown'
 require 'descriptive_statistics'
 require 'premailer'
+require 'nokogiri'
+require 'nokogiri-styles'
+require 'roman-numerals'
 
 class WordToMarkdown
 
@@ -91,7 +94,7 @@ class WordToMarkdown
     string.gsub!(/^([0-9]+)\.[[:space:]]*/,"\\1. ") # Numbered lists
     string.gsub!(/^-[[:space:]·]*/,"- ")            # Unnumbered lists
     string.gsub!(/\u00A0/, "")                      # Unicode non-breaking spaces, injected as tabs
-    string.gsub!(/^ /, "")                          # Leading spaces
+    string.gsub!(/&nbsp;/, " ")
     string.gsub!(/^- (\d+)\./, "\\1.")              # OL's wrapped in UL's see http://bit.ly/1ivqxy8
     string
   end
@@ -146,6 +149,20 @@ class WordToMarkdown
     # Convert unnumbered list paragraphs to actual unnumbered lists
     doc.css(".#{LI_SELECTORS.join(",.")}").each { |node| node.node_name = "li" }
 
+    # Semanticize OLs
+    doc.css(".MsoListParagraph").each do |node|
+
+      indent = ((node.left_margin - 0.5) / 0.5).to_i
+
+      # Convert all list items into numbered list items, e.g., ii. => 2.
+      span = node.css("span").first
+      span.content = span.content.gsub /^[[:space:]]+/, ""
+      span.content = span.content.gsub /^[a-zA-Z]+\.[[:space:]]/, "1. "
+
+      # current node's indent level, as determined by left margin
+      (indent * 4).times { node.content = "&nbsp;#{node.content}"}
+    end
+
     # Try to guess heading where implicit bassed on font size
     implicit_headings.each do |element|
       heading = guess_heading element
@@ -161,14 +178,26 @@ module Nokogiri
   module XML
     class Element
 
-      FONT_SIZE_REGEX = /\bfont-size:\s?([0-9\.]+)pt;?\b/
-
-      # Extend nokogiri nodes to guess their font size where defined
-      def font_size
-        @font_size ||= begin
-          match = FONT_SIZE_REGEX.match attr("style")
-          match[1].to_i unless match.nil?
+      # The node's left-margin
+      # Used for parsing nested Lis
+      #
+      # Returns a float with the left margin
+      def left_margin
+        if styles['margin-left']
+          styles['margin-left'].to_f
+        elsif styles['margin']
+          styles['margin'].split(" ").last.to_f
+        else
+          0
         end
+      end
+
+      # The node's font size
+      # Used for guessing heading sizes
+      #
+      # Returns a float with the font-size
+      def font_size
+        styles['font-size'].to_f if styles['font-size']
       end
     end
   end
