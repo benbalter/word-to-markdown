@@ -35,6 +35,10 @@ class WordToMarkdown
   end
 
   # Perform pre-processing normalization
+  #
+  # html - the raw html input from the export
+  #
+  # Returns the normalized html
   def normalize(html)
     encoding = encoding(html)
     html = html.force_encoding(encoding).encode("UTF-8", :invalid => :replace, :replace => "")
@@ -46,18 +50,26 @@ class WordToMarkdown
     html
   end
 
+  # Pretty print the class in console
   def inspect
     "<WordToMarkdown path=\"#{@path}\">"
   end
 
+  # Returns the markdown representation of the document
   def to_s
     @markdown ||= scrub_whitespace(ReverseMarkdown.parse(html))
   end
 
+  # Returns the html representation of the document
   def html
     doc.to_html
   end
 
+  # Determine the document encoding
+  #
+  # html - the raw html export
+  #
+  # Returns the encoding, defaulting to "UTF-8"
   def encoding(html)
     match = html.encode("UTF-8", :invalid => :replace, :replace => "").match(/charset=([^\"]+)/)
     if match
@@ -67,6 +79,11 @@ class WordToMarkdown
     end
   end
 
+  # Perform post-processing normalization of certain Word quirks
+  #
+  # string - the markdown representation of the document
+  #
+  # Returns the normalized markdown
   def scrub_whitespace(string)
     string.sub!(/\A[[:space:]]+/,'')                # leading whitespace
     string.sub!(/[[:space:]]+\z/,'')                # trailing whitespace
@@ -101,6 +118,10 @@ class WordToMarkdown
   end
 
   # Given a Nokogiri node, guess what heading it represents, if any
+  #
+  # node - the nokigiri node
+  #
+  # retuns the heading tag (e.g., H1), or nil
   def guess_heading(node)
     return nil if node.font_size == nil
     [*1...HEADING_DEPTH].each do |heading|
@@ -111,6 +132,10 @@ class WordToMarkdown
 
   # Minimum font size required for a given heading
   # e.g., H(2) would represent the minimum font size of an implicit h2
+  #
+  # n - the heading number, e.g., 1, 2
+  #
+  # returns the minimum font size as an integer
   def h(n)
     font_sizes.percentile ((HEADING_DEPTH-1)-n) * HEADING_STEP
   end
@@ -137,6 +162,7 @@ module Nokogiri
 
       FONT_SIZE_REGEX = /\bfont-size:\s?([0-9\.]+)pt;?\b/
 
+      # Extend nokogiri nodes to guess their font size where defined
       def font_size
         @font_size ||= begin
           match = FONT_SIZE_REGEX.match attr("style")
