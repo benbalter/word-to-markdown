@@ -35,6 +35,10 @@ class TestWordToMarkdown < Test::Unit::TestCase
     validate_fixture "ol", "1. One\n\n2. Two\n\n3. Three"
   end
 
+  should "not wrap ol in uls" do
+    validate_fixture "ul-ol", "1. One\n2. Two"
+  end
+
   should "parse tables" do
     validate_fixture "table", "| **Foo** | **Bar** |\n| One | Two |\n| Three | Four |"
   end
