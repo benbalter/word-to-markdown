@@ -6,7 +6,6 @@ PATH
       nokogiri-styles
       premailer
       reverse_markdown (~> 0.4.7)
-      roman-numerals
 
 GEM
   remote: https://rubygems.org/
@@ -78,7 +77,6 @@ GEM
       listen (~> 2.7)
     reverse_markdown (0.4.7)
       nokogiri
-    roman-numerals (0.3.0)
     shoulda (3.5.0)
       shoulda-context (~> 1.0, >= 1.0.1)
       shoulda-matchers (>= 1.4.1, < 3.0)

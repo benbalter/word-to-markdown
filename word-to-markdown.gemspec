@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.add_dependency('descriptive_statistics', "~> 1.1.3")
   s.add_dependency( "premailer" )
   s.add_dependency( 'nokogiri-styles' )
-  s.add_dependency( 'roman-numerals' )
   s.add_development_dependency( "rake" )
   s.add_development_dependency( "shoulda" )
   s.add_development_dependency( "rdoc" )

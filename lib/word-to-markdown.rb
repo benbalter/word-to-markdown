@@ -3,7 +3,6 @@ require 'descriptive_statistics'
 require 'premailer'
 require 'nokogiri'
 require 'nokogiri-styles'
-require 'roman-numerals'
 
 class WordToMarkdown
 
