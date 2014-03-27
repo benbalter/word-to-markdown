@@ -67,7 +67,7 @@ class WordToMarkdown
 
   # Returns the html representation of the document
   def html
-    doc.to_html
+    doc.to_html.gsub("</li>\n", "</li>")
   end
 
   # Determine the document encoding
@@ -93,12 +93,7 @@ class WordToMarkdown
     string.sub!(/\A[[:space:]]+/,'')                # leading whitespace
     string.sub!(/[[:space:]]+\z/,'')                # trailing whitespace
     string.gsub!(/\n\n \n\n/,"\n\n")                # Quadruple line breaks
-    string.gsub!(/^([0-9]+)\.[[:space:]]*/,"\\1. ") # Numbered lists
-    string.gsub!(/&nbsp;/, " ")                     # Convert indents to actual spaces
-    string.gsub!(/^- ([[:space:]]+\d+)\. /,"\\1. ") # Numbered lists wrapped in unnumered lists
-    string.gsub!(/^-[[:space:]]*/,"- ")             # Unnumbered lists excessive whitespace
     string.gsub!(/\u00A0/, "")                      # Unicode non-breaking spaces, injected as tabs
-    string.gsub!(/^- (\d+)\./, "\\1.")              # OL's wrapped in UL's see http://bit.ly/1ivqxy8
     string
   end
 
@@ -193,9 +188,9 @@ class WordToMarkdown
       end
 
       # Convert all pseudo-numbered list items into numbered list items, e.g., ii. => 2.
-      span = node.css("span").first
-      span.content = span.content.gsub /^[[:space:]]+/, ""
-      span.content = span.content.gsub /^[a-zA-Z0-9]+\.[[:space:]]/, ""
+      span = node#.css("span").first
+      node.content = node.content.gsub /^[[:space:] ]+/, ""
+      node.content = node.content.gsub /^[a-zA-Z0-9]+\.[[:space:]]+/, ""
 
     end
 

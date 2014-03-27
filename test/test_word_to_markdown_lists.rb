@@ -15,11 +15,11 @@ class TestWordToMarkdownLists < Test::Unit::TestCase
   end
 
   should "parse nested ols" do
-    validate_fixture "nested-ol", "1. One\n    1.  Sub one\n    1.  Sub two\n2. Two\n    1.  Sub one\n        1.  Sub sub one\n        1.  Sub sub two\n    1.  Sub two\n3. Three"
+    validate_fixture "nested-ol", "1. One\n  1. Sub one\n  2. Sub two\n\n3. Two\n  1. Sub one\n    1. Sub sub one\n    2. Sub sub two\n\n  3. Sub two\n\n4. Three"
   end
 
   should "parse nested uls" do
-    validate_fixture "nested-ul", "- One\n  - Sub one\n    -  Sub sub one\n     -  Sub sub two\n\n  - Sub two\n\n- Two"
+    validate_fixture "nested-ul", "- One\n  - Sub one\n    - Sub sub one\n    - Sub sub two\n\n  - Sub two\n\n- Two"
   end
 
   should "parse left margin" do
