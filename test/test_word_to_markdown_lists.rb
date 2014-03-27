@@ -7,7 +7,7 @@ class TestWordToMarkdownLists < Test::Unit::TestCase
   end
 
   should "properly parse numbered lists" do
-    validate_fixture "ol", "1. One\n\n2. Two\n\n3. Three"
+    validate_fixture "ol", "1. One\n2. Two\n3. Three"
   end
 
   should "not wrap ol in uls" do
@@ -15,7 +15,11 @@ class TestWordToMarkdownLists < Test::Unit::TestCase
   end
 
   should "parse nested ols" do
-    validate_fixture "nested-ol", "1. One\n\n    1.  Sub one\n\n    1.  Sub two\n\n2. Two\n\n    1.  Sub one\n\n        1.  Sub sub one\n\n        1.  Sub sub two\n\n    1.  Sub two\n\n3. Three"
+    validate_fixture "nested-ol", "1. One\n    1.  Sub one\n    1.  Sub two\n2. Two\n    1.  Sub one\n        1.  Sub sub one\n        1.  Sub sub two\n    1.  Sub two\n3. Three"
+  end
+
+  should "parse nested uls" do
+    validate_fixture "nested-ul", ""
   end
 
   should "parse left margin" do

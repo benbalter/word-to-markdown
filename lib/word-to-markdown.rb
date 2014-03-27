@@ -15,6 +15,7 @@ class WordToMarkdown
     MsoListParagraphCxSpFirst
     MsoListParagraphCxSpMiddle
     MsoListParagraphCxSpLast
+    MsoListParagraph
   ]
 
   attr_reader :path, :doc
@@ -92,9 +93,10 @@ class WordToMarkdown
     string.sub!(/[[:space:]]+\z/,'')                # trailing whitespace
     string.gsub!(/\n\n \n\n/,"\n\n")                # Quadruple line breaks
     string.gsub!(/^([0-9]+)\.[[:space:]]*/,"\\1. ") # Numbered lists
-    string.gsub!(/^-[[:space:]·]*/,"- ")            # Unnumbered lists
+    string.gsub!(/&nbsp;/, " ")                     # Convert indents to actual spaces
+    string.gsub!(/^- ([[:space:]]+\d+)\. /,"\\1. ") # Numbered lists wrapped in unnumered lists
+    string.gsub!(/^-[[:space:]]*/,"- ")             # Unnumbered lists excessive whitespace
     string.gsub!(/\u00A0/, "")                      # Unicode non-breaking spaces, injected as tabs
-    string.gsub!(/&nbsp;/, " ")
     string.gsub!(/^- (\d+)\./, "\\1.")              # OL's wrapped in UL's see http://bit.ly/1ivqxy8
     string
   end
@@ -144,15 +146,24 @@ class WordToMarkdown
     font_sizes.percentile ((HEADING_DEPTH-1)-n) * HEADING_STEP
   end
 
+  def li_selectors
+    ".#{LI_SELECTORS.join(",.")}"
+  end
+
   # Try to make semantic markup explicit where implied by the export
   def semanticize!
-    # Convert unnumbered list paragraphs to actual unnumbered lists
-    doc.css(".#{LI_SELECTORS.join(",.")}").each { |node| node.node_name = "li" }
 
-    # Semanticize OLs
-    doc.css(".MsoListParagraph").each do |node|
+    # Semanticize lists
+    doc.css(li_selectors).each do |node|
 
-      indent = ((node.left_margin - 0.5) / 0.5).to_i
+      # Convert list paragraphs to actual numbered and unnumbered lists
+      node.node_name = "li"
+
+      # Scrub unicode bullets
+      span = node.css("span:first")[1]
+      if span && span.styles["mso-list"] && span.styles["mso-list"] == "Ignore"
+        span.content = span.content[1..-1] unless span.content.match /^\d+\./
+      end
 
       # Convert all list items into numbered list items, e.g., ii. => 2.
       span = node.css("span").first
@@ -160,7 +171,9 @@ class WordToMarkdown
       span.content = span.content.gsub /^[a-zA-Z]+\.[[:space:]]/, "1. "
 
       # current node's indent level, as determined by left margin
+      indent = ((node.left_margin - 0.5) / 0.5).to_i
       (indent * 4).times { node.content = "&nbsp;#{node.content}"}
+
     end
 
     # Try to guess heading where implicit bassed on font size
