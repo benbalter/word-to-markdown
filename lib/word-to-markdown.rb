@@ -187,7 +187,6 @@ class WordToMarkdown
       end
 
       # Convert all pseudo-numbered list items into numbered list items, e.g., ii. => 2.
-      span = node#.css("span").first
       node.content = node.content.gsub /^[[:space:] ]+/, ""
       node.content = node.content.gsub /^[a-zA-Z0-9]+\.[[:space:]]+/, ""
 
