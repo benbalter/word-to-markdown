@@ -11,10 +11,10 @@ class WordToMarkdown
   MIN_HEADING_SIZE = 20
 
   LI_SELECTORS = %w[
-    MsoListParagraphCxSpFirst
-    MsoListParagraphCxSpMiddle
-    MsoListParagraphCxSpLast
-    MsoListParagraph
+    .MsoListParagraphCxSpFirst
+    .MsoListParagraphCxSpMiddle
+    .MsoListParagraphCxSpLast
+    .MsoListParagraph
   ]
 
   attr_reader :path, :doc
@@ -143,7 +143,7 @@ class WordToMarkdown
 
   # CSS selector to select non-symantic lists
   def li_selectors
-    ".#{LI_SELECTORS.join(",.")}"
+    LI_SELECTORS.join(",")
   end
 
   # Try to make semantic markup explicit where implied by the export
