@@ -1,6 +1,8 @@
 require 'reverse_markdown'
 require 'descriptive_statistics'
 require 'premailer'
+require 'nokogiri'
+require 'nokogiri-styles'
 
 class WordToMarkdown
 
@@ -12,6 +14,7 @@ class WordToMarkdown
     MsoListParagraphCxSpFirst
     MsoListParagraphCxSpMiddle
     MsoListParagraphCxSpLast
+    MsoListParagraph
   ]
 
   attr_reader :path, :doc
@@ -44,6 +47,7 @@ class WordToMarkdown
     html = html.force_encoding(encoding).encode("UTF-8", :invalid => :replace, :replace => "")
     html = Premailer.new(html, :with_html_string => true, :input_encoding => "UTF-8").to_inline_css
     html.gsub! /\<\/?o:[^>]+>/, "" # Strip everything in the office namespace
+    html.gsub! /\<\/?w:[^>]+>/, "" # Strip everything in the word namespace
     html.gsub! /\n|\r/," "         # Remove linebreaks
     html.gsub! /“|”/, '"'          # Straighten curly double quotes
     html.gsub! /‘|’/, "'"          # Straighten curly single quotes
@@ -62,7 +66,7 @@ class WordToMarkdown
 
   # Returns the html representation of the document
   def html
-    doc.to_html
+    doc.to_html.gsub("</li>\n", "</li>")
   end
 
   # Determine the document encoding
@@ -88,11 +92,7 @@ class WordToMarkdown
     string.sub!(/\A[[:space:]]+/,'')                # leading whitespace
     string.sub!(/[[:space:]]+\z/,'')                # trailing whitespace
     string.gsub!(/\n\n \n\n/,"\n\n")                # Quadruple line breaks
-    string.gsub!(/^([0-9]+)\.[[:space:]]*/,"\\1. ") # Numbered lists
-    string.gsub!(/^-[[:space:]·]*/,"- ")            # Unnumbered lists
     string.gsub!(/\u00A0/, "")                      # Unicode non-breaking spaces, injected as tabs
-    string.gsub!(/^ /, "")                          # Leading spaces
-    string.gsub!(/^- (\d+)\./, "\\1.")              # OL's wrapped in UL's see http://bit.ly/1ivqxy8
     string
   end
 
@@ -141,10 +141,56 @@ class WordToMarkdown
     font_sizes.percentile ((HEADING_DEPTH-1)-n) * HEADING_STEP
   end
 
+  # CSS selector to select non-symantic lists
+  def li_selectors
+    ".#{LI_SELECTORS.join(",.")}"
+  end
+
   # Try to make semantic markup explicit where implied by the export
   def semanticize!
-    # Convert unnumbered list paragraphs to actual unnumbered lists
-    doc.css(".#{LI_SELECTORS.join(",.")}").each { |node| node.node_name = "li" }
+
+    # Semanticize lists
+    indent_level = 0
+    doc.css(li_selectors).each do |node|
+
+      # Determine if this is an implicit UL or an implicit OL list item
+      if node.classes.include?("MsoListParagraph") || node.content.match(/^[a-zA-Z0-9]+\./)
+        list_type = "ol"
+      else
+        list_type = "ul"
+      end
+
+      # Determine parent node for this li, creating it if necessary
+      if node.indent > indent_level
+        list = Nokogiri::XML::Node.new list_type, @doc
+        list.classes = ["list", "indent#{node.indent}"]
+        if node.indent == 1
+          list.parent = node.parent
+        else
+          list.parent = node.parent.css(".indent#{node.indent-1} li").last
+        end
+      else
+        list = node.parent.css(".indent#{node.indent}").last
+      end
+
+      # Note our current nesting depth
+      indent_level = node.indent
+
+      # Convert list paragraphs to actual numbered and unnumbered lists
+      node.node_name = "li"
+      node.parent = list
+
+      # Scrub unicode bullets
+      span = node.css("span:first")[1]
+      if span && span.styles["mso-list"] && span.styles["mso-list"] == "Ignore"
+        span.content = span.content[1..-1] unless span.content.match /^\d+\./
+      end
+
+      # Convert all pseudo-numbered list items into numbered list items, e.g., ii. => 2.
+      node.content = node.content.gsub /^[[:space:] ]+/, ""
+      node.content = node.content.gsub /^[a-zA-Z0-9]+\.[[:space:]]+/, ""
+
+    end
 
     # Try to guess heading where implicit bassed on font size
     implicit_headings.each do |element|
@@ -161,14 +207,34 @@ module Nokogiri
   module XML
     class Element
 
-      FONT_SIZE_REGEX = /\bfont-size:\s?([0-9\.]+)pt;?\b/
-
-      # Extend nokogiri nodes to guess their font size where defined
-      def font_size
-        @font_size ||= begin
-          match = FONT_SIZE_REGEX.match attr("style")
-          match[1].to_i unless match.nil?
+      def indent
+        if styles['mso-list']
+          styles['mso-list'].split(" ")[1].sub("level","").to_i
+        else
+          (left_margin / 0.5).to_i
         end
+      end
+
+      # The node's left-margin
+      # Used for parsing nested Lis
+      #
+      # Returns a float with the left margin
+      def left_margin
+        if styles['margin-left']
+          styles['margin-left'].to_f
+        elsif styles['margin']
+          styles['margin'].split(" ").last.to_f
+        else
+          0
+        end
+      end
+
+      # The node's font size
+      # Used for guessing heading sizes
+      #
+      # Returns a float with the font-size
+      def font_size
+        styles['font-size'].to_f if styles['font-size']
       end
     end
   end

@@ -33,4 +33,9 @@ class TestWordToMarkdownImplicitHeadings < Test::Unit::TestCase
     doc = WordToMarkdown.new '<span style="font-size:18.0pt">Test</span>'
     assert_equal [], doc.implicit_headings
   end
+
+  should "parse font size" do
+    doc = WordToMarkdown.new "<p style='font-size: 25px'>foo</p>"
+    assert_equal 25, doc.doc.css("p").first.font_size
+  end
 end

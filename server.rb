@@ -1,6 +1,6 @@
 require 'word-to-markdown'
 require 'sinatra'
-require 'kramdown'
+require 'html/pipeline'
 require 'rack/coffee'
 
 module WordToMarkdownServer
@@ -18,7 +18,7 @@ module WordToMarkdownServer
         render_template :index, { :error => error }
       end
       md = WordToMarkdown.new(params['doc'][:tempfile]).to_s
-      html = Kramdown::Document.new(md).to_html
+      html = HTML::Pipeline::MarkdownFilter.new(md).call
       render_template :display, { :md => md, :html => html, :filename => params['doc'][:filename].sub(/\.html?$/,"") }
     end
 
