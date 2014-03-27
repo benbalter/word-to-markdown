@@ -48,6 +48,7 @@ class WordToMarkdown
     html = html.force_encoding(encoding).encode("UTF-8", :invalid => :replace, :replace => "")
     html = Premailer.new(html, :with_html_string => true, :input_encoding => "UTF-8").to_inline_css
     html.gsub! /\<\/?o:[^>]+>/, "" # Strip everything in the office namespace
+    html.gsub! /\<\/?w:[^>]+>/, "" # Strip everything in the word namespace
     html.gsub! /\n|\r/," "         # Remove linebreaks
     html.gsub! /“|”/, '"'          # Straighten curly double quotes
     html.gsub! /‘|’/, "'"          # Straighten curly single quotes
@@ -158,19 +159,27 @@ class WordToMarkdown
     indent_level = 0
     doc.css(li_selectors).each do |node|
 
-      if node.content.match(/^[a-zA-Z0-9]+\./) || node.classes.include?("MsoListParagraph")
+      # Determine if this is an implicit UL or an implicit OL list item
+      if node.classes.include?("MsoListParagraph") || node.content.match(/^[a-zA-Z0-9]+\./)
         list_type = "ol"
       else
         list_type = "ul"
       end
 
+      # Determine parent node for this li, creating it if necessary
       if node.indent > indent_level
         list = Nokogiri::XML::Node.new list_type, @doc
-        list.parent = node.parent
+        list.classes = ["list", "indent#{node.indent}"]
+        if node.indent == 1
+          list.parent = node.parent
+        else
+          list.parent = node.parent.css(".indent#{node.indent-1} li").last
+        end
       else
-        list = node.parent.css("ul,ol").first
+        list = node.parent.css(".indent#{node.indent}").last
       end
 
+      # Note our current nesting depth
       indent_level = node.indent
 
       # Convert list paragraphs to actual numbered and unnumbered lists
@@ -187,9 +196,6 @@ class WordToMarkdown
       span = node.css("span").first
       span.content = span.content.gsub /^[[:space:]]+/, ""
       span.content = span.content.gsub /^[a-zA-Z0-9]+\.[[:space:]]/, ""
-
-      # current node's indent level, as determined by left margin
-      #(node.indent * 4).times { node.content = "&nbsp;#{node.content}"}
 
     end
 

@@ -1,6 +1,6 @@
 require 'word-to-markdown'
 require 'sinatra'
-require 'kramdown'
+require 'redcarpet'
 require 'rack/coffee'
 
 module WordToMarkdownServer
@@ -18,7 +18,7 @@ module WordToMarkdownServer
         render_template :index, { :error => error }
       end
       md = WordToMarkdown.new(params['doc'][:tempfile]).to_s
-      html = Kramdown::Document.new(md).to_html
+      html = Redcarpet::Markdown.new(Redcarpet::Render::HTML, tables: true).render(md)
       render_template :display, { :md => md, :html => html, :filename => params['doc'][:filename].sub(/\.html?$/,"") }
     end
 

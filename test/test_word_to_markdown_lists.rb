@@ -19,7 +19,7 @@ class TestWordToMarkdownLists < Test::Unit::TestCase
   end
 
   should "parse nested uls" do
-    validate_fixture "nested-ul", ""
+    validate_fixture "nested-ul", "- One\n  - Sub one\n    -  Sub sub one\n     -  Sub sub two\n\n  - Sub two\n\n- Two"
   end
 
   should "parse left margin" do
