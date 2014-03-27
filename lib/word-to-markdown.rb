@@ -146,6 +146,7 @@ class WordToMarkdown
     font_sizes.percentile ((HEADING_DEPTH-1)-n) * HEADING_STEP
   end
 
+  # CSS selector to select non-symantic lists
   def li_selectors
     ".#{LI_SELECTORS.join(",.")}"
   end
@@ -154,10 +155,27 @@ class WordToMarkdown
   def semanticize!
 
     # Semanticize lists
+    indent_level = 0
     doc.css(li_selectors).each do |node|
+
+      if node.content.match(/^[a-zA-Z0-9]+\./) || node.classes.include?("MsoListParagraph")
+        list_type = "ol"
+      else
+        list_type = "ul"
+      end
+
+      if node.indent > indent_level
+        list = Nokogiri::XML::Node.new list_type, @doc
+        list.parent = node.parent
+      else
+        list = node.parent.css("ul,ol").first
+      end
+
+      indent_level = node.indent
 
       # Convert list paragraphs to actual numbered and unnumbered lists
       node.node_name = "li"
+      node.parent = list
 
       # Scrub unicode bullets
       span = node.css("span:first")[1]
@@ -165,14 +183,13 @@ class WordToMarkdown
         span.content = span.content[1..-1] unless span.content.match /^\d+\./
       end
 
-      # Convert all list items into numbered list items, e.g., ii. => 2.
+      # Convert all pseudo-numbered list items into numbered list items, e.g., ii. => 2.
       span = node.css("span").first
       span.content = span.content.gsub /^[[:space:]]+/, ""
-      span.content = span.content.gsub /^[a-zA-Z]+\.[[:space:]]/, "1. "
+      span.content = span.content.gsub /^[a-zA-Z0-9]+\.[[:space:]]/, ""
 
       # current node's indent level, as determined by left margin
-      indent = ((node.left_margin - 0.5) / 0.5).to_i
-      (indent * 4).times { node.content = "&nbsp;#{node.content}"}
+      #(node.indent * 4).times { node.content = "&nbsp;#{node.content}"}
 
     end
 
@@ -190,6 +207,14 @@ end
 module Nokogiri
   module XML
     class Element
+
+      def indent
+        if styles['mso-list']
+          styles['mso-list'].split(" ")[1].sub("level","").to_i
+        else
+          (left_margin / 0.5).to_i
+        end
+      end
 
       # The node's left-margin
       # Used for parsing nested Lis
