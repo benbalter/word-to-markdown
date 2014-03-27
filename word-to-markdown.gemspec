@@ -2,7 +2,7 @@ Gem::Specification.new do |s|
   s.name = "word-to-markdown"
   s.summary = "Ruby Gem to convert Word documents to markdown"
   s.description = "Ruby Gem to convert Word documents to markdown."
-  s.version = "0.0.4"
+  s.version = "0.1.0"
   s.authors = ["Ben Balter"]
   s.email = "ben.balter@github.com"
   s.homepage = "https://github.com/benbalter/word-to-markdown"
