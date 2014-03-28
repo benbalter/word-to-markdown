@@ -15,6 +15,7 @@ class WordToMarkdown
     .MsoListParagraphCxSpMiddle
     .MsoListParagraphCxSpLast
     .MsoListParagraph
+    ul
   ]
 
   attr_reader :path, :doc
@@ -178,7 +179,7 @@ class WordToMarkdown
 
       # Convert list paragraphs to actual numbered and unnumbered lists
       node.node_name = "li"
-      node.parent = list
+      node.parent = list if list
 
       # Scrub unicode bullets
       span = node.css("span:first")[1]
