@@ -22,6 +22,10 @@ class TestWordToMarkdownLists < Test::Unit::TestCase
     validate_fixture "nested-ul", "- One\n  - Sub one\n    - Sub sub one\n    - Sub sub two\n\n  - Sub two\n\n- Two"
   end
 
+  should "parse gdoc nested uls" do
+    validate_fixture "gdoc", "- Bullet point\n\n  - Indented bullet point"
+  end
+
   should "parse left margin" do
     doc = WordToMarkdown.new "<p style='margin-left: 25px'>foo</p>"
     assert_equal 25, doc.doc.css("p").first.left_margin
