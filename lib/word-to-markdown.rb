@@ -15,7 +15,7 @@ class WordToMarkdown
     .MsoListParagraphCxSpMiddle
     .MsoListParagraphCxSpLast
     .MsoListParagraph
-    ul
+    li
   ]
 
   attr_reader :path, :doc
@@ -147,6 +147,20 @@ class WordToMarkdown
     LI_SELECTORS.join(",")
   end
 
+  # Returns an array of all indented values
+  def indents
+    @indents ||= doc.css(li_selectors).map{ |el| el.indent }.uniq.sort
+  end
+
+  # Determine the indent level given an indent value
+  #
+  # level - the true indent, e.g., 2.5 (from 2.5em)
+  #
+  # Returns an integer representing the indent level
+  def indent(level)
+    indents.find_index level
+  end
+
   # Try to make semantic markup explicit where implied by the export
   def semanticize!
 
@@ -161,21 +175,20 @@ class WordToMarkdown
         list_type = "ul"
       end
 
+      # calculate indent level
+      current_indent = indent(node.indent)
+
       # Determine parent node for this li, creating it if necessary
-      if node.indent > indent_level
+      if current_indent > indent_level || indent_level == 0 && node.parent.css(".indent#{current_indent}").empty?
         list = Nokogiri::XML::Node.new list_type, @doc
-        list.classes = ["list", "indent#{node.indent}"]
-        if node.indent == 1
-          list.parent = node.parent
-        else
-          list.parent = node.parent.css(".indent#{node.indent-1} li").last
-        end
+        list.classes = ["list", "indent#{current_indent}"]
+        list.parent = node.parent.css(".indent#{current_indent-1} li").last || node.parent
       else
-        list = node.parent.css(".indent#{node.indent}").last
+        list = node.parent.css(".indent#{current_indent}").last
       end
 
       # Note our current nesting depth
-      indent_level = node.indent
+      indent_level = current_indent
 
       # Convert list paragraphs to actual numbered and unnumbered lists
       node.node_name = "li"
