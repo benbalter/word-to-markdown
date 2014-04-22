@@ -13,7 +13,7 @@ A Ruby gem to liberate content from [the jail that is Word documents](http://ben
 ## Getting HTML content out of Microsoft Word
 
 1. Open the file in Microsoft Word
-2. Select "File" -> "Save as Web Page"
+2. Select "File" &#8594; "Save as Web Page"
 3. Hit save
 
 ## Usage
@@ -47,7 +47,9 @@ doc.doc
 
 ## Testing
 
-`script/cibuild`
+```
+script/cibuild
+```
 
 ## Server
 
