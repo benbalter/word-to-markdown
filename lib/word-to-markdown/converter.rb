@@ -7,14 +7,6 @@ class WordToMarkdown
     HEADING_STEP = 100/HEADING_DEPTH
     MIN_HEADING_SIZE = 20
 
-    LI_SELECTORS = %w[
-      .MsoListParagraphCxSpFirst
-      .MsoListParagraphCxSpMiddle
-      .MsoListParagraphCxSpLast
-      .MsoListParagraph
-      li
-    ]
-
     def initialize(document)
       @document = document
     end
@@ -68,14 +60,9 @@ class WordToMarkdown
       font_sizes.percentile ((HEADING_DEPTH-1)-n) * HEADING_STEP
     end
 
-    # CSS selector to select non-symantic lists
-    def li_selectors
-      LI_SELECTORS.join(",")
-    end
-
     # Returns an array of all indented values
     def indents
-      @indents ||= @document.tree.css(li_selectors).map{ |el| el.indent }.uniq.sort
+      @indents ||= @document.tree.css("li").map{ |el| el.indent }.uniq.sort
     end
 
     # Determine the indent level given an indent value
@@ -92,7 +79,7 @@ class WordToMarkdown
 
       # Semanticize lists
       indent_level = 0
-      @document.tree.css(li_selectors).each do |node|
+      @document.tree.css("li").each do |node|
 
         next unless node['class']
 

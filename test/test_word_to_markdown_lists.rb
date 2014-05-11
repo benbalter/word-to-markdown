@@ -23,7 +23,10 @@ class TestWordToMarkdownLists < Test::Unit::TestCase
   end
 
   should "parse gdoc nested uls" do
-    validate_fixture "gdoc", "- Bullet point\n\n  - Indented bullet point"
+    source = fixture_path("gdoc").sub ".docx", ".htm"
+    html = File.read source
+    doc = stub_doc html
+    assert_equal "- Bullet point\n\n  - Indented bullet point", doc.to_s
   end
 
   should "parse left margin" do

@@ -25,8 +25,8 @@ def validate_fixture(fixture, expected)
 end
 
 def stub_doc(html)
-  tree = Nokogiri::HTML(html)
   doc = WordToMarkdown.new "test/fixtures/em.docx"
+  tree = Nokogiri::HTML(doc.document.normalize(html))
   doc.document.stubs(:tree).returns(tree)
   doc
 end

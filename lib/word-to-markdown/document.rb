@@ -88,9 +88,7 @@ class WordToMarkdown
 
     def raw_html
       @raw_html ||= begin
-        raise "Cannot convert Word Document to HTML. Must define SOFFICE_PATH." unless WordToMarkdown::soffice_path
-        output, status = Open3.capture2e WordToMarkdown::soffice_path, '--headless', '--convert-to', 'html', path, '--outdir', tmpdir
-        raise "Word to HTML converstion failed: #{output}" if status != 0
+        WordToMarkdown::run_command '--headless', '--convert-to', 'html', path, '--outdir', tmpdir
         html = File.read dest_path
         File.delete dest_path
         html

@@ -27,7 +27,7 @@ class WordToMarkdown
     convert!
   end
 
-  def soffice_in_path
+  def self.soffice_in_path
     ENV['PATH'].split(':').any? {|path| File.exists? "#{patj}/soffice" }
   end
 
@@ -39,8 +39,15 @@ class WordToMarkdown
     end
   end
 
-  def source_path
-    @path
+  def self.run_command(*args)
+    raise "Must define SOFFICE_PATH." unless soffice_path
+    output, status = Open3.capture2e soffice_path, *args
+    raise "soffice command failed: #{output}" if status != 0
+    output
+  end
+
+  def self.soffice_version
+    run_command('--version').strip.sub "LibreOffice ", ""
   end
 
   # Pretty print the class in console
