@@ -33,15 +33,14 @@ class WordToMarkdown
       html.gsub! /\n|\r/," "         # Remove linebreaks
       html.gsub! /“|”/, '"'          # Straighten curly double quotes
       html.gsub! /‘|’/, "'"          # Straighten curly single quotes
+      html.gsub! />\s+</, "><"       # Remove extra whitespace between tags
       html
     end
 
     # Returns the html representation of the document
     def html
-      tree.to_html.gsub("</li>\n", "</li>").gsub(/>\s+</, "><")
+      tree.to_html.gsub("</li>\n", "</li>")
     end
-    alias_method :as_html, :html
-    alias_method :to_html, :html
 
     # Returns the markdown representation of the document
     def to_s
