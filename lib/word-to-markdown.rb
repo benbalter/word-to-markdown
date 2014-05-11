@@ -47,6 +47,7 @@ class WordToMarkdown
   end
 
   def self.run_command(*args)
+    puts "soffice binary: #{soffice_path}"
     output, status = Open3.capture2e soffice_path, *args
     raise "soffice command failed: #{output}" if status != 0
     output
