@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'word-to-markdown'
+
+doc = WordToMarkdown.new ARGV[0]
+puts doc.to_s
