@@ -1,7 +1,7 @@
 langauage: ruby
 script: "script/cibuild"
 rvm:
-  - 2.1.0
+  - 2.1.2
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install libreoffice-writer
