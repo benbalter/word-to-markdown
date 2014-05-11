@@ -16,25 +16,16 @@ A Ruby gem to liberate content from [the jail that is Word documents](http://ben
 
 **[Demo](http://word-to-markdown.herokuapp.com/)**
 
-## Getting HTML content out of Microsoft Word
-
-1. Open the file in Microsoft Word
-2. Select "File" -> "Save as Web Page"
-3. Hit save
-
 ## Usage
 
 ```ruby
-doc = WordToMarkdown.new("/path/to/export.htm")
-=> <WordToMarkdown path="/path/to/export.htm">
+file = WordToMarkdown.new("/path/to/document.docx")
+=> <WordToMarkdown path="/path/to/document.docx">
 
-doc.to_s
+file.to_s
 => "# Test\n\n This is a test"
 
-doc.html
-=> "<html>\n\n<head>..."
-
-doc.doc
+file.document.doc
 => <Nokogiri Document>
 ```
 
