@@ -6,7 +6,13 @@ A Ruby gem to liberate content from [the jail that is Word documents](http://ben
 
 ## The problem
 
-*Link to blog post here*
+> Our default content publishing workflow is terribly broken. [We've all been trained to make paper](http://ben.balter.com/2012/10/19/we-ve-been-trained-to-make-paper/), yet today, content authored once is more commonly consumed in multiple formats, and rarely, if ever, does it embody physical form. Put another way, our go-to content authoring workflow remains relatively unchanged since it was conceived in the early 80s.
+>
+> I'm asked regularly by government employees — knowledge workers who fire up a desktop word processor as the first step to any project — for an automated pipeline to convert Microsoft Word documents to [Markdown](http://guides.github.com/overviews/mastering-markdown/), the *lingua franca* of the internet, but as my recent foray into building [just such a converter](http://word-to-markdown.herokuapp.com/) proves, it's not that simple.
+>
+> Markdown isn't just an alternative format. Markdown forces you to write for the web.
+
+**[Read more](http://ben.balter.com/2014/03/31/word-versus-markdown-more-than-mere-semantics/)**
 
 **[Demo](http://word-to-markdown.herokuapp.com/)**
 
