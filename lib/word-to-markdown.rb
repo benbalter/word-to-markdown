@@ -28,7 +28,7 @@ class WordToMarkdown
   end
 
   def self.soffice_in_path
-    ENV['PATH'].split(':').any? {|path| File.exists? "#{patj}/soffice" }
+    ENV['PATH'].split(':').any? {|path| File.exists? "#{path}/soffice" }
   end
 
   def self.soffice_path
@@ -56,7 +56,7 @@ class WordToMarkdown
   end
 
   def convert!
-    converter.convert
+    converter.convert!
   end
 
   def to_s

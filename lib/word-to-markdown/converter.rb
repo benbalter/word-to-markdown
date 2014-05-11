@@ -6,13 +6,19 @@ class WordToMarkdown
     HEADING_DEPTH = 6 # Number of headings to guess, e.g., h6
     HEADING_STEP = 100/HEADING_DEPTH
     MIN_HEADING_SIZE = 20
+    UNICODE_BULLETS = ["○", "●", "", "o"]
 
     def initialize(document)
       @document = document
     end
 
-    def convert
-      semanticize!
+    def convert!
+      semanticize_font_styles!
+      semanticize_headings!
+      remove_paragraphs_from_tables!
+      remove_paragraphs_from_list_items!
+      remove_unicode_bullets_from_list_items!
+      remove_numbering_from_list_items!
     end
 
     # Returns an array of Nokogiri nodes that are implicit headings
@@ -74,54 +80,7 @@ class WordToMarkdown
       indents.find_index level
     end
 
-    # Try to make semantic markup explicit where implied by the export
-    def semanticize!
-
-      # Semanticize lists
-      indent_level = 0
-      @document.tree.css("li").each do |node|
-
-        next unless node['class']
-
-        # Determine if this is an implicit UL or an implicit OL list item
-        if node.classes.include?("MsoListParagraph") || node.content.match(/^[a-zA-Z0-9]+\./)
-          list_type = "ol"
-        else
-          list_type = "ul"
-        end
-
-        # calculate indent level
-        current_indent = indent(node.indent)
-
-        # Determine parent node for this li, creating it if necessary
-        if current_indent > indent_level || indent_level == 0 && node.parent.css(".indent#{current_indent}").empty?
-          list = Nokogiri::XML::Node.new list_type, @document.tree
-          list.classes = ["list", "indent#{current_indent}"]
-          list.parent = node.parent.css(".indent#{current_indent-1} li").last || node.parent
-        else
-          list = node.parent.css(".indent#{current_indent}").last
-        end
-
-        # Note our current nesting depth
-        indent_level = current_indent
-
-        # Convert list paragraphs to actual numbered and unnumbered lists
-        node.node_name = "li"
-        node.parent = list if list
-
-        # Scrub unicode bullets
-        span = node.css("span:first")[1]
-        if span && span.styles["mso-list"] && span.styles["mso-list"] == "Ignore"
-          span.content = span.content[1..-1] unless span.content.match /^\d+\./
-        end
-
-        # Convert all pseudo-numbered list items into numbered list items, e.g., ii. => 2.
-        node.content = node.content.gsub /^[[:space:] ]+/, ""
-        node.content = node.content.gsub /^[a-zA-Z0-9]+\.[[:space:]]+/, ""
-
-      end
-
-      # styling
+    def semanticize_font_styles!
       @document.tree.css("span").each do |node|
         if node.bold?
           node.node_name = "strong"
@@ -129,15 +88,35 @@ class WordToMarkdown
           node.node_name = "em"
         end
       end
+    end
 
-      # Try to guess heading where implicit bassed on font size
+    def remove_paragraphs_from_tables!
+      @document.tree.search("td p").each { |node| node.node_name = "span" }
+    end
+
+    def remove_paragraphs_from_list_items!
+      @document.tree.search("li p").each { |node| node.node_name = "span" }
+    end
+
+    def remove_unicode_bullets_from_list_items!
+      @document.tree.search("li span").each do |span|
+        span.content = span.content[1..-2] if UNICODE_BULLETS.include? span.content[0]
+      end
+    end
+
+    def remove_numbering_from_list_items!
+      @document.tree.search("li span").each do |span|
+        span.content = span.content.gsub /^[a-zA-Z0-9]+\./m, ""
+      end
+    end
+
+    # Try to guess heading where implicit bassed on font size
+    def semanticize_headings!
       implicit_headings.each do |element|
         heading = guess_heading element
         element.node_name = heading unless heading.nil?
       end
-
-      # Removes paragraphs from tables
-      @document.tree.search("td p").each { |node| node.node_name = "span" }
     end
+
   end
 end
