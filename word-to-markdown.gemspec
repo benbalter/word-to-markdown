@@ -7,7 +7,12 @@ Gem::Specification.new do |s|
   s.email = "ben.balter@github.com"
   s.homepage = "https://github.com/benbalter/word-to-markdown"
   s.licenses = ["MIT"]
-  s.files = [ "lib/word-to-markdown.rb" ]
+  s.files = [
+    "lib/word-to-markdown.rb",
+    "lib/word-to-markdown/document.rb",
+    "lib/word-to-markdown/converter.rb",
+    "lib/nokogiri/xml/element.rb"
+  ]
   s.add_dependency("reverse_markdown","~> 0.4.7")
   s.add_dependency('descriptive_statistics', "~> 1.1.3")
   s.add_dependency( "premailer" )
