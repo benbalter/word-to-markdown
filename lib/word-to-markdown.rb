@@ -24,7 +24,7 @@ class WordToMarkdown
   def initialize(path)
     @document = WordToMarkdown::Document.new path
     @converter = WordToMarkdown::Converter.new @document
-    convert!
+    converter.convert!
   end
 
   def self.soffice_in_path
@@ -53,10 +53,6 @@ class WordToMarkdown
   # Pretty print the class in console
   def inspect
     "<WordToMarkdown path=\"#{@document.path}\">"
-  end
-
-  def convert!
-    converter.convert!
   end
 
   def to_s

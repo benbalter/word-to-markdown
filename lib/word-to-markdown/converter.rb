@@ -67,20 +67,6 @@ class WordToMarkdown
       font_sizes.percentile ((HEADING_DEPTH-1)-n) * HEADING_STEP
     end
 
-    # Returns an array of all indented values
-    def indents
-      @indents ||= @document.tree.css("li").map{ |el| el.indent }.uniq.sort
-    end
-
-    # Determine the indent level given an indent value
-    #
-    # level - the true indent, e.g., 2.5 (from 2.5em)
-    #
-    # Returns an integer representing the indent level
-    def indent(level)
-      indents.find_index level
-    end
-
     def semanticize_font_styles!
       @document.tree.css("span").each do |node|
         if node.bold?

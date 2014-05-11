@@ -21,22 +21,6 @@ class WordToMarkdown
       end
     end
 
-    # Perform pre-processing normalization
-    #
-    # html - the raw html input from the export
-    #
-    # Returns the normalized html
-    def normalize(html)
-      encoding = encoding(html)
-      html = html.force_encoding(encoding).encode("UTF-8", :invalid => :replace, :replace => "")
-      html = Premailer.new(html, :with_html_string => true, :input_encoding => "UTF-8").to_inline_css
-      html.gsub! /\n|\r/," "         # Remove linebreaks
-      html.gsub! /“|”/, '"'          # Straighten curly double quotes
-      html.gsub! /‘|’/, "'"          # Straighten curly single quotes
-      html.gsub! />\s+</, "><"       # Remove extra whitespace between tags
-      html
-    end
-
     # Returns the html representation of the document
     def html
       tree.to_html.gsub("</li>\n", "</li>")
@@ -59,6 +43,24 @@ class WordToMarkdown
       else
         "UTF-8"
       end
+    end
+
+    private
+
+    # Perform pre-processing normalization
+    #
+    # html - the raw html input from the export
+    #
+    # Returns the normalized html
+    def normalize(html)
+      encoding = encoding(html)
+      html = html.force_encoding(encoding).encode("UTF-8", :invalid => :replace, :replace => "")
+      html = Premailer.new(html, :with_html_string => true, :input_encoding => "UTF-8").to_inline_css
+      html.gsub! /\n|\r/," "         # Remove linebreaks
+      html.gsub! /“|”/, '"'          # Straighten curly double quotes
+      html.gsub! /‘|’/, "'"          # Straighten curly single quotes
+      html.gsub! />\s+</, "><"       # Remove extra whitespace between tags
+      html
     end
 
     # Perform post-processing normalization of certain Word quirks

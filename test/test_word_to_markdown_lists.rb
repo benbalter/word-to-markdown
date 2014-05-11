@@ -17,14 +17,4 @@ class TestWordToMarkdownLists < Test::Unit::TestCase
   should "parse nested uls" do
     validate_fixture "nested-ul", "- One\n  - Sub one\n    - Sub sub one\n    - Sub sub two\n\n  - Sub two\n\n- Two"
   end
-
-  should "parse left margin" do
-    doc = stub_doc "<p style='margin-left: 25px'>foo</p>"
-    assert_equal 25, doc.document.tree.css("p").first.left_margin
-  end
-
-  should "parse left margin shorthand" do
-    doc = stub_doc "<p style='margin: 0 0 0 25px'>foo</p>"
-    assert_equal 25, doc.document.tree.css("p").first.left_margin
-  end
 end
