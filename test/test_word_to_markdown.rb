@@ -32,21 +32,21 @@ class TestWordToMarkdown < Test::Unit::TestCase
   end
 
   should "accept string input" do
-    assert_equal "# Heading", WordToMarkdown.new("<h1>Heading</h1>").to_s
+    assert_equal "# Heading", stub_doc("<h1>Heading</h1>").to_s
   end
 
   should "not mangle encoding" do
-    doc = WordToMarkdown.new "<span>…</span>"
+    doc = stub_doc "<span>…</span>"
     assert_equal "…", doc.to_s
   end
 
   should "straighten double curly quotes" do
-    doc = WordToMarkdown.new "<span>“”</span>"
+    doc = stub_doc "<span>“”</span>"
     assert_equal '""', doc.to_s
   end
 
   should "straighten single curly quotes" do
-    doc = WordToMarkdown.new "<span>‘’</span>"
+    doc = stub_doc "<span>‘’</span>"
     assert_equal "''", doc.to_s
   end
 end

@@ -27,12 +27,12 @@ class TestWordToMarkdownLists < Test::Unit::TestCase
   end
 
   should "parse left margin" do
-    doc = WordToMarkdown.new "<p style='margin-left: 25px'>foo</p>"
-    assert_equal 25, doc.doc.css("p").first.left_margin
+    doc = stub_doc "<p style='margin-left: 25px'>foo</p>"
+    assert_equal 25, doc.document.tree.css("p").first.left_margin
   end
 
   should "parse left margin shorthand" do
-    doc = WordToMarkdown.new "<p style='margin: 0 0 0 25px'>foo</p>"
-    assert_equal 25, doc.doc.css("p").first.left_margin
+    doc = stub_doc "<p style='margin: 0 0 0 25px'>foo</p>"
+    assert_equal 25, doc.document.tree.css("p").first.left_margin
   end
 end
