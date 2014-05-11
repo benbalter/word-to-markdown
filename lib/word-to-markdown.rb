@@ -24,11 +24,25 @@ class WordToMarkdown
     converter.convert!
   end
 
+  # source: https://github.com/ricn/libreconv/blob/master/lib/libreconv.rb#L48
+  def self.which(cmd)
+    exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
+    ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
+      exts.each do |ext|
+        exe = File.join(path, "#{cmd}#{ext}")
+        return exe if File.executable? exe
+      end
+    end
+
+    return nil
+  end
+
   def self.soffice_path
     if RUBY_PLATFORM.include? "darwin"
       "/Applications/LibreOffice.app/Contents/MacOS/soffice"
     else
-      "soffice"
+      soffice_path ||= which("soffice")
+      soffice_path ||= which("soffice.bin")
     end
   end
 
