@@ -42,6 +42,21 @@ file.document.doc
 * Images
 * Tables
 
+## Requirements and configuration
+
+Word-to-markdown requires `soffice` a command line interface to LibreOffice.
+
+## Installing on OS X
+
+Follow the instructions for [Installing LibreOffice on OS X](https://www.libreoffice.org/get-help/install-howto/os-x/)
+
+## Installing on ubuntu
+
+```
+sudo apt-get update
+sudo apt-get install libreoffice
+```
+
 ## Testing
 
 `script/cibuild`

@@ -4,13 +4,10 @@ require 'premailer'
 require 'nokogiri'
 require 'nokogiri-styles'
 require 'open3'
-require 'dotenv'
 require 'tmpdir'
 require_relative 'word-to-markdown/document'
 require_relative 'word-to-markdown/converter'
 require_relative 'nokogiri/xml/element'
-
-Dotenv.load
 
 class WordToMarkdown
 
@@ -27,20 +24,15 @@ class WordToMarkdown
     converter.convert!
   end
 
-  def self.soffice_in_path
-    ENV['PATH'].split(':').any? {|path| File.exists? "#{path}/soffice" }
-  end
-
   def self.soffice_path
-    if ENV['SOFFICE_PATH']
-      ENV['SOFFICE_PATH']
-    elsif soffice_in_path
+    if RUBY_PLATFORM.include? "darwin"
+      "/Applications/LibreOffice.app/Contents/MacOS/soffice"
+    else
       "soffice"
     end
   end
 
   def self.run_command(*args)
-    raise "Must define SOFFICE_PATH." unless soffice_path
     output, status = Open3.capture2e soffice_path, *args
     raise "soffice command failed: #{output}" if status != 0
     output
