@@ -4,5 +4,5 @@ rvm:
   - 2.1
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -qq libreoffice
+  - sudo apt-get install -qq libreoffice-writer
   - "soffice --version"
