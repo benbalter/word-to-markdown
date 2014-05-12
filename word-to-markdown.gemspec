@@ -1,8 +1,10 @@
+require_relative 'lib/word-to-markdown/version'
+
 Gem::Specification.new do |s|
   s.name = "word-to-markdown"
   s.summary = "Ruby Gem to convert Word documents to markdown"
   s.description = "Ruby Gem to convert Word documents to markdown."
-  s.version = "1.0.0"
+  s.version = WordToMarkdown::VERSION
   s.authors = ["Ben Balter"]
   s.email = "ben.balter@github.com"
   s.homepage = "https://github.com/benbalter/word-to-markdown"
