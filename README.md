@@ -16,6 +16,12 @@ A Ruby gem to liberate content from [the jail that is Word documents](http://ben
 
 **[Demo](http://word-to-markdown.herokuapp.com/)**
 
+## Install
+
+```bash
+gem install word-to-markdown`
+```
+
 ## Usage
 
 ```ruby
@@ -31,8 +37,10 @@ file.document.doc
 
 ### Command line usage
 
+Once you've installed the gem, it's just:
+
 ```
-$ bundle exec w2m path/to/document.docx
+$ w2m path/to/document.docx
 ```
 
 *Outputs the resulting markdown to stdout*
