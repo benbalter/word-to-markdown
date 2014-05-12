@@ -29,6 +29,14 @@ file.document.doc
 => <Nokogiri Document>
 ```
 
+### Command line usage
+
+```
+$ bundle exec w2m path/to/document.docx
+```
+
+*Outputs the resulting markdown to stdout*
+
 ## Supports
 
 * Paragraphs
