@@ -47,6 +47,7 @@ class WordToMarkdown
     end
   end
 
+  # Ideally this would be done via open3, but Travis CI can't seen to find soffice when we do
   def self.run_command(*args)
     `#{soffice_path} #{args.join(' ')}`
   end
