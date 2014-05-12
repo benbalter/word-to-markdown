@@ -61,10 +61,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler
+  bundler (~> 1.6)
   minitest (~> 4.7)
   mocha (~> 1.0)
-  pry (~> 0.9.12)
+  pry (~> 0.9)
   rake (~> 10.3)
   rdoc (~> 4.1)
   shoulda (~> 3.5)
