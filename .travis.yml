@@ -3,6 +3,6 @@ script: "script/cibuild"
 rvm:
   - 2.1
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install libreoffice
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq libreoffice
   - "soffice --version"
