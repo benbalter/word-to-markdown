@@ -11,9 +11,11 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.files = [
     "lib/word-to-markdown.rb",
+    "lib/word-to-markdown/version.rb",
     "lib/word-to-markdown/document.rb",
     "lib/word-to-markdown/converter.rb",
-    "lib/nokogiri/xml/element.rb"
+    "lib/nokogiri/xml/element.rb",
+    "bin/w2m"
   ]
   s.executables = ["w2m"]
   s.add_dependency("reverse_markdown","~> 0.4.7")
