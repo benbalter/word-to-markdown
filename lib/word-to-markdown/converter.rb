@@ -13,9 +13,16 @@ class WordToMarkdown
     end
 
     def convert!
+
+      # Fonts and headings
       semanticize_font_styles!
       semanticize_headings!
+
+      # Tables
       remove_paragraphs_from_tables!
+      semanticize_table_headers!
+
+      # list items
       remove_paragraphs_from_list_items!
       remove_unicode_bullets_from_list_items!
       remove_whitespace_from_list_items!
@@ -99,6 +106,10 @@ class WordToMarkdown
 
     def remove_whitespace_from_list_items!
       @document.tree.search("li span").each { |span| span.content.strip! }
+    end
+
+    def semanticize_table_headers!
+      @document.tree.search("table tr:first td").each { |node| node.node_name = "th" }
     end
 
     # Try to guess heading where implicit bassed on font size

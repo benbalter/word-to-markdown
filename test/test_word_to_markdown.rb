@@ -28,7 +28,7 @@ class TestWordToMarkdown < Test::Unit::TestCase
   end
 
   should "parse tables" do
-    validate_fixture "table", "| **Foo** | **Bar** |\n| One | Two |\n| Three | Four |"
+    validate_fixture "table", "| **Foo** | **Bar** |\n| --- | --- |\n| One | Two |\n| Three | Four |"
   end
 
   should "accept string input" do
