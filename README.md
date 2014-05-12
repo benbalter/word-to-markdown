@@ -19,7 +19,7 @@ A Ruby gem to liberate content from [the jail that is Word documents](http://ben
 ## Install
 
 ```bash
-gem install word-to-markdown`
+gem install word-to-markdown
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ file = WordToMarkdown.new("/path/to/document.docx")
 file.to_s
 => "# Test\n\n This is a test"
 
-file.document.doc
+file.document.tree
 => <Nokogiri Document>
 ```
 
