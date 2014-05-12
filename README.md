@@ -59,7 +59,9 @@ sudo apt-get install libreoffice
 
 ## Testing
 
-`script/cibuild`
+```
+script/cibuild
+```
 
 ## Server
 
