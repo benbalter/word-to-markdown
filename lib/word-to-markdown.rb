@@ -38,11 +38,12 @@ class WordToMarkdown
   end
 
   def self.soffice_path
-    if RUBY_PLATFORM.include? "darwin"
+    if false && RUBY_PLATFORM.include?("darwin")
       "/Applications/LibreOffice.app/Contents/MacOS/soffice"
     else
       soffice_path ||= which("soffice")
       soffice_path ||= which("soffice.bin")
+      soffice_path ||= "soffice"
     end
   end
 
