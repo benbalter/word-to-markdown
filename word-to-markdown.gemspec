@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
     "lib/word-to-markdown/converter.rb",
     "lib/nokogiri/xml/element.rb"
   ]
+  s.executables = ["w2m"]
   s.add_dependency("reverse_markdown","~> 0.4.7")
   s.add_dependency('descriptive_statistics', "~> 1.1.3")
   s.add_dependency( "premailer" )

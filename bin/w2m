@@ -2,5 +2,10 @@
 
 require 'word-to-markdown'
 
+if ARGV.size != 1
+  puts "Usage: bundle exec w2m path/to/document.docx"
+  exit 1
+end
+
 doc = WordToMarkdown.new ARGV[0]
 puts doc.to_s
