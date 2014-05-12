@@ -48,7 +48,7 @@ class WordToMarkdown
   end
 
   def self.run_command(*args)
-    system "#{soffice_path} #{args.join(' ')}"
+    `#{soffice_path} #{args.join(' ')}`
   end
 
   def self.soffice_version
