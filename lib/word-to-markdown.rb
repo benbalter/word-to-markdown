@@ -41,9 +41,7 @@ class WordToMarkdown
     if false && RUBY_PLATFORM.include?("darwin")
       "/Applications/LibreOffice.app/Contents/MacOS/soffice"
     else
-      soffice_path ||= which("soffice")
-      soffice_path ||= which("soffice.bin")
-      soffice_path ||= "soffice"
+      "soffice"
     end
   end
 
