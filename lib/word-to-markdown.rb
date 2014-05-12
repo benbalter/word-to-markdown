@@ -38,7 +38,7 @@ class WordToMarkdown
   end
 
   def self.soffice_path
-    if false && RUBY_PLATFORM.include?("darwin")
+    if RUBY_PLATFORM.include?("darwin")
       "/Applications/LibreOffice.app/Contents/MacOS/soffice"
     else
       soffice_path ||= which("soffice")
@@ -49,7 +49,7 @@ class WordToMarkdown
 
   def self.run_command(*args)
     puts "soffice binary: #{soffice_path}"
-    output, status = Open3.capture2e {'PATH' => ".:#{ENV['PATH']}"}, soffice_path, *args
+    output, status = Open3.capture2e({'PATH' => ".:#{ENV['PATH']}"}, soffice_path, *args)
     raise "soffice command failed: #{output}" if status != 0
     output
   end
