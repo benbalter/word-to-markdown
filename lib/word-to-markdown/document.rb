@@ -28,7 +28,7 @@ class WordToMarkdown
 
     # Returns the markdown representation of the document
     def to_s
-      @markdown ||= scrub_whitespace(ReverseMarkdown.parse(html))
+      @markdown ||= scrub_whitespace(ReverseMarkdown.convert(html, WordToMarkdown::REVERSE_MARKDOWN_OPTIONS))
     end
 
     # Determine the document encoding

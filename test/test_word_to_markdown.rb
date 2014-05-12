@@ -7,7 +7,7 @@ class TestWordToMarkdown < Test::Unit::TestCase
   end
 
   should "properly parse bold text" do
-    validate_fixture "strong", "This word is **bold**."
+    validate_fixture "strong", "This word is **bold** ."
   end
 
   should "properly parse explicit h1's" do

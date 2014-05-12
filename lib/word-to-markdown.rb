@@ -13,6 +13,11 @@ class WordToMarkdown
 
   attr_reader :document, :converter
 
+  REVERSE_MARKDOWN_OPTIONS = {
+    unknown_tags: :bypass,
+    github_flavored: true
+  }
+
   # Create a new WordToMarkdown object
   #
   # input - a HTML string or path to an HTML file

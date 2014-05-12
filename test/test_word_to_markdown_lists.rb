@@ -11,7 +11,7 @@ class TestWordToMarkdownLists < Test::Unit::TestCase
   end
 
   should "parse nested ols" do
-    validate_fixture "nested-ol", "1. One\n  1. Sub one\n  2. Sub two\n\n3. Two\n  1. Sub one\n    1. Sub sub one\n    2. Sub sub two\n\n  3. Sub two\n\n4. Three"
+    validate_fixture "nested-ol", "1. One\n  1. Sub one\n  2. Sub two\n\n2. Two\n  1. Sub one\n    1. Sub sub one\n    2. Sub sub two\n\n  2. Sub two\n\n3. Three"
   end
 
   should "parse nested uls" do
