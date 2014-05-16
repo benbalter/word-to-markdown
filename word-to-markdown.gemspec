@@ -1,4 +1,4 @@
-require_relative 'lib/word-to-markdown/version'
+require File.expand_path('../lib/word-to-markdown/version', __FILE__)
 
 Gem::Specification.new do |s|
   s.name = "word-to-markdown"
