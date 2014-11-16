@@ -3,10 +3,11 @@ class WordToMarkdown
   class Document
     class NotFoundError < StandardError; end
 
-    attr_reader :path, :raw_html
+    attr_reader :path, :raw_html, :tmpdir
 
-    def initialize(path)
+    def initialize(path, tmpdir = nil)
       @path = File.expand_path path, Dir.pwd
+      @tmpdir = tmpdir || Dir.mktmpdir
       raise NotFoundError, "File #{@path} does not exist" unless File.exist?(@path)
     end
 
@@ -75,10 +76,6 @@ class WordToMarkdown
       string.gsub!(/\n\n \n\n/,"\n\n")                # Quadruple line breaks
       string.gsub!(/\u00A0/, "")                      # Unicode non-breaking spaces, injected as tabs
       string
-    end
-
-    def tmpdir
-      @tmpdir ||= Dir.mktmpdir
     end
 
     def dest_path
