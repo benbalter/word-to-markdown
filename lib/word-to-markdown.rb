@@ -45,7 +45,7 @@ class WordToMarkdown
   def self.soffice_path
     if RUBY_PLATFORM.include?("darwin")
       %w[~/Applications /Applications]
-        .map  { |f| File.join(f, "/LibreOffice.app/Contents/MacOS/soffice") }
+        .map  { |f| File.expand_path(File.join(f, "/LibreOffice.app/Contents/MacOS/soffice")) }
         .find { |f| File.file?(f) } || -> { raise RuntimeError.new("Coudln't find LibreOffice on your machine.") }.call
     else
       soffice_path ||= which("soffice")
