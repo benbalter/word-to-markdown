@@ -1,10 +1,13 @@
 install:
   - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
   - gem install bundler --no-ri --no-rdoc
-  - "bundle install"
+  - bundle install
+
+build_script:
+  - gem build word-to-markdown.gemspec
 
 test_script:
-  - "bundle exec rake test"
+  - bundle exec rake test
 
 environment:
   matrix:
