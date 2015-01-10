@@ -7,3 +7,4 @@ before_install:
   - sudo apt-get install -qq libreoffice-writer
   - "soffice --version"
   - "which soffice"
+  - "/usr/bin/soffice --version"
