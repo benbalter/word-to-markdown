@@ -1,4 +1,5 @@
 install:
+  - bitsadmin /transfer libreoffice  /download /priority normal http://donate.libreoffice.org/home/dl/win-x86/4.3.5/en-US/LibreOffice_4.3.5_Win_x86.msi LibreOffice_4.3.5_Win_x86.msi
   - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
   - gem install bundler --no-ri --no-rdoc
   - bundle install
@@ -11,5 +12,4 @@ test_script:
 
 environment:
   matrix:
-    - ruby_version: "193"
     - ruby_version: "200"
