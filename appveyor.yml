@@ -3,7 +3,7 @@ clone_folder: c:\projects\w2m
 install:
   - ps: wget http://download.documentfoundation.org/libreoffice/stable/4.3.5/win/x86/LibreOffice_4.3.5_Win_x86.msi -OutFile C:\projects\w2m\LibreOffice_4.3.5_Win_x86.msi
   - msiexec /qn /i C:\projects\w2m\LibreOffice_4.3.5_Win_x86.msi /L* install_log.txt ALLUSERS=0 RebootYesNo=No IS1033=0 IS1078=0 IS1025=0 IS1101=0 IS1610=0 IS1059=0 IS1026=0 IS2117=0 IS2121=0 IS1150=0 IS1603=0 IS5146=0 IS1027=0 IS32771=0 IS1029=0 IS1106=0 IS1030=1 IS1031=0 IS1604=0 IS2129=0 IS1032=0 IS2057=0 IS7177=0 IS1553=0 IS1034=0 IS1061=0 IS1069=0 IS1065=0 IS1035=0 IS1036=0 IS2108=0 IS1084=0 IS1110=0 IS1095=0 IS1037=0 IS1081=0 IS1050=0 IS1038=0 IS1057=0 IS1039=0 IS1040=0 IS1041=0 IS1079=0 IS1087=0 IS1107=0 IS1099=0 IS1042=0 IS1111=0 IS1120=0 IS1574=0 IS1108=0 IS1063=0 IS1062=0 IS1605=0 IS1071=0 IS1100=0 IS1104=0 IS1112=0 IS1102=0 IS1109=0 IS1044=0 IS1121=0 IS1043=0 IS2068=0 IS1580=0 IS1132=0 IS1154=0 IS2162=0 IS1096=0 IS1094=0 IS1045=0 IS2070=0 IS1046=0 IS1048=0 IS1049=0 IS1569=0 IS1103=0 IS1606=0 IS1113=0 IS2074=0 IS2133=0 IS1051=0 IS1060=0 IS1052=0 IS3098=0 IS1579=0 IS1072=0 IS1053=0 IS1089=0 IS1097=0 IS1098=0 IS1064=0 IS1054=0 IS1074=0 IS1055=0 IS1073=0 IS2200=0 IS1058=0 IS1091=0 IS1075=0 IS1066=0 IS1076=0 IS2052=0 IS1028=0 IS1077=0 IS1033=1
-  - C:\Program Files (x86)\LibreOffice 4\program\soffice.exe --version
+  - "C:\Program Files (x86)\LibreOffice 4\program\soffice.exe --version"
   - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
   - gem install bundler --no-ri --no-rdoc
   - bundle install
@@ -19,4 +19,4 @@ environment:
     - ruby_version: "200"
 
 artifacts:
-  - path: C:\projects\w2m\install_log.txt
+  - path: install_log.txt
