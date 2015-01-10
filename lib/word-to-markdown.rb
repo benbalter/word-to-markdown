@@ -72,9 +72,7 @@ class WordToMarkdown
     when :windows
       'C:\Program Files (x86)\LibreOffice 4\program\soffice.exe'
     else
-      soffice_path ||= which("soffice")
-      soffice_path ||= which("soffice.bin")
-      soffice_path ||= "soffice"
+      "soffice"
     end
   end
 
