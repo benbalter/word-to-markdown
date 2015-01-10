@@ -70,7 +70,7 @@ class WordToMarkdown
         .map  { |f| File.join(f, "/LibreOffice.app/Contents/MacOS/soffice") }
         .find { |f| File.file?(f) } || -> { raise RuntimeError.new("Coudln't find LibreOffice on your machine.") }.call
     when :windows
-      "C:\Program Files (x86)\LibreOffice 4\program\soffice.exe"
+      'C:\Program Files (x86)\LibreOffice 4\program\soffice.exe'
     else
       soffice_path ||= which("soffice")
       soffice_path ||= which("soffice.bin")
