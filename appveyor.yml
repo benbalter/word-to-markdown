@@ -1,0 +1,12 @@
+install:
+  - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
+  - gem install bundler --no-ri --no-rdoc
+  - "script/bootstrap"
+
+test_script:
+  - "script/cibuild"
+
+environment:
+  matrix:
+    - ruby_version: "193"
+    - ruby_version: "200"
