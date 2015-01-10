@@ -5,6 +5,7 @@ require 'nokogiri'
 require 'nokogiri-styles'
 require 'tmpdir'
 require 'rbconfig'
+require 'open3'
 require_relative 'word-to-markdown/version'
 require_relative 'word-to-markdown/document'
 require_relative 'word-to-markdown/converter'
@@ -77,9 +78,10 @@ class WordToMarkdown
     end
   end
 
-  # Ideally this would be done via open3, but Travis CI can't seen to find soffice when we do
   def self.run_command(*args)
-    `#{soffice_path} #{args.join(' ')}`
+    output, status = Open3.capture2e(soffice_path, *args)
+    raise "Command `#{soffice_path} #{args.join(" ")}` failed: #{output}" if status != 0
+    output
   end
 
   def self.soffice_version
