@@ -68,16 +68,16 @@ class WordToMarkdown
     when :macosx
       %w[~/Applications /Applications]
         .map  { |f| File.expand_path(File.join(f, "/LibreOffice.app/Contents/MacOS/soffice")) }
-        .find { |f| File.file?(f) } || -> { raise RuntimeError.new("Couldn't find LibreOffice on your machine.") }.call
+        .find { |f| File.file?(f) }
     when :windows
       'C:\Program Files (x86)\LibreOffice 4\program\soffice.exe'
     else
-      "soffice"
+      which("soffice") || "soffice"
     end
   end
 
   def self.run_command(*args)
-    output, status = Open3.capture2e(soffice_path, *args)
+    output, status = Open3.capture2e(ENV, soffice_path, *args)
     raise "Command `#{soffice_path} #{args.join(" ")}` failed: #{output}" if status != 0
     output
   end
