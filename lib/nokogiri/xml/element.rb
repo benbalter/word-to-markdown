@@ -7,7 +7,11 @@ module Nokogiri
       #
       # Returns a float with the font-size
       def font_size
-        styles['font-size'].to_f if styles['font-size']
+        if styles['font-size']
+          styles['font-size'].to_f
+        else
+          12.to_f
+        end
       end
 
       def bold?
