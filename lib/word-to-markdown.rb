@@ -67,8 +67,8 @@ class WordToMarkdown
     case os
     when :macosx
       %w[~/Applications /Applications]
-        .map  { |f| File.join(f, "/LibreOffice.app/Contents/MacOS/soffice") }
-        .find { |f| File.file?(f) } || -> { raise RuntimeError.new("Coudln't find LibreOffice on your machine.") }.call
+        .map  { |f| File.expand_path(File.join(f, "/LibreOffice.app/Contents/MacOS/soffice")) }
+        .find { |f| File.file?(f) } || -> { raise RuntimeError.new("Couldn't find LibreOffice on your machine.") }.call
     when :windows
       'C:\Program Files (x86)\LibreOffice 4\program\soffice.exe'
     else
