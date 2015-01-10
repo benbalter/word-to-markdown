@@ -4,6 +4,7 @@ require 'premailer'
 require 'nokogiri'
 require 'nokogiri-styles'
 require 'tmpdir'
+require 'rbconfig'
 require_relative 'word-to-markdown/version'
 require_relative 'word-to-markdown/document'
 require_relative 'word-to-markdown/converter'
@@ -29,6 +30,25 @@ class WordToMarkdown
     converter.convert!
   end
 
+  # source: https://stackoverflow.com/questions/11784109/detecting-operating-systems-in-ruby
+  def os
+    @os ||= (
+    host_os = RbConfig::CONFIG['host_os']
+    case host_os
+    when /mswin|msys|mingw|cygwin|bccwin|wince|emc/
+      :windows
+    when /darwin|mac os/
+      :macosx
+    when /linux/
+      :linux
+    when /solaris|bsd/
+      :unix
+    else
+      raise Error::WebDriverError, "unknown os: #{host_os.inspect}"
+    end
+    )
+  end
+
   # source: https://github.com/ricn/libreconv/blob/master/lib/libreconv.rb#L48
   def self.which(cmd)
     exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
@@ -43,10 +63,13 @@ class WordToMarkdown
   end
 
   def self.soffice_path
-    if RUBY_PLATFORM.include?("darwin")
+    case os
+    when :macosx
       %w[~/Applications /Applications]
         .map  { |f| File.join(f, "/LibreOffice.app/Contents/MacOS/soffice") }
         .find { |f| File.file?(f) } || -> { raise RuntimeError.new("Coudln't find LibreOffice on your machine.") }.call
+    when :windows
+      "C:\Program Files (x86)\LibreOffice 4\program\soffice.exe"
     else
       soffice_path ||= which("soffice")
       soffice_path ||= which("soffice.bin")
