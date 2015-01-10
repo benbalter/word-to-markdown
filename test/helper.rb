@@ -13,6 +13,9 @@ require 'mocha'
 require 'mocha/test_unit'
 require 'open3'
 
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
+
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'word-to-markdown'
