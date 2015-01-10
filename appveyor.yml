@@ -1,10 +1,10 @@
 install:
   - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
   - gem install bundler --no-ri --no-rdoc
-  - "./script/bootstrap"
+  - "bundle install"
 
 test_script:
-  - "./script/cibuild"
+  - "bundle exec rake test"
 
 environment:
   matrix:
