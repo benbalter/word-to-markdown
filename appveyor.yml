@@ -3,7 +3,7 @@ clone_folder: c:\projects\w2m
 install:
   - ps: wget http://donate.libreoffice.org/home/dl/win-x86/4.3.5/en-US/LibreOffice_4.3.5_Win_x86.msi -OutFile C:\projects\w2m\LibreOffice_4.3.5_Win_x86.msi
   - dir
-  - msiexec /qn /i C:\projects\w2m\LibreOffice_4.3.5_Win_x86.msi
+  - msiexec /qn /i C:\projects\w2m\LibreOffice_4.3.5_Win_x86.msi /l* install_log.txt ALLUSERS=0 RebootYesNo=No SELECT_WORD=1 SELECT_EXCEL=0 SELECT_POWERPOINT=0
   - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
   - gem install bundler --no-ri --no-rdoc
   - bundle install
@@ -17,3 +17,6 @@ test_script:
 environment:
   matrix:
     - ruby_version: "200"
+
+artifacts:
+  - path: install_log.txt
