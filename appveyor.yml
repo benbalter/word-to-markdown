@@ -19,4 +19,4 @@ environment:
     - ruby_version: "200"
 
 artifacts:
-  - path: install_log.txt
+  - path: C:\projects\w2m\install_log.txt
