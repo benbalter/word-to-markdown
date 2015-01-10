@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
     "bin/w2m"
   ]
   s.executables = ["w2m"]
-  s.add_dependency("reverse_markdown","~> 0.5")
+  s.add_dependency("reverse_markdown","~> 0.5.1")
   s.add_dependency('descriptive_statistics', "~> 1.1")
   s.add_dependency( "premailer", "~> 1.8" )
   s.add_dependency( 'nokogiri-styles', "~> 0.1")
