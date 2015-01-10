@@ -1,5 +1,7 @@
+clone_folder: c:\projects\w2m
+
 install:
-  - ps: wget http://donate.libreoffice.org/home/dl/win-x86/4.3.5/en-US/LibreOffice_4.3.5_Win_x86.msi -OutFile LibreOffice_4.3.5_Win_x86.msi
+  - ps: (new-object System.Net.WebClient).Downloadfile("http://donate.libreoffice.org/home/dl/win-x86/4.3.5/en-US/LibreOffice_4.3.5_Win_x86.msi", "C:\projects\w2m\LibreOffice_4.3.5_Win_x86.msi")
   - msiexec /qn /i LibreOffice_4.3.5_Win_x86.msi
   - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
   - gem install bundler --no-ri --no-rdoc
