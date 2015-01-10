@@ -2,7 +2,8 @@
 
 A Ruby gem to liberate content from [the jail that is Word documents](http://ben.balter.com/2012/10/19/we-ve-been-trained-to-make-paper/#jailbreaking-content)
 
-[![Build Status](https://travis-ci.org/benbalter/word-to-markdown.svg?branch=master)](https://travis-ci.org/benbalter/word-to-markdown) [![Gem Version](https://badge.fury.io/rb/word-to-markdown.png)](http://badge.fury.io/rb/word-to-markdown) [![Inline docs](http://inch-ci.org/github/benbalter/word-to-markdown.png)](http://inch-ci.org/github/benbalter/word-to-markdown)
+[![Build Status](https://travis-ci.org/benbalter/word-to-markdown.svg?branch=master)](https://travis-ci.org/benbalter/word-to-markdown) [![Gem Version](https://badge.fury.io/rb/word-to-markdown.png)](http://badge.fury.io/rb/word-to-markdown) [![Inline docs](http://inch-ci.org/github/benbalter/word-to-markdown.png)](http://inch-ci.org/github/benbalter/word-to-markdown) [![Build status](https://ci.appveyor.com/api/projects/status/1hmk6643hqsx3bt3?svg=true)](https://ci.appveyor.com/project/benbalter/word-to-markdown)
+
 
 ## The problem
 
