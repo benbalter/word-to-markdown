@@ -49,4 +49,8 @@ class TestWordToMarkdown < Test::Unit::TestCase
     doc = stub_doc "<span>‘’</span>"
     assert_equal "''", doc.to_s
   end
+
+  should "handle files with spaces" do
+    validate_fixture "file with space", "This is paragraph text."
+  end
 end
