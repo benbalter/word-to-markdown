@@ -2,9 +2,4 @@
 /*.gem
 .env
 *.html
-
-#bower bloat
-public/vendor/bootstrap/grunt
-public/vendor/bootstrap/less
-public/vendor/bootstrap/test-infra
-public/vendor/jquery/src
+Gemfile.lock
