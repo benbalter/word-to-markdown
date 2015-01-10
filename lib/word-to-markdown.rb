@@ -50,19 +50,6 @@ class WordToMarkdown
     )
   end
 
-  # source: https://github.com/ricn/libreconv/blob/master/lib/libreconv.rb#L48
-  def self.which(cmd)
-    exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
-    ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
-      exts.each do |ext|
-        exe = File.join(path, "#{cmd}#{ext}")
-        return exe if File.executable? exe
-      end
-    end
-
-    return nil
-  end
-
   def self.soffice_path
     case os
     when :macosx
@@ -72,12 +59,12 @@ class WordToMarkdown
     when :windows
       'C:\Program Files (x86)\LibreOffice 4\program\soffice.exe'
     else
-      which("soffice") || "soffice"
+      "soffice"
     end
   end
 
   def self.run_command(*args)
-    output, status = Open3.capture2e(ENV, soffice_path, *args)
+    output, status = Open3.capture2e(soffice_path, *args)
     raise "Command `#{soffice_path} #{args.join(" ")}` failed: #{output}" if status != 0
     output
   end
