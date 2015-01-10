@@ -50,31 +50,16 @@ class WordToMarkdown
     )
   end
 
-  # source: https://github.com/ricn/libreconv/blob/master/lib/libreconv.rb#L48
-  def self.which(cmd)
-    exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
-    ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
-      exts.each do |ext|
-        exe = File.join(path, "#{cmd}#{ext}")
-        return exe if File.executable? exe
-      end
-    end
-
-    return nil
-  end
-
   def self.soffice_path
     case os
     when :macosx
       %w[~/Applications /Applications]
         .map  { |f| File.expand_path(File.join(f, "/LibreOffice.app/Contents/MacOS/soffice")) }
-        .find { |f| File.file?(f) } || -> { raise RuntimeError.new("Couldn't find LibreOffice on your machine.") }.call
+        .find { |f| File.file?(f) }
     when :windows
       'C:\Program Files (x86)\LibreOffice 4\program\soffice.exe'
     else
-      soffice_path ||= which("soffice")
-      soffice_path ||= which("soffice.bin")
-      soffice_path ||= "soffice"
+      "soffice"
     end
   end
 
