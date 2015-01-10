@@ -31,7 +31,7 @@ class WordToMarkdown
   end
 
   # source: https://stackoverflow.com/questions/11784109/detecting-operating-systems-in-ruby
-  def os
+  def self.os
     @os ||= (
     host_os = RbConfig::CONFIG['host_os']
     case host_os
