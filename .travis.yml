@@ -16,3 +16,7 @@ addons:
 cache:
   - bundler
   - apt
+
+env:
+  global:
+    NOKOGIRI_USE_SYSTEM_LIBRARIES=true
