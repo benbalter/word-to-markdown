@@ -2,6 +2,8 @@
 
 set -e
 
+bundle exec w2m --version
+
 bundle exec rake test
 
 bundle exec gem build word-to-markdown.gemspec
