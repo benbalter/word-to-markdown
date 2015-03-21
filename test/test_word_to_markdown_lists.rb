@@ -19,6 +19,6 @@ class TestWordToMarkdownLists < Test::Unit::TestCase
   end
 
   should "parse lists with links" do
-    validate_fixture "list-with-links", "[word-to-markdown](https://github.com/benbalter/word-to-markdown)\n  - [word-to-markdown](https://github.com/benbalter/word-to-markdown)"
+    validate_fixture "list-with-links", "[word-to-markdown](https://github.com/benbalter/word-to-markdown)\n\n- [word-to-markdown](https://github.com/benbalter/word-to-markdown)"
   end
 end

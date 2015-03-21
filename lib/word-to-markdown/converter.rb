@@ -14,7 +14,6 @@ class WordToMarkdown
     end
 
     def convert!
-
       # Fonts and headings
       semanticize_font_styles!
       semanticize_headings!
@@ -95,18 +94,18 @@ class WordToMarkdown
 
     def remove_unicode_bullets_from_list_items!
       @document.tree.search("li span").each do |span|
-        span.content = span.content.gsub /^([#{UNICODE_BULLETS.join("")}]+)/, ""
+        span.inner_html = span.inner_html.gsub /^([#{UNICODE_BULLETS.join("")}]+)/, ""
       end
     end
 
     def remove_numbering_from_list_items!
       @document.tree.search("li span").each do |span|
-        span.content = span.content.gsub /^[a-zA-Z0-9]+\./m, ""
+        span.inner_html = span.inner_html.gsub /^[a-zA-Z0-9]+\./m, ""
       end
     end
 
     def remove_whitespace_from_list_items!
-      @document.tree.search("li span").each { |span| span.content.strip! }
+      @document.tree.search("li span").each { |span| span.inner_html.strip! }
     end
 
     def semanticize_table_headers!
