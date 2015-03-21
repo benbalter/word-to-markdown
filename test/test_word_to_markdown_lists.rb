@@ -17,4 +17,8 @@ class TestWordToMarkdownLists < Test::Unit::TestCase
   should "parse nested uls" do
     validate_fixture "nested-ul", "- One\n  - Sub one\n    - Sub sub one\n    - Sub sub two\n\n  - Sub two\n\n- Two"
   end
+
+  should "parse lists with links" do
+    validate_fixture "list-with-links", "[word-to-markdown](https://github.com/benbalter/word-to-markdown)\n  - [word-to-markdown](https://github.com/benbalter/word-to-markdown)"
+  end
 end

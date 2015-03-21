@@ -17,7 +17,7 @@ class WordToMarkdown
 
     def tree
       @tree ||= begin
-        tree = Nokogiri::HTML(normalize(raw_html))
+        tree = Nokogiri::HTML(normalized_html)
         tree.css("title").remove
         tree
       end
@@ -38,8 +38,8 @@ class WordToMarkdown
     # html - the raw html export
     #
     # Returns the encoding, defaulting to "UTF-8"
-    def encoding(html)
-      match = html.encode("UTF-8", :invalid => :replace, :replace => "").match(/charset=([^\"]+)/)
+    def encoding
+      match = raw_html.encode("UTF-8", :invalid => :replace, :replace => "").match(/charset=([^\"]+)/)
       if match
         match[1].sub("macintosh", "MacRoman")
       else
@@ -54,9 +54,9 @@ class WordToMarkdown
     # html - the raw html input from the export
     #
     # Returns the normalized html
-    def normalize(html)
-      encoding = encoding(html)
-      html = html.force_encoding(encoding).encode("UTF-8", :invalid => :replace, :replace => "")
+    def normalized_html
+      html = raw_html.force_encoding(encoding)
+      html = html.encode("UTF-8", :invalid => :replace, :replace => "")
       html = Premailer.new(html, :with_html_string => true, :input_encoding => "UTF-8").to_inline_css
       html.gsub! /\n|\r/," "         # Remove linebreaks
       html.gsub! /“|”/, '"'          # Straighten curly double quotes
