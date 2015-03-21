@@ -30,7 +30,8 @@ end
 
 def stub_doc(html)
   doc = WordToMarkdown.new "test/fixtures/em.docx"
-  tree = Nokogiri::HTML(doc.document.send(:normalize, html))
+  doc.document.stubs(:raw_html).returns(html)
+  tree = Nokogiri::HTML(doc.document.send(:normalized_html))
   doc.document.stubs(:tree).returns(tree)
   doc
 end
