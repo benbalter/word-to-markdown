@@ -71,9 +71,11 @@ class WordToMarkdown
     #
     # Returns the normalized markdown
     def scrub_whitespace(string)
-      string.sub!(/\A[[:space:]]+/,'')                # leading whitespace
-      string.sub!(/[[:space:]]+\z/,'')                # trailing whitespace
-      string.gsub!(/\n\n \n\n/,"\n\n")                # Quadruple line breaks
+      string.gsub!("&nbsp;", " ")                     # HTML encoded spaces
+      string.sub!(/\A[[:space:]]+/,'')                # document leading whitespace
+      string.sub!(/[[:space:]]+\z/,'')                # document trailing whitespace
+      string.gsub!(/([ ]+)$/, '')                     # line trailing whitespace
+      string.gsub!(/\n\n\n\n/,"\n\n")                 # Quadruple line breaks
       string.gsub!(/\u00A0/, "")                      # Unicode non-breaking spaces, injected as tabs
       string
     end
