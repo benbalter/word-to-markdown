@@ -53,4 +53,8 @@ class TestWordToMarkdown < Test::Unit::TestCase
   should "handle files with spaces" do
     validate_fixture "file with space", "This is paragraph text."
   end
+
+  should "know the soffice version" do
+    assert_match /\d\.\d\.\d\.\d .*/, WordToMarkdown.soffice_version
+  end
 end
