@@ -1,17 +1,21 @@
-require 'reverse_markdown'
 require 'descriptive_statistics'
-require 'premailer'
-require 'nokogiri'
+require 'reverse_markdown'
 require 'nokogiri-styles'
-require 'tmpdir'
+require 'sys/proctable'
+require 'premailer'
 require 'rbconfig'
+require 'nokogiri'
+require 'tmpdir'
 require 'open3'
+
 require_relative 'word-to-markdown/version'
 require_relative 'word-to-markdown/document'
 require_relative 'word-to-markdown/converter'
 require_relative 'nokogiri/xml/element'
 
 class WordToMarkdown
+
+  include Sys
 
   attr_reader :document, :converter
 
@@ -67,8 +71,14 @@ class WordToMarkdown
     @soffice ||= !(soffice_path.nil? || soffice_version.nil?)
   end
 
+  def self.soffice_open?
+    ProcTable.ps.any? { |p| p.exe == soffice_path }
+  end
+
   def self.run_command(*args)
     raise "LibreOffice executable not found" unless soffice?
+    raise "LibreOffice already running" if soffice_open?
+
     output, status = Open3.capture2e(soffice_path, *args)
     raise "Command `#{soffice_path} #{args.join(" ")}` failed: #{output}" if status != 0
     output
