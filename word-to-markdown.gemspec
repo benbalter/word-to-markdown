@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency("descriptive_statistics", "~> 2.5")
   s.add_dependency("premailer", "~> 1.8")
   s.add_dependency("nokogiri-styles", "~> 0.1")
+  s.add_dependency("sys-proctable", "~> 0.9")
   s.add_development_dependency("rake", "~> 10.4")
   s.add_development_dependency("shoulda", "~> 3.5")
   s.add_development_dependency("bundler", "~> 1.6")
