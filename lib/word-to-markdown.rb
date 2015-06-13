@@ -63,14 +63,21 @@ class WordToMarkdown
     end
   end
 
+  def self.soffice?
+    @soffice ||= !(soffice_path.nil? || soffice_version.nil?)
+  end
+
   def self.run_command(*args)
+    raise "LibreOffice executable not found" unless soffice?
     output, status = Open3.capture2e(soffice_path, *args)
     raise "Command `#{soffice_path} #{args.join(" ")}` failed: #{output}" if status != 0
     output
   end
 
   def self.soffice_version
-    run_command('--version').strip.sub "LibreOffice ", ""
+    return if soffice_path.nil?
+    output, status = Open3.capture2e(soffice_path, "--version")
+    output.strip.sub "LibreOffice ", "" if status == 0
   end
 
   # Pretty print the class in console
