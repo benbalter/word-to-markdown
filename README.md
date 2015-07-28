@@ -58,6 +58,7 @@ $ w2m path/to/document.docx
 * Implicit headings (e.g., text with a larger font size relative to paragraph text)
 * Images
 * Tables
+* Hyperlinks
 
 ## Requirements and configuration
 
