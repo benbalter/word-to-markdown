@@ -19,6 +19,8 @@ A Ruby gem to liberate content from [the jail that is Word documents](http://ben
 
 ## Install
 
+You'll need to install [LibreOffice](http://www.libreoffice.org/). Then:
+
 ```bash
 gem install word-to-markdown
 ```
