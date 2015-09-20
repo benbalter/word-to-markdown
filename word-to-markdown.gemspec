@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
     "lib/word-to-markdown/document.rb",
     "lib/word-to-markdown/converter.rb",
     "lib/nokogiri/xml/element.rb",
+    "lib/cliver/dependency_ext.rb",
     "bin/w2m"
   ]
   s.executables = ["w2m"]
@@ -23,6 +24,8 @@ Gem::Specification.new do |s|
   s.add_dependency("premailer", "~> 1.8")
   s.add_dependency("nokogiri-styles", "~> 0.1")
   s.add_dependency("sys-proctable", "~> 0.9")
+  s.add_dependency("cliver", "~> 0.3")
+
   s.add_development_dependency("rake", "~> 10.4")
   s.add_development_dependency("shoulda", "~> 3.5")
   s.add_development_dependency("bundler", "~> 1.6")
