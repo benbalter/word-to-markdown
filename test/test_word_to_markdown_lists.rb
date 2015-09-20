@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-class TestWordToMarkdownLists < Test::Unit::TestCase
+class TestWordToMarkdownLists < Minitest::Test
 
   should "properly parse unnumbered lists" do
     validate_fixture "ul", "- One\n- Two\n- Three"

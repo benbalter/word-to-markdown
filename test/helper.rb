@@ -7,7 +7,7 @@ rescue Bundler::BundlerError => e
   $stderr.puts "Run `bundle install` to install missing gems"
   exit e.status_code
 end
-require 'test/unit'
+require "minitest/autorun"
 require 'shoulda'
 require 'mocha'
 require 'mocha/test_unit'

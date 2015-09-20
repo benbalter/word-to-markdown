@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-class TestWordToMarkdownDocument < Test::Unit::TestCase
+class TestWordToMarkdownDocument < Minitest::Test
 
   def setup
     @doc = WordToMarkdown::Document.new fixture_path("em")

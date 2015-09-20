@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-class TestWordToMarkdown < Test::Unit::TestCase
+class TestWordToMarkdown < Minitest::Test
 
   should "properly parse italic text" do
     validate_fixture "em", "This word is _italic_."

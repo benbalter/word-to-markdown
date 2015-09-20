@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-class TestWordToMarkdownImplicitHeadings < Test::Unit::TestCase
+class TestWordToMarkdownImplicitHeadings < Minitest::Test
 
   def setup
     @doc = WordToMarkdown.new fixture_path("small-medium-large")

@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
-class TestWordToMarkdownCli < Test::Unit::TestCase
+class TestWordToMarkdownCli < Minitest::Test
   should "return usage information" do
     output, status = Open3.capture2e "bundle", "exec", "w2m"
     assert_equal false, status.success?

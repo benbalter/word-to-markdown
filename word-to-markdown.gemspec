@@ -28,5 +28,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency("bundler", "~> 1.6")
   s.add_development_dependency("pry", "~> 0.10")
   s.add_development_dependency("mocha", "~> 1.1")
-  s.add_development_dependency("minitest", "~> 4.7")
+  s.add_development_dependency("minitest", "~> 5.0")
 end
