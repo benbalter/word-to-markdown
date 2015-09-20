@@ -14,7 +14,7 @@ test_script:
 
 environment:
   matrix:
-    - ruby_version: "200"
+    - ruby_version: "210"
 
 artifacts:
   - path: install_log.txt
