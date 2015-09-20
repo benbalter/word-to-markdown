@@ -37,38 +37,40 @@ class WordToMarkdown
 
   # source: https://stackoverflow.com/questions/11784109/detecting-operating-systems-in-ruby
   def self.os
-    @os ||= (
-    host_os = RbConfig::CONFIG['host_os']
-    case host_os
-    when /mswin|msys|mingw|cygwin|bccwin|wince|emc/
-      :windows
-    when /darwin|mac os/
-      :macosx
-    when /linux/
-      :linux
-    when /solaris|bsd/
-      :unix
-    else
-      raise Error::WebDriverError, "unknown os: #{host_os.inspect}"
+    @os ||= begin
+      case RbConfig::CONFIG['host_os']
+      when /mswin|msys|mingw|cygwin|bccwin|wince|emc/
+        :windows
+      when /darwin|mac os/
+        :macosx
+      when /linux/
+        :linux
+      when /solaris|bsd/
+        :unix
+      else
+        raise "Unknown OS: #{RbConfig::CONFIG['host_os'].inspect}"
+      end
     end
-    )
   end
 
   def self.soffice_path
-    case os
-    when :macosx
-      %w[~/Applications /Applications]
-        .map  { |f| File.expand_path(File.join(f, "/LibreOffice.app/Contents/MacOS/soffice")) }
-        .find { |f| File.file?(f) }
-    when :windows
-      'C:\Program Files (x86)\LibreOffice 4\program\soffice.exe'
-    else
-      "soffice"
+    @soffice_path ||= begin
+      case os
+      when :macosx
+        %w[~/Applications /Applications]
+          .map  { |f| File.expand_path(File.join(f, "/LibreOffice.app/Contents/MacOS/soffice")) }
+          .find { |f| File.file?(f) }
+      when :windows
+        'C:\Program Files (x86)\LibreOffice 4\program\soffice.exe'
+      else
+        "soffice"
+      end
     end
   end
 
   def self.soffice?
-    @soffice ||= !(soffice_path.nil? || soffice_version.nil?)
+    return @soffice if defined? @soffice
+    @soffice = !(soffice_path.nil? || soffice_version.nil?)
   end
 
   def self.soffice_open?
@@ -86,8 +88,10 @@ class WordToMarkdown
 
   def self.soffice_version
     return if soffice_path.nil?
-    output, status = Open3.capture2e(soffice_path, "--version")
-    output.strip.sub "LibreOffice ", "" if status == 0
+    @soffice_version ||= begin
+      output, status = Open3.capture2e(soffice_path, "--version")
+      output.strip.sub "LibreOffice ", "" if status == 0
+    end
   end
 
   # Pretty print the class in console
