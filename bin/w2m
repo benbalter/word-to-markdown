@@ -9,7 +9,7 @@ end
 
 if ARGV[0] == "--version"
   puts "WordToMarkdown v#{WordToMarkdown::VERSION}"
-  puts "LibreOffice #{WordToMarkdown.soffice_version}"
+  puts "LibreOffice v#{WordToMarkdown.soffice.version}"
 else
   doc = WordToMarkdown.new ARGV[0]
   puts doc.to_s

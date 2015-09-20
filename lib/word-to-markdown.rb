@@ -1,21 +1,20 @@
 require 'descriptive_statistics'
 require 'reverse_markdown'
 require 'nokogiri-styles'
-require 'sys/proctable'
 require 'premailer'
 require 'rbconfig'
 require 'nokogiri'
 require 'tmpdir'
+require 'cliver'
 require 'open3'
 
 require_relative 'word-to-markdown/version'
 require_relative 'word-to-markdown/document'
 require_relative 'word-to-markdown/converter'
 require_relative 'nokogiri/xml/element'
+require_relative 'cliver/dependency_ext'
 
 class WordToMarkdown
-
-  include Sys
 
   attr_reader :document, :converter
 
@@ -23,6 +22,14 @@ class WordToMarkdown
     unknown_tags: :bypass,
     github_flavored: true
   }
+
+  SOFFICE_VERSION_REQUIREMENT = '> 4.0'
+
+  PATHS = [
+    "~/Applications/LibreOffice.app/Contents/MacOS",
+    "/Applications/LibreOffice.app/Contents/MacOS",
+    "/C/Program Files (x86)/LibreOffice 4/program"
+  ]
 
   # Create a new WordToMarkdown object
   #
@@ -35,63 +42,27 @@ class WordToMarkdown
     converter.convert!
   end
 
-  # source: https://stackoverflow.com/questions/11784109/detecting-operating-systems-in-ruby
-  def self.os
-    @os ||= begin
-      case RbConfig::CONFIG['host_os']
-      when /mswin|msys|mingw|cygwin|bccwin|wince|emc/
-        :windows
-      when /darwin|mac os/
-        :macosx
-      when /linux/
-        :linux
-      when /solaris|bsd/
-        :unix
-      else
-        raise "Unknown OS: #{RbConfig::CONFIG['host_os'].inspect}"
-      end
-    end
-  end
-
-  def self.soffice_path
-    @soffice_path ||= begin
-      case os
-      when :macosx
-        %w[~/Applications /Applications]
-          .map  { |f| File.expand_path(File.join(f, "/LibreOffice.app/Contents/MacOS/soffice")) }
-          .find { |f| File.file?(f) }
-      when :windows
-        'C:\Program Files (x86)\LibreOffice 4\program\soffice.exe'
-      else
-        "soffice"
-      end
-    end
-  end
-
-  def self.soffice?
-    return @soffice if defined? @soffice
-    @soffice = !(soffice_path.nil? || soffice_version.nil?)
-  end
-
-  def self.soffice_open?
-    ProcTable.ps.any? { |p| p.exe == soffice_path }
-  end
-
   def self.run_command(*args)
-    raise "LibreOffice executable not found" unless soffice?
-    raise "LibreOffice already running" if soffice_open?
+    raise "LibreOffice already running" if soffice.open?
 
-    output, status = Open3.capture2e(soffice_path, *args)
+    output, status = Open3.capture2e(soffice.path, *args)
     raise "Command `#{soffice_path} #{args.join(" ")}` failed: #{output}" if status != 0
     output
   end
 
-  def self.soffice_version
-    return if soffice_path.nil?
-    @soffice_version ||= begin
-      output, status = Open3.capture2e(soffice_path, "--version")
-      output.strip.sub "LibreOffice ", "" if status == 0
-    end
+  # Returns a Cliver::Dependency object representing our soffice dependency
+  #
+  # Attempts to resolve by looking at PATH followed by paths in the PATHS constant
+  #
+  # Methods used internally:
+  #   path    - returns the resolved path. Raises an error if not satisfied
+  #   version - returns the resolved version
+  #   open    - is the dependency currently open/running?
+  def self.soffice
+    @soffice_dependency ||= Cliver::Dependency.new(
+      "soffice", SOFFICE_VERSION_REQUIREMENT,
+      :path => "*:" + PATHS.join(":")
+    )
   end
 
   # Pretty print the class in console

@@ -55,6 +55,6 @@ class TestWordToMarkdown < Minitest::Test
   end
 
   should "know the soffice version" do
-    assert_match /\d\.\d\.\d\.\d .*/, WordToMarkdown.soffice_version
+    assert_match /\d\.\d\.\d\.\d/, WordToMarkdown.soffice.version
   end
 end
