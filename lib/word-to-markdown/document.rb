@@ -89,6 +89,7 @@ class WordToMarkdown
       @raw_html ||= begin
         WordToMarkdown::run_command '--headless', '--convert-to', 'html', path, '--outdir', tmpdir
         html = File.read dest_path
+        puts html.inspect
         File.delete dest_path
         html
       end
