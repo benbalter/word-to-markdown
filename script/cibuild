@@ -2,8 +2,6 @@
 
 set -e
 
-LC_ALL= LANG= ruby -e 'p Encoding.default_external'
-
 bundle exec w2m --version
 
 bundle exec rake test

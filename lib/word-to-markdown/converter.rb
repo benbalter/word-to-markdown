@@ -94,6 +94,8 @@ class WordToMarkdown
 
     def remove_unicode_bullets_from_list_items!
       @document.tree.search("li span").each do |span|
+        puts span.inner_html.inspect
+        puts span.inner_html.split(//).map { |c| c.ord }.inspect
         span.inner_html = span.inner_html.gsub /^([#{UNICODE_BULLETS.join("")}]+)/, ""
       end
     end
