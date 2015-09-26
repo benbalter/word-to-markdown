@@ -6,8 +6,6 @@ class WordToMarkdown
 
     attr_reader :path, :raw_html, :tmpdir
 
-    FILTER = "html:XHTML Writer File:UTF8"
-
     def initialize(path, tmpdir = nil)
       @path = File.expand_path path, Dir.pwd
       @tmpdir = tmpdir || Dir.mktmpdir
@@ -90,11 +88,19 @@ class WordToMarkdown
 
     def raw_html
       @raw_html ||= begin
-        WordToMarkdown::run_command '--headless', '--convert-to', FILTER, path, '--outdir', tmpdir
+        WordToMarkdown::run_command '--headless', '--convert-to', filter, path, '--outdir', tmpdir
         raise ConverstionError, "Failed to convert #{path}" unless File.exists?(dest_path)
         html = File.read dest_path
         File.delete dest_path
         html
+      end
+    end
+
+    def filter
+      if WordToMarkdown.soffice.version.split(".").first == "5"
+        "html:XHTML Writer File:UTF8"
+      else
+        "html"
       end
     end
   end

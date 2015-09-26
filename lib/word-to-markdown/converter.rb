@@ -93,13 +93,13 @@ class WordToMarkdown
     end
 
     def remove_unicode_bullets_from_list_items!
-      @document.tree.search("li span span").each do |span|
+      @document.tree.search("li span span, li span").each do |span|
         span.inner_html = span.inner_html.gsub /^([#{UNICODE_BULLETS.join("")}]+)/, ""
       end
     end
 
     def remove_numbering_from_list_items!
-      @document.tree.search("li span span").each do |span|
+      @document.tree.search("li span span, li span").each do |span|
         span.inner_html = span.inner_html.gsub /^[a-zA-Z0-9]+\./m, ""
       end
     end
