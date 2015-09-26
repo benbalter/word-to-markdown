@@ -28,6 +28,7 @@ class WordToMarkdown
   PATHS = [
     "~/Applications/LibreOffice.app/Contents/MacOS",
     "/Applications/LibreOffice.app/Contents/MacOS",
+    "/C/Program Files (x86)/LibreOffice 5/program",
     "/C/Program Files (x86)/LibreOffice 4/program"
   ]
 
