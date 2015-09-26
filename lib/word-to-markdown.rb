@@ -23,7 +23,7 @@ class WordToMarkdown
     github_flavored: true
   }
 
-  SOFFICE_VERSION_REQUIREMENT = '~> 5.0'
+  SOFFICE_VERSION_REQUIREMENT = '> 4.0'
 
   PATHS = [
     "~/Applications/LibreOffice.app/Contents/MacOS",
