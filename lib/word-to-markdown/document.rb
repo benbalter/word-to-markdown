@@ -2,8 +2,11 @@
 class WordToMarkdown
   class Document
     class NotFoundError < StandardError; end
+    class ConverstionError < StandardError; end
 
     attr_reader :path, :raw_html, :tmpdir
+
+    FILTER = "html:XHTML Writer File:UTF8"
 
     def initialize(path, tmpdir = nil)
       @path = File.expand_path path, Dir.pwd
@@ -87,7 +90,8 @@ class WordToMarkdown
 
     def raw_html
       @raw_html ||= begin
-        WordToMarkdown::run_command '--headless', '--convert-to', 'html', path, '--outdir', tmpdir
+        WordToMarkdown::run_command '--headless', '--convert-to', FILTER, path, '--outdir', tmpdir
+        raise ConverstionError, "Failed to convert #{path}" unless File.exists?(dest_path)
         html = File.read dest_path
         File.delete dest_path
         html

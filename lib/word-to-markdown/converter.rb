@@ -7,7 +7,7 @@ class WordToMarkdown
     HEADING_DEPTH = 6 # Number of headings to guess, e.g., h6
     HEADING_STEP = 100/HEADING_DEPTH
     MIN_HEADING_SIZE = 20
-    UNICODE_BULLETS = ["○", "o", "●", "\uF0B7", "\u2022", "\uF0A7"]
+    UNICODE_BULLETS = ["○", "o", "●", "\u2022", "\\p{C}"]
 
     def initialize(document)
       @document = document
@@ -93,13 +93,13 @@ class WordToMarkdown
     end
 
     def remove_unicode_bullets_from_list_items!
-      @document.tree.search("li span").each do |span|
+      @document.tree.search("li span span").each do |span|
         span.inner_html = span.inner_html.gsub /^([#{UNICODE_BULLETS.join("")}]+)/, ""
       end
     end
 
     def remove_numbering_from_list_items!
-      @document.tree.search("li span").each do |span|
+      @document.tree.search("li span span").each do |span|
         span.inner_html = span.inner_html.gsub /^[a-zA-Z0-9]+\./m, ""
       end
     end
