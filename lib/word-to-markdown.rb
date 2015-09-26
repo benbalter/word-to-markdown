@@ -4,6 +4,7 @@ require 'nokogiri-styles'
 require 'premailer'
 require 'rbconfig'
 require 'nokogiri'
+require 'logger'
 require 'tmpdir'
 require 'cliver'
 require 'open3'
@@ -46,6 +47,7 @@ class WordToMarkdown
     raise "LibreOffice already running" if soffice.open?
 
     output, status = Open3.capture2e(soffice.path, *args)
+    logger.debug output
     raise "Command `#{soffice_path} #{args.join(" ")}` failed: #{output}" if status.exitstatus != 0
     output
   end
@@ -59,10 +61,18 @@ class WordToMarkdown
   #   version - returns the resolved version
   #   open    - is the dependency currently open/running?
   def self.soffice
-    @soffice_dependency ||= Cliver::Dependency.new(
+    @@soffice_dependency ||= Cliver::Dependency.new(
       "soffice", SOFFICE_VERSION_REQUIREMENT,
       :path => "*:" + PATHS.join(":")
     )
+  end
+
+  def self.logger
+    @@logger ||= begin
+      logger = Logger.new(STDOUT)
+      logger.level = Logger::ERROR unless ENV["DEBUG"]
+      logger
+    end
   end
 
   # Pretty print the class in console
