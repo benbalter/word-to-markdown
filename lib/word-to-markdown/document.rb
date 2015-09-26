@@ -97,7 +97,7 @@ class WordToMarkdown
     end
 
     def filter
-      if WordToMarkdown.soffice.version.split(".").first == "5"
+      if WordToMarkdown.soffice.major_version == "5"
         "html:XHTML Writer File:UTF8"
       else
         "html"

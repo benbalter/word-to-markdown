@@ -23,5 +23,9 @@ module Cliver
       version = installed_versions.find { |p, v| p == path }
       @detected_version = version.nil? ? nil : version[1]
     end
+
+    def major_version
+      version.split(".").first
+    end
   end
 end
