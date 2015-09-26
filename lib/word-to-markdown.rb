@@ -46,7 +46,7 @@ class WordToMarkdown
     raise "LibreOffice already running" if soffice.open?
 
     output, status = Open3.capture2e(soffice.path, *args)
-    raise "Command `#{soffice_path} #{args.join(" ")}` failed: #{output}" if status != 0
+    raise "Command `#{soffice_path} #{args.join(" ")}` failed: #{output}" if status.exitstatus != 0
     output
   end
 
