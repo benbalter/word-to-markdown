@@ -14,7 +14,7 @@ module Cliver
 
     # Is the detected dependency currently open?
     def open?
-      ProcTable.ps.any? { |p| p.exe == path }
+      ProcTable.ps.any? { |p| p.comm == path }
     end
 
     # Returns the version of the resolved dependency
