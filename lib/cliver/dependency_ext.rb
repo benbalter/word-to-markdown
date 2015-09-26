@@ -25,7 +25,7 @@ module Cliver
     end
 
     def major_version
-      version.split(".").first
+      version.split(".").first if version
     end
   end
 end
