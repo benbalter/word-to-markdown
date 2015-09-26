@@ -63,7 +63,7 @@ class WordToMarkdown
   #   open    - is the dependency currently open/running?
   def self.soffice
     @@soffice_dependency ||= Cliver::Dependency.new(
-      "soffice", SOFFICE_VERSION_REQUIREMENT,
+      executable, SOFFICE_VERSION_REQUIREMENT,
       :path => "*:" + PATHS.join(":")
     )
   end
@@ -83,5 +83,11 @@ class WordToMarkdown
 
   def to_s
     document.to_s
+  end
+
+  private
+
+  def self.executable
+    Gem.win_platform? ? "soffice.exe" : "soffice"
   end
 end
