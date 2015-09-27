@@ -25,7 +25,7 @@ cache:
   - bundle
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
-  - C:/Ruby193/lib/ruby/gems/1.9.1
-  - C:/Users/appveyor/.gem/ruby/1.9.1
+  - C:\Ruby21\lib\ruby\gems\2.1.0
+  - C:\Users\appveyor\.gem\ruby\2.1.0
 
 build: false
