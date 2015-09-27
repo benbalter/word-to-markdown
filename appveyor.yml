@@ -22,5 +22,7 @@ artifacts:
 
 cache:
   - bundle
-
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
+  
 build: false
