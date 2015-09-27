@@ -2,9 +2,10 @@ clone_folder: c:\projects\w2m
 
 install:
   - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
+  - ruby --version
+  - gem update --system --no-ri --no-rdoc
   - gem install bundler --no-ri --no-rdoc
   - bundle install --jobs=3 --retry=3 --path=bundle
-  - gem env
   - choco install --confirm libreoffice
 
 build_script:
