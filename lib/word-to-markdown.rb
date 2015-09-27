@@ -27,10 +27,11 @@ class WordToMarkdown
   SOFFICE_VERSION_REQUIREMENT = '> 4.0'
 
   PATHS = [
+    "*", # Sub'd for ENV["PATH"]
     "~/Applications/LibreOffice.app/Contents/MacOS",
     "/Applications/LibreOffice.app/Contents/MacOS",
-    "/C/Program Files (x86)/LibreOffice 5/program",
-    "/C/Program Files (x86)/LibreOffice 4/program"
+    "/Program Files/LibreOffice 5/program",
+    "/Program Files (x86)/LibreOffice 4/program"
   ]
 
   # Create a new WordToMarkdown object
@@ -62,10 +63,7 @@ class WordToMarkdown
   #   version - returns the resolved version
   #   open    - is the dependency currently open/running?
   def self.soffice
-    @@soffice_dependency ||= Cliver::Dependency.new(
-      "soffice", SOFFICE_VERSION_REQUIREMENT,
-      :path => "*:" + PATHS.join(":")
-    )
+    @@soffice_dependency ||= Cliver::Dependency.new("soffice", *soffice_dependency_args)
   end
 
   def self.logger
@@ -83,5 +81,21 @@ class WordToMarkdown
 
   def to_s
     document.to_s
+  end
+
+  private
+
+  # Workaround for two upstream bugs:
+  # 1. `soffice.exe --version` on windows opens a popup and retuns a null string when manually closed
+  # 2. Even if the second argument to Cliver is nil, Cliver thinks there's a requirement
+  #    and will shell out to `soffice.exe --version`
+  # In order to support Windows, don't pass *any* version requirement to Cliver
+  def self.soffice_dependency_args
+    args = [:path => PATHS.join(File::PATH_SEPARATOR)]
+    if Gem.win_platform?
+      args
+    else
+      args.unshift SOFFICE_VERSION_REQUIREMENT
+    end
   end
 end

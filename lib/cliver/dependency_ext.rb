@@ -20,12 +20,13 @@ module Cliver
     # Returns the version of the resolved dependency
     def version
       return @detected_version if defined? @detected_version
+      return if Gem.win_platform?
       version = installed_versions.find { |p, v| p == path }
       @detected_version = version.nil? ? nil : version[1]
     end
 
     def major_version
-      version.split(".").first
+      version.split(".").first if version
     end
   end
 end

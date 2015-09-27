@@ -56,7 +56,9 @@ class TestWordToMarkdown < Minitest::Test
     validate_fixture "file with space", "This is paragraph text."
   end
 
-  should "know the soffice version" do
-    assert_match /\d\.\d\.\d\.\d/, WordToMarkdown.soffice.version
+  unless Gem.win_platform?
+    should "know the soffice version" do
+      assert_match /\d\.\d\.\d\.\d/, WordToMarkdown.soffice.version
+    end
   end
 end
