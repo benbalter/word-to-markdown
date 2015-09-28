@@ -19,6 +19,7 @@ cache:
 env:
   global:
     NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+    DEBUG=1
   matrix:
     - LIBRE_OFFICE_VERSION=4-4
     - LIBRE_OFFICE_VERSION=5-0
