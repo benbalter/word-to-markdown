@@ -19,6 +19,7 @@ CodeClimate::TestReporter.start
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'word-to-markdown'
+include Sys
 
 def fixture_path(fixture="")
   File.expand_path "fixtures/#{fixture}.docx", File.dirname(__FILE__)
