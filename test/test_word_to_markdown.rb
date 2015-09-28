@@ -73,8 +73,8 @@ class TestWordToMarkdown < Minitest::Test
       sleep 1
       assert WordToMarkdown.soffice.open?
     ensure
-      if pid = ProcTable.ps.find { |p| p.comm == "soffice" }.pid
-        system("kill #{pid}")
+      if process = ProcTable.ps.find { |p| p.comm == "soffice" }
+        system("kill #{process.pid}")
         sleep 1
       end
     end
