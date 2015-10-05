@@ -50,7 +50,7 @@ class WordToMarkdown
 
     output, status = Open3.capture2e(soffice.path, *args)
     logger.debug output
-    raise "Command `#{soffice_path} #{args.join(" ")}` failed: #{output}" if status.exitstatus != 0
+    raise "Command `#{soffice.path} #{args.join(" ")}` failed: #{output}" if status.exitstatus != 0
     output
   end
 
