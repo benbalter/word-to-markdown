@@ -60,5 +60,23 @@ class TestWordToMarkdown < Minitest::Test
     should "know the soffice version" do
       assert_match /\d\.\d\.\d\.\d/, WordToMarkdown.soffice.version
     end
+
+    should "know the major version" do
+      assert_match /\A\d\z/, WordToMarkdown.soffice.major_version
+    end
+  end
+
+  should "know if soffice is open" do
+    refute WordToMarkdown.soffice.open?
+    begin
+      system("#{WordToMarkdown.soffice.path} &")
+      sleep 1
+      assert WordToMarkdown.soffice.open?
+    ensure
+      if process = ProcTable.ps.find { |p| p.comm == "soffice" }
+        system("kill #{process.pid}")
+        sleep 1
+      end
+    end
   end
 end
