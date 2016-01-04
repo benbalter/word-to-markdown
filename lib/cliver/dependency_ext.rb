@@ -15,6 +15,9 @@ module Cliver
     # Is the detected dependency currently open?
     def open?
       ProcTable.ps.any? { |p| p.comm == path }
+    # See https://github.com/djberg96/sys-proctable/issues/44
+    rescue ArgumentError
+      false
     end
 
     # Returns the version of the resolved dependency
