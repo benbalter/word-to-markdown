@@ -6,16 +6,20 @@ class WordToMarkdown
 
     attr_reader :path, :raw_html, :tmpdir
 
+    # @param path [string] Path to the Word document
+    # @param tmpdir [string] Path to a working directory to use
     def initialize(path, tmpdir = nil)
       @path = File.expand_path path, Dir.pwd
       @tmpdir = tmpdir || Dir.mktmpdir
       fail NotFoundError, "File #{@path} does not exist" unless File.exist?(@path)
     end
 
+    # @return [String] the document's extension
     def extension
       File.extname path
     end
 
+    # @return [Nokigiri::Document]
     def tree
       @tree ||= begin
         tree = Nokogiri::HTML(normalized_html)
@@ -24,21 +28,19 @@ class WordToMarkdown
       end
     end
 
-    # Returns the html representation of the document
+    # @return [String] the html representation of the document
     def html
       tree.to_html.gsub("</li>\n", '</li>')
     end
 
-    # Returns the markdown representation of the document
+    # @return [String] the markdown representation of the document
     def to_s
       @markdown ||= scrub_whitespace(ReverseMarkdown.convert(html, WordToMarkdown::REVERSE_MARKDOWN_OPTIONS))
     end
 
     # Determine the document encoding
     #
-    # html - the raw html export
-    #
-    # Returns the encoding, defaulting to "UTF-8"
+    # @return [String] the encoding, defaulting to "UTF-8"
     def encoding
       match = raw_html.encode('UTF-8', invalid: :replace, replace: '').match(/charset=([^\"]+)/)
       if match
@@ -52,9 +54,7 @@ class WordToMarkdown
 
     # Perform pre-processing normalization
     #
-    # html - the raw html input from the export
-    #
-    # Returns the normalized html
+    # @return [String] the normalized html
     def normalized_html
       html = raw_html.force_encoding(encoding)
       html = html.encode('UTF-8', invalid: :replace, replace: '')
@@ -68,9 +68,9 @@ class WordToMarkdown
 
     # Perform post-processing normalization of certain Word quirks
     #
-    # string - the markdown representation of the document
+    # @param string [String] the markdown representation of the document
     #
-    # Returns the normalized markdown
+    # @return [String] the normalized markdown
     def scrub_whitespace(string)
       string.gsub!('&nbsp;', ' ') # HTML encoded spaces
       string.sub!(/\A[[:space:]]+/, '')                # document leading whitespace
@@ -81,11 +81,13 @@ class WordToMarkdown
       string
     end
 
+    # @return [String] the path to the intermediary HTML document
     def dest_path
       dest_filename = File.basename(path).gsub(/#{Regexp.escape(extension)}$/, '.html')
       File.expand_path(dest_filename, tmpdir)
     end
 
+    # @return [String] the unnormalized HTML representation
     def raw_html
       @raw_html ||= begin
         WordToMarkdown.run_command '--headless', '--convert-to', filter, path, '--outdir', tmpdir
@@ -96,6 +98,7 @@ class WordToMarkdown
       end
     end
 
+    # @return [String] the LibreOffice filter to use for conversion
     def filter
       if WordToMarkdown.soffice.major_version == '5'
         'html:XHTML Writer File:UTF8'

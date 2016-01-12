@@ -18,13 +18,16 @@ require_relative 'cliver/dependency_ext'
 class WordToMarkdown
   attr_reader :document, :converter
 
+  # Options to be passed to Reverse Markdown
   REVERSE_MARKDOWN_OPTIONS = {
     unknown_tags:    :bypass,
     github_flavored: true
   }
 
+  # Minimum version of LibreOffice Required
   SOFFICE_VERSION_REQUIREMENT = '> 4.0'
 
+  # Paths to look for LibreOffice, in order of preference
   PATHS = [
     '*', # Sub'd for ENV["PATH"]
     '~/Applications/LibreOffice.app/Contents/MacOS',
@@ -35,25 +38,27 @@ class WordToMarkdown
 
   # Create a new WordToMarkdown object
   #
-  # input - a HTML string or path to an HTML file
-  #
-  # Returns the WordToMarkdown object
+  # @param path [string] Path to the Word document
+  # @param tmpdir [string] Path to a working directory to use
+  # @return [WordToMarkdown] WordToMarkdown object with the converted document
   def initialize(path, tmpdir = nil)
     @document = WordToMarkdown::Document.new path, tmpdir
     @converter = WordToMarkdown::Converter.new @document
     converter.convert!
   end
 
-  # Pretty print the class in console
-  def inspect
-    "<WordToMarkdown path=\"#{@document.path}\">"
-  end
-
+  # Helper method to return the document body, as markdown
+  # @return [string] the document body, as markdown
   def to_s
     document.to_s
   end
 
   class << self
+
+    # Run an soffice command
+    #
+    # @param args [string] one or more arguments to pass to the sofice command
+    # @return [string] the command output
     def run_command(*args)
       fail 'LibreOffice already running' if soffice.open?
 
@@ -71,10 +76,12 @@ class WordToMarkdown
     #   path    - returns the resolved path. Raises an error if not satisfied
     #   version - returns the resolved version
     #   open    - is the dependency currently open/running?
+    # @return Cliver::Dependency instance
     def soffice
       @soffice_dependency ||= Cliver::Dependency.new('soffice', *soffice_dependency_args)
     end
 
+    # @return Logger instance
     def logger
       @logger ||= begin
         logger = Logger.new(STDOUT)
