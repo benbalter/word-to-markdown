@@ -2,12 +2,12 @@
 
 require 'word-to-markdown'
 
-if ARGV.size != 1 || ARGV[0] == "--help"
-  puts "Usage: bundle exec w2m path/to/document.docx"
+if ARGV.size != 1 || ARGV[0] == '--help'
+  puts 'Usage: bundle exec w2m path/to/document.docx'
   exit 1
 end
 
-if ARGV[0] == "--version"
+if ARGV[0] == '--version'
   puts "WordToMarkdown v#{WordToMarkdown::VERSION}"
   puts "LibreOffice v#{WordToMarkdown.soffice.version}" unless Gem.win_platform?
 else

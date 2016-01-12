@@ -2,7 +2,6 @@ require 'sys/proctable'
 
 module Cliver
   class Dependency
-
     include Sys
 
     # Memoized shortcut for detect
@@ -24,12 +23,12 @@ module Cliver
     def version
       return @detected_version if defined? @detected_version
       return if Gem.win_platform?
-      version = installed_versions.find { |p, v| p == path }
+      version = installed_versions.find { |p, _v| p == path }
       @detected_version = version.nil? ? nil : version[1]
     end
 
     def major_version
-      version.split(".").first if version
+      version.split('.').first if version
     end
   end
 end

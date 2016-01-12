@@ -1,0 +1,19 @@
+Lint/EndAlignment:
+  AlignWith: variable
+  AutoCorrect: true
+
+Style/AlignHash:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+
+Style/FileName:
+  Enabled: false

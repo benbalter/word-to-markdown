@@ -6,4 +6,6 @@ bundle exec w2m --version
 
 bundle exec rake test
 
+bundle exec rubocop
+
 bundle exec gem build word-to-markdown.gemspec

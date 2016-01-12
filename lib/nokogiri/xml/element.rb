@@ -1,7 +1,6 @@
 module Nokogiri
   module XML
     class Element
-
       DEFAULT_FONT_SIZE = 12.to_f
 
       # The node's font size
@@ -13,11 +12,11 @@ module Nokogiri
       end
 
       def bold?
-        styles['font-weight'] && styles['font-weight'] == "bold"
+        styles['font-weight'] && styles['font-weight'] == 'bold'
       end
 
       def italic?
-        styles['font-style'] && styles['font-style'] == "italic"
+        styles['font-style'] && styles['font-style'] == 'italic'
       end
     end
   end
