@@ -1,5 +1,7 @@
 # Contributing to Word To Markdown
 
+Hi there! We're thrilled that you'd like to contribute to Word To Markdown. Your help is essential for keeping it great.
+
 Word To Markdown is an open source project supported by the efforts of an entire community and built one contribution at a time by users like you. We'd love for you to get involved. Whatever your level of skill or however much time you can give, your contribution is greatly appreciated. There are many ways to contribute, from writing tutorials or blog posts, improving the documentation, submitting bug reports and feature requests, helping other users by commenting on issues, or writing code which can be incorporated into Word To Markdown itself.
 
 Following these guidelines helps to communicate that you respect the time of the developers managing and developing this open source project. In return, they should reciprocate that respect in addressing your issue, assessing changes, and helping you finalize your pull requests.
@@ -63,13 +65,17 @@ Here's a few general guidelines for proposing changes:
 * Each pull request should implement **one** feature or bug fix. If you want to add or fix more than one thing, submit more than one pull request
 * Do not commit changes to files that are irrelevant to your feature or bug fix
 * Don't bump the version number in your pull request (it will be bumped prior to release)
+* Write [a good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 
 At a high level, [the process for proposing changes](https://guides.github.com/introduction/flow/) is:
 
-1. Fork the project
-2. Create a descriptively named branch
-3. Make your changes, including tests and documentation
-4. Submit a pull request describing your change
+1. [Fork](https://github.com/benbalter/word-to-markdown/fork) and clone the project
+2. Configure and install the dependencies: `script/bootstrap`
+3. Make sure the tests pass on your machine: `script/cibuild`
+4. Create a descriptively named branch: `git checkout -b my-branch-name`
+5. Make your change, add tests and documentation, and make sure the tests still pass
+6. Push to your fork and [submit a pull request](https://github.com/benbalter/word-to-markdown/compare) describing your change
+7. Pat your self on the back and wait for your pull request to be reviewed and merged
 
 **Interesting in submitting your first Pull Request?** It's easy! You can learn how from this *free* series [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
 
@@ -84,3 +90,9 @@ At a high level, [the process for proposing changes](https://guides.github.com/i
 ## Code of conduct
 
 This project is governed by [the Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+
+## Additional Resources
+
+* [Contributing to Open Source on GitHub](https://guides.github.com/activities/contributing-to-open-source/)
+* [Using Pull Requests](https://help.github.com/articles/using-pull-requests/)
+* [GitHub Help](https://help.github.com)
