@@ -2,7 +2,7 @@
 class WordToMarkdown
   class Document
     class NotFoundError < StandardError; end
-    class ConverstionError < StandardError; end
+    class ConversionError < StandardError; end
 
     attr_reader :path, :raw_html, :tmpdir
 
@@ -91,7 +91,7 @@ class WordToMarkdown
     def raw_html
       @raw_html ||= begin
         WordToMarkdown.run_command '--headless', '--convert-to', filter, path, '--outdir', tmpdir
-        fail ConverstionError, "Failed to convert #{path}" unless File.exist?(dest_path)
+        fail ConversionError, "Failed to convert #{path}" unless File.exist?(dest_path)
         html = File.read dest_path
         File.delete dest_path
         html
