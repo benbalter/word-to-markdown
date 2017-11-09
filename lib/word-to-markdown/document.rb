@@ -1,17 +1,19 @@
-# encoding: utf-8
+
+# frozen_string_literal: true
+
 class WordToMarkdown
   class Document
     class NotFoundError < StandardError; end
     class ConversionError < StandardError; end
 
-    attr_reader :path, :raw_html, :tmpdir
+    attr_reader :path, :tmpdir
 
     # @param path [string] Path to the Word document
     # @param tmpdir [string] Path to a working directory to use
     def initialize(path, tmpdir = nil)
       @path = File.expand_path path, Dir.pwd
       @tmpdir = tmpdir || Dir.mktmpdir
-      fail NotFoundError, "File #{@path} does not exist" unless File.exist?(@path)
+      raise NotFoundError, "File #{@path} does not exist" unless File.exist?(@path)
     end
 
     # @return [String] the document's extension
@@ -56,7 +58,7 @@ class WordToMarkdown
     #
     # @return [String] the normalized html
     def normalized_html
-      html = raw_html.force_encoding(encoding)
+      html = raw_html.dup.force_encoding(encoding)
       html = html.encode('UTF-8', invalid: :replace, replace: '')
       html = Premailer.new(html, with_html_string: true, input_encoding: 'UTF-8').to_inline_css
       html.gsub!(/\n|\r/, ' ')  # Remove linebreaks
@@ -72,12 +74,13 @@ class WordToMarkdown
     #
     # @return [String] the normalized markdown
     def scrub_whitespace(string)
-      string.gsub!('&nbsp;', ' ') # HTML encoded spaces
-      string.sub!(/\A[[:space:]]+/, '')                # document leading whitespace
-      string.sub!(/[[:space:]]+\z/, '')                # document trailing whitespace
-      string.gsub!(/([ ]+)$/, '') # line trailing whitespace
-      string.gsub!(/\n\n\n\n/, "\n\n") # Quadruple line breaks
-      string.gsub!(/\u00A0/, '') # Unicode non-breaking spaces, injected as tabs
+      string = string.dup
+      string.gsub!('&nbsp;', ' ')       # HTML encoded spaces
+      string.sub!(/\A[[:space:]]+/, '') # document leading whitespace
+      string.sub!(/[[:space:]]+\z/, '') # document trailing whitespace
+      string.gsub!(/([ ]+)$/, '')       # line trailing whitespace
+      string.gsub!(/\n\n\n\n/, "\n\n")  # Quadruple line breaks
+      string.delete!(' ')               # Unicode non-breaking spaces, injected as tabs
       string
     end
 
@@ -91,7 +94,7 @@ class WordToMarkdown
     def raw_html
       @raw_html ||= begin
         WordToMarkdown.run_command '--headless', '--convert-to', filter, path, '--outdir', tmpdir
-        fail ConversionError, "Failed to convert #{path}" unless File.exist?(dest_path)
+        raise ConversionError, "Failed to convert #{path}" unless File.exist?(dest_path)
         html = File.read dest_path
         File.delete dest_path
         html

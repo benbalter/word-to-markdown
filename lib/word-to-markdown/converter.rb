@@ -1,4 +1,6 @@
-# encoding: utf-8
+
+# frozen_string_literal: true
+
 class WordToMarkdown
   class Converter
     attr_reader :document
@@ -13,7 +15,7 @@ class WordToMarkdown
     MIN_HEADING_SIZE = 20
 
     # Unicode bullets to strip when processing
-    UNICODE_BULLETS = ['○', 'o', '●', "\u2022", '\\p{C}']
+    UNICODE_BULLETS = ['○', 'o', '●', "\u2022", '\\p{C}'].freeze
 
     # @param document [WordToMarkdown::Document] The document to convert
     def initialize(document)

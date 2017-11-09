@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sys/proctable'
 
 module Cliver

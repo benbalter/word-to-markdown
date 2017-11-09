@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'descriptive_statistics'
 require 'reverse_markdown'
 require 'nokogiri-styles'
@@ -22,10 +24,10 @@ class WordToMarkdown
   REVERSE_MARKDOWN_OPTIONS = {
     unknown_tags:    :bypass,
     github_flavored: true
-  }
+  }.freeze
 
   # Minimum version of LibreOffice Required
-  SOFFICE_VERSION_REQUIREMENT = '> 4.0'
+  SOFFICE_VERSION_REQUIREMENT = '> 4.0'.freeze
 
   # Paths to look for LibreOffice, in order of preference
   PATHS = [
@@ -34,7 +36,7 @@ class WordToMarkdown
     '/Applications/LibreOffice.app/Contents/MacOS',
     '/Program Files/LibreOffice 5/program',
     '/Program Files (x86)/LibreOffice 4/program'
-  ]
+  ].freeze
 
   # Create a new WordToMarkdown object
   #
@@ -54,17 +56,16 @@ class WordToMarkdown
   end
 
   class << self
-
     # Run an soffice command
     #
     # @param args [string] one or more arguments to pass to the sofice command
     # @return [string] the command output
     def run_command(*args)
-      fail 'LibreOffice already running' if soffice.open?
+      raise 'LibreOffice already running' if soffice.open?
 
       output, status = Open3.capture2e(soffice.path, *args)
       logger.debug output
-      fail "Command `#{soffice.path} #{args.join(' ')}` failed: #{output}" if status.exitstatus != 0
+      raise "Command `#{soffice.path} #{args.join(' ')}` failed: #{output}" if status.exitstatus != 0
       output
     end
 
