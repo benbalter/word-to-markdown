@@ -58,7 +58,7 @@ class WordToMarkdown
     #
     # @return [String] the normalized html
     def normalized_html
-      html = raw_html.force_encoding(encoding)
+      html = raw_html.dup.force_encoding(encoding)
       html = html.encode('UTF-8', invalid: :replace, replace: '')
       html = Premailer.new(html, with_html_string: true, input_encoding: 'UTF-8').to_inline_css
       html.gsub!(/\n|\r/, ' ')  # Remove linebreaks
@@ -74,12 +74,13 @@ class WordToMarkdown
     #
     # @return [String] the normalized markdown
     def scrub_whitespace(string)
-      string.gsub!('&nbsp;', ' ') # HTML encoded spaces
-      string.sub!(/\A[[:space:]]+/, '')                # document leading whitespace
-      string.sub!(/[[:space:]]+\z/, '')                # document trailing whitespace
-      string.gsub!(/([ ]+)$/, '') # line trailing whitespace
-      string.gsub!(/\n\n\n\n/, "\n\n") # Quadruple line breaks
-      string.delete!(' ') # Unicode non-breaking spaces, injected as tabs
+      string = string.dup
+      string.gsub!('&nbsp;', ' ')       # HTML encoded spaces
+      string.sub!(/\A[[:space:]]+/, '') # document leading whitespace
+      string.sub!(/[[:space:]]+\z/, '') # document trailing whitespace
+      string.gsub!(/([ ]+)$/, '')       # line trailing whitespace
+      string.gsub!(/\n\n\n\n/, "\n\n")  # Quadruple line breaks
+      string.delete!(' ')               # Unicode non-breaking spaces, injected as tabs
       string
     end
 
