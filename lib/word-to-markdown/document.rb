@@ -1,17 +1,19 @@
-# encoding: utf-8
+
+# frozen_string_literal: true
+
 class WordToMarkdown
   class Document
     class NotFoundError < StandardError; end
     class ConversionError < StandardError; end
 
-    attr_reader :path, :raw_html, :tmpdir
+    attr_reader :path, :tmpdir
 
     # @param path [string] Path to the Word document
     # @param tmpdir [string] Path to a working directory to use
     def initialize(path, tmpdir = nil)
       @path = File.expand_path path, Dir.pwd
       @tmpdir = tmpdir || Dir.mktmpdir
-      fail NotFoundError, "File #{@path} does not exist" unless File.exist?(@path)
+      raise NotFoundError, "File #{@path} does not exist" unless File.exist?(@path)
     end
 
     # @return [String] the document's extension
@@ -77,7 +79,7 @@ class WordToMarkdown
       string.sub!(/[[:space:]]+\z/, '')                # document trailing whitespace
       string.gsub!(/([ ]+)$/, '') # line trailing whitespace
       string.gsub!(/\n\n\n\n/, "\n\n") # Quadruple line breaks
-      string.gsub!(/\u00A0/, '') # Unicode non-breaking spaces, injected as tabs
+      string.delete!(' ') # Unicode non-breaking spaces, injected as tabs
       string
     end
 
@@ -91,7 +93,7 @@ class WordToMarkdown
     def raw_html
       @raw_html ||= begin
         WordToMarkdown.run_command '--headless', '--convert-to', filter, path, '--outdir', tmpdir
-        fail ConversionError, "Failed to convert #{path}" unless File.exist?(dest_path)
+        raise ConversionError, "Failed to convert #{path}" unless File.exist?(dest_path)
         html = File.read dest_path
         File.delete dest_path
         html

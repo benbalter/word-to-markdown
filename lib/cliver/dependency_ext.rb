@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sys/proctable'
 
 module Cliver
@@ -28,7 +30,7 @@ module Cliver
     end
 
     def major_version
-      version.split('.').first if version
+      version&.split('.')&.first
     end
   end
 end

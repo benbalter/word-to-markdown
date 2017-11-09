@@ -8,17 +8,23 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq libreoffice-writer
 
-addons:
-  code_climate:
-    repo_token: 5d3c17f575317e4b908b8af9e1e44fbc48a4970b14a06c086658c3f1e567b558
-
 cache:
   - bundler
   - apt
 
 env:
   global:
-    NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+    - CC_TEST_REPORTER_ID=5d3c17f575317e4b908b8af9e1e44fbc48a4970b14a06c086658c3f1e567b558
+
   matrix:
     - LIBRE_OFFICE_VERSION=4-4
     - LIBRE_OFFICE_VERSION=5-0
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
