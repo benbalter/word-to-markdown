@@ -1,4 +1,6 @@
 # Configuration for probot-no-response - https://github.com/probot/no-response
+# Note: Please Don't edit this file directly.
+# Edit https://github.com/benbalter/shared-community-files instead.
 
 # Number of days of inactivity before an Issue is closed for lack of response
 daysUntilClose: 14
