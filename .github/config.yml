@@ -1,6 +1,6 @@
 # Behaviorbot config. See https://github.com/behaviorbot/ for more information.
 # Note: Please Don't edit this file directly.
-# Edit https://github.com/benbalter/behaviorbot-config instead.
+# Edit https://github.com/benbalter/shared-community-files instead.
 
 # Configuration for update-docs - https://github.com/behaviorbot/update-docs
 updateDocsComment: "Thanks for the pull request! If you are making any changes to the user-facing functionality, please be sure to update the documentation in the `README` or `docs/` folder alongside your change. :heart:"
