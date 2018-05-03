@@ -18,3 +18,6 @@ newPRWelcomeComment: Welcome! Congrats on your first pull request to Word To Mar
 
 # Configuration for first-pr-merge - https://github.com/behaviorbot/first-pr-merge
 firstPRMergeComment: "Congrats on getting your first pull request to Word To Markdown merged! Without amazing humans like you submitting pull requests, we couldn’t run this project. You rock! :tada:<br /><br />If you're interested in tackling another bug or feature, take a look at [the open issues](https://github.com/benbalter/word-to-markdown/issues), especially those [labeled `help wanted`](https://github.com/benbalter/word-to-markdown/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)."
+
+# Bug workaround
+contact_links: []
