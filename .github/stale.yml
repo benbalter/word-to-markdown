@@ -1,4 +1,6 @@
 # Configuration for probot-stale - https://github.com/probot/stale
+# Note: Please Don't edit this file directly.
+# Edit https://github.com/benbalter/shared-community-files instead.
 
 # Number of days of inactivity before an Issue or Pull Request becomes stale
 daysUntilStale: 60
