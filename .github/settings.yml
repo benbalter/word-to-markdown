@@ -1,4 +1,6 @@
 # Repository settings set via https://github.com/probot/settings
+# Note: Please Don't edit this file directly.
+# Edit https://github.com/benbalter/shared-community-files instead.
 
 repository:
   has_issues: true
