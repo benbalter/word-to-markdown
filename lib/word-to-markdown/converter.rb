@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 class WordToMarkdown
@@ -78,11 +77,11 @@ class WordToMarkdown
     # Minimum font size required for a given heading
     # e.g., H(2) would represent the minimum font size of an implicit h2
     #
-    # @param n [Integer] the heading number, e.g., 1, 2
+    # @param num [Integer] the heading number, e.g., 1, 2
     #
     # @return [Integer] the minimum font size
-    def h(n)
-      font_sizes.percentile(((HEADING_DEPTH - 1) - n) * HEADING_STEP)
+    def h(num)
+      font_sizes.percentile(((HEADING_DEPTH - 1) - num) * HEADING_STEP)
     end
 
     # Convert span-based font styles to `strong`s and `em`s

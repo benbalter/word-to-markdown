@@ -1,14 +1,5 @@
 Style/Documentation:
   Enabled: false
 
-Metrics/MethodLength:
-  Enabled: false
-
 Metrics/LineLength:
-  Enabled: false
-
-Style/FileName:
-  Enabled: false
-
-Metrics/BlockLength:
   Enabled: false

@@ -9,9 +9,10 @@ module Cliver
     # Memoized shortcut for detect
     # Returns the path to the detected dependency
     # Raises an error if the dependency was not satisfied
-    def path
+    def detected_path
       @detected_path ||= detect!
     end
+    alias path detected_path
 
     # Is the detected dependency currently open?
     def open?

@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 class WordToMarkdown
@@ -36,9 +35,10 @@ class WordToMarkdown
     end
 
     # @return [String] the markdown representation of the document
-    def to_s
+    def markdown
       @markdown ||= scrub_whitespace(ReverseMarkdown.convert(html, WordToMarkdown::REVERSE_MARKDOWN_OPTIONS))
     end
+    alias to_s markdown
 
     # Determine the document encoding
     #

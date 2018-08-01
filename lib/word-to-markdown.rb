@@ -79,7 +79,7 @@ class WordToMarkdown
     #   open    - is the dependency currently open/running?
     # @return Cliver::Dependency instance
     def soffice
-      @soffice_dependency ||= Cliver::Dependency.new('soffice', *soffice_dependency_args)
+      @soffice ||= Cliver::Dependency.new('soffice', *soffice_dependency_args)
     end
 
     # @return Logger instance
