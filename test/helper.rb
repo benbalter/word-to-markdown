@@ -4,9 +4,9 @@ require 'simplecov'
 SimpleCov.start
 
 require 'minitest/autorun'
+require 'minitest/unit'
+require 'mocha/minitest'
 require 'shoulda'
-require 'mocha'
-require 'mocha/test_unit'
 require 'open3'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
