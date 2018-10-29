@@ -71,6 +71,16 @@ Word-to-markdown requires `soffice` a command line interface to LibreOffice that
 script/cibuild
 ```
 
+## Docker
+
+Everything you need to run the executable locally
+
+```
+docker-compose build
+docker-compose run --rm app w2m --help
+docker-compose run --rm app w2m test/fixtures/em.docx
+```
+
 ## Server
 
 [Word-to-markdown-demo](https://github.com/benbalter/word-to-markdown-demo) contains a lightweight server for converting Word Documents as a service.
