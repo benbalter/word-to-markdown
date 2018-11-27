@@ -28,6 +28,6 @@ branch_protection:
   required_status_checks:
     strict: true
     contexts:
-      - "continuous-integration/travis-ci"
+      - "Travis CI - Pull Request"
   required_pull_request_reviews:
     require_code_owner_reviews: true
