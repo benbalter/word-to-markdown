@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency('reverse_markdown', '~> 1.0')
   s.add_dependency('sys-proctable', '~> 1.0')
 
-  s.add_development_dependency('bundler', '~> 1.6')
+  s.add_development_dependency('bundler', '~> 2.0')
   s.add_development_dependency('minitest', '~> 5.0')
   s.add_development_dependency('mocha', '~> 1.1')
   s.add_development_dependency('pry', '~> 0.10')
