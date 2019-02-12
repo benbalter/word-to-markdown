@@ -22,7 +22,7 @@ class WordToMarkdown
 
   # Options to be passed to Reverse Markdown
   REVERSE_MARKDOWN_OPTIONS = {
-    unknown_tags:    :bypass,
+    unknown_tags: :bypass,
     github_flavored: true
   }.freeze
 
@@ -66,6 +66,7 @@ class WordToMarkdown
       output, status = Open3.capture2e(soffice.path, *args)
       logger.debug output
       raise "Command `#{soffice.path} #{args.join(' ')}` failed: #{output}" if status.exitstatus != 0
+
       output
     end
 

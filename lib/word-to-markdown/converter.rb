@@ -68,6 +68,7 @@ class WordToMarkdown
     # @return [String, nil] the heading tag (e.g., H1), or nil
     def guess_heading(node)
       return nil if node.font_size.nil?
+
       [*1...HEADING_DEPTH].each do |heading|
         return "h#{heading}" if node.font_size >= h(heading)
       end

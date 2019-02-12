@@ -3,3 +3,6 @@ Style/Documentation:
 
 Metrics/LineLength:
   Enabled: false
+
+Naming/FileName:
+  Enabled: false

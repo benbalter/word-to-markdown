@@ -95,6 +95,7 @@ class WordToMarkdown
       @raw_html ||= begin
         WordToMarkdown.run_command '--headless', '--convert-to', filter, path, '--outdir', tmpdir
         raise ConversionError, "Failed to convert #{path}" unless File.exist?(dest_path)
+
         html = File.read dest_path
         File.delete dest_path
         html
