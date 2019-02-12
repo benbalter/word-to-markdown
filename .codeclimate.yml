@@ -1,0 +1,7 @@
+version: "2"
+plugins:
+  rubocop:
+    enabled: true
+    channel: rubocop-0-63
+  shellcheck:
+    enabled: true
