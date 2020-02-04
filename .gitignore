@@ -2,7 +2,6 @@
 /*.gem
 .env
 *.html
-Gemfile.lock
 .~*
 doc
 .yardoc
