@@ -32,7 +32,7 @@ module Cliver
     end
 
     def major_version
-      version.split('.').first if version
+      version&.split('.')&.first
     end
   end
 end

@@ -27,7 +27,7 @@ class WordToMarkdown
   }.freeze
 
   # Minimum version of LibreOffice Required
-  SOFFICE_VERSION_REQUIREMENT = '> 4.0'.freeze
+  SOFFICE_VERSION_REQUIREMENT = '> 4.0'
 
   # Paths to look for LibreOffice, in order of preference
   PATHS = [
