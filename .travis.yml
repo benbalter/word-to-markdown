@@ -1,7 +1,7 @@
 langauage: ruby
 script: "script/cibuild"
 rvm:
-  - 2.1
+  - 2.7
 before_install:
   - sudo apt-get install python-software-properties
   - sudo add-apt-repository -y ppa:libreoffice/libreoffice-$LIBRE_OFFICE_VERSION
