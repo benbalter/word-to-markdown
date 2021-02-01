@@ -75,12 +75,18 @@ script/cibuild
 
 ## Docker
 
-Everything you need to run the executable locally
+First, create the `Gemfile.lock` by installing the dependencies:
+
+```
+bundle install
+```
+
+Everything you need to run the executable locally:
 
 ```
 docker-compose build
-docker-compose run --rm app w2m --help
-docker-compose run --rm app w2m test/fixtures/em.docx
+docker-compose run --rm app bundle exec w2m --help
+docker-compose run --rm app bundle exec w2m test/fixtures/em.docx
 ```
 
 ## Hosted service
