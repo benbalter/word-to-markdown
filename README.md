@@ -2,7 +2,7 @@
 
 A Ruby gem to liberate content from [the jail that is Word documents](http://ben.balter.com/2012/10/19/we-ve-been-trained-to-make-paper/#jailbreaking-content)
 
-[![Build Status](https://travis-ci.org/benbalter/word-to-markdown.svg?branch=master)](https://travis-ci.org/benbalter/word-to-markdown) [![Gem Version](https://badge.fury.io/rb/word-to-markdown.png)](http://badge.fury.io/rb/word-to-markdown) [![Inline docs](http://inch-ci.org/github/benbalter/word-to-markdown.png)](http://inch-ci.org/github/benbalter/word-to-markdown) [![Build status](https://ci.appveyor.com/api/projects/status/x2gnsfvli3q47a2e/branch/master?svg=true)](https://ci.appveyor.com/project/benbalter/word-to-markdown/branch/master) [![Maintainability](https://api.codeclimate.com/v1/badges/aae0d67ea7db185f1595/maintainability)](https://codeclimate.com/github/benbalter/word-to-markdown/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/aae0d67ea7db185f1595/test_coverage)](https://codeclimate.com/github/benbalter/word-to-markdown/test_coverage)
+[![CI](https://github.com/benbalter/word-to-markdown/actions/workflows/ci.yml/badge.svg)](https://github.com/benbalter/word-to-markdown/actions/workflows/ci.yml) [![Gem Version](https://badge.fury.io/rb/word-to-markdown.png)](http://badge.fury.io/rb/word-to-markdown) [![Inline docs](http://inch-ci.org/github/benbalter/word-to-markdown.png)](http://inch-ci.org/github/benbalter/word-to-markdown) [![Build status](https://ci.appveyor.com/api/projects/status/x2gnsfvli3q47a2e/branch/master?svg=true)](https://ci.appveyor.com/project/benbalter/word-to-markdown/branch/master) [![Maintainability](https://api.codeclimate.com/v1/badges/aae0d67ea7db185f1595/maintainability)](https://codeclimate.com/github/benbalter/word-to-markdown/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/aae0d67ea7db185f1595/test_coverage)](https://codeclimate.com/github/benbalter/word-to-markdown/test_coverage)
 
 ## The problem
 
@@ -75,12 +75,18 @@ script/cibuild
 
 ## Docker
 
-Everything you need to run the executable locally
+First, create the `Gemfile.lock` by installing the dependencies:
+
+```
+bundle install
+```
+
+Everything you need to run the executable locally:
 
 ```
 docker-compose build
-docker-compose run --rm app w2m --help
-docker-compose run --rm app w2m test/fixtures/em.docx
+docker-compose run --rm app bundle exec w2m --help
+docker-compose run --rm app bundle exec w2m test/fixtures/em.docx
 ```
 
 ## Hosted service

@@ -32,7 +32,7 @@ class TestWordToMarkdownImplicitHeadings < Minitest::Test
 
   should 'ignore headings below minimum size' do
     doc = stub_doc '<span style="font-size:18.0pt">Test</span>'
-    assert_equal [], doc.converter.implicit_headings
+    assert_empty doc.converter.implicit_headings
   end
 
   should 'parse font size' do
