@@ -78,7 +78,7 @@ class WordToMarkdown
       string.gsub!('&nbsp;', ' ')       # HTML encoded spaces
       string.sub!(/\A[[:space:]]+/, '') # document leading whitespace
       string.sub!(/[[:space:]]+\z/, '') # document trailing whitespace
-      string.gsub!(/( ])$/, '') # line trailing whitespace
+      string.gsub!(/([ ]+)$/, '')       # line trailing whitespace
       string.gsub!(/\n\n\n\n/, "\n\n")  # Quadruple line breaks
       string.delete!(' ')               # Unicode non-breaking spaces, injected as tabs
       string
