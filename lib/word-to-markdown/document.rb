@@ -44,7 +44,7 @@ class WordToMarkdown
     #
     # @return [String] the encoding, defaulting to "UTF-8"
     def encoding
-      match = raw_html.encode('UTF-8', invalid: :replace, replace: '').match(/charset=([^\"]+)/)
+      match = raw_html.encode('UTF-8', invalid: :replace, replace: '').match(/charset=([^"]+)/)
       if match
         match[1].sub('macintosh', 'MacRoman')
       else
@@ -78,7 +78,7 @@ class WordToMarkdown
       string.gsub!('&nbsp;', ' ')       # HTML encoded spaces
       string.sub!(/\A[[:space:]]+/, '') # document leading whitespace
       string.sub!(/[[:space:]]+\z/, '') # document trailing whitespace
-      string.gsub!(/([ ]+)$/, '')       # line trailing whitespace
+      string.gsub!(/( ])$/, '') # line trailing whitespace
       string.gsub!(/\n\n\n\n/, "\n\n")  # Quadruple line breaks
       string.delete!(' ')               # Unicode non-breaking spaces, injected as tabs
       string
