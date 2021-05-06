@@ -44,7 +44,7 @@ class WordToMarkdown
     #
     # @return [String] the encoding, defaulting to "UTF-8"
     def encoding
-      match = raw_html.encode('UTF-8', invalid: :replace, replace: '').match(/charset=([^\"]+)/)
+      match = raw_html.encode('UTF-8', invalid: :replace, replace: '').match(/charset=([^"]+)/)
       if match
         match[1].sub('macintosh', 'MacRoman')
       else
