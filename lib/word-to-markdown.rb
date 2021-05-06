@@ -85,7 +85,7 @@ class WordToMarkdown
     # @return Logger instance
     def logger
       @logger ||= begin
-        logger = Logger.new(STDOUT)
+        logger = Logger.new($stdout)
         logger.level = Logger::ERROR unless ENV['DEBUG']
         logger
       end
