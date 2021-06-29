@@ -30,5 +30,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rubocop', '~> 1.0')
   s.add_development_dependency('rubocop-minitest', '~> 0.3')
   s.add_development_dependency('rubocop-performance', '~> 1.5')
-  s.add_development_dependency('shoulda', '~> 3.5')
+  s.add_development_dependency('shoulda', '~> 4.0')
 end
