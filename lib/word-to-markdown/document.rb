@@ -3,6 +3,7 @@
 class WordToMarkdown
   class Document
     class NotFoundError < StandardError; end
+
     class ConversionError < StandardError; end
 
     attr_reader :path, :tmpdir

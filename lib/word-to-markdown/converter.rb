@@ -110,7 +110,7 @@ class WordToMarkdown
     def remove_unicode_bullets_from_list_items!
       path = WordToMarkdown.soffice.major_version == '5' ? 'li span span' : 'li span'
       @document.tree.search(path).each do |span|
-        span.inner_html = span.inner_html.gsub(/^([#{UNICODE_BULLETS.join("")}]+)/, '')
+        span.inner_html = span.inner_html.gsub(/^([#{UNICODE_BULLETS.join}]+)/, '')
       end
     end
 
