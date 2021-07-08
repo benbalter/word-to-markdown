@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'descriptive_statistics'
 require 'reverse_markdown'
 require 'nokogiri-styles'
 require 'premailer'

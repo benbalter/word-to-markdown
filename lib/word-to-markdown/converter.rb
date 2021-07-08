@@ -82,7 +82,7 @@ class WordToMarkdown
     #
     # @return [Integer] the minimum font size
     def h(num)
-      font_sizes.percentile(((HEADING_DEPTH - 1) - num) * HEADING_STEP)
+      percentile(((HEADING_DEPTH - 1) - num) * HEADING_STEP, font_sizes)
     end
 
     # Convert span-based font styles to `strong`s and `em`s
@@ -139,5 +139,22 @@ class WordToMarkdown
         element.node_name = heading unless heading.nil?
       end
     end
+
+    private
+
+      def percentile(p, collection)
+        values = collection.map(&:to_f)
+
+        return if values.empty?
+        return values.first if values.size == 1
+
+        values.sort!
+
+        return values.last if p == 100
+
+        rank = p / 100.0 * (values.size - 1)
+        lower, upper = values[rank.floor, 2]
+        lower + (upper - lower) * (rank - rank.floor)
+      end
   end
 end

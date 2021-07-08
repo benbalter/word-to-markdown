@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
   s.executables = ['w2m']
 
   s.add_dependency('cliver', '~> 0.3')
-  s.add_dependency('descriptive_statistics', '~> 2.5')
   s.add_dependency('nokogiri-styles', '~> 0.1')
   s.add_dependency('premailer', '~> 1.8')
   s.add_dependency('reverse_markdown', '>= 1', '< 3')
