@@ -5,13 +5,13 @@ require File.join(File.dirname(__FILE__), 'helper')
 class TestWordToMarkdownCli < Minitest::Test
   should 'return usage information' do
     output, status = Open3.capture2e 'bundle', 'exec', 'w2m'
-    refute(status.success?)
+    refute_predicate(status, :success?)
     assert_includes(output, 'Usage:')
   end
 
   should 'convert a document' do
     output, status = Open3.capture2e 'bundle', 'exec', 'w2m', fixture_path('em')
-    assert(status.success?)
+    assert_predicate(status, :success?)
     assert_includes(output, '_italic_')
   end
 end

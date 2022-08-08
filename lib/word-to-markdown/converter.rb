@@ -58,7 +58,7 @@ class WordToMarkdown
         @document.tree.css('[style]').each do |element|
           sizes.push element.font_size.round(-1) unless element.font_size.nil?
         end
-        sizes.uniq.sort
+        sizes.uniq.sort.extend(DescriptiveStatistics)
       end
     end
 
