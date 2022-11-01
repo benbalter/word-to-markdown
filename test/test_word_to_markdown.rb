@@ -59,6 +59,10 @@ class TestWordToMarkdown < Minitest::Test
     validate_fixture 'file with space', 'This is paragraph text.'
   end
 
+  should 'not add spaces between bolded text and punctuation' do
+    validate_fixture 'comma after bold', 'This is **bolded**, and text.'
+  end
+
   unless Gem.win_platform?
     should 'know the soffice version' do
       assert_match(/\d\.\d\.\d\.\d/, WordToMarkdown.soffice.version)
