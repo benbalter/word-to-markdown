@@ -39,16 +39,19 @@ class TestWordToMarkdown < Minitest::Test
 
   should 'not mangle encoding' do
     doc = stub_doc '<span>…</span>'
+
     assert_equal '…', doc.to_s
   end
 
   should 'straighten double curly quotes' do
     doc = stub_doc '<span>“”</span>'
+
     assert_equal '""', doc.to_s
   end
 
   should 'straighten single curly quotes' do
     doc = stub_doc '<span>‘’</span>'
+
     assert_equal "''", doc.to_s
   end
 
