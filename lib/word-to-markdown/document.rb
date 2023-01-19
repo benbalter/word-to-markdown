@@ -82,7 +82,7 @@ class WordToMarkdown
       string.gsub!(/([ ]+)$/, '')       # line trailing whitespace
       string.gsub!(/\n\n\n\n/, "\n\n")  # Quadruple line breaks
       string.delete!(' ')               # Unicode non-breaking spaces, injected as tabs
-      string.gsub!(/\*\*\ +(?!\*\*)([[:punct:]])/, '**\1') # Remove extra space after bold
+      string.gsub!(/\*\*\ +(?!\*|_)([[:punct:]])/, '**\1') # Remove extra space after bold
       string
     end
 
