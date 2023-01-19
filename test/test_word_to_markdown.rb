@@ -64,7 +64,7 @@ class TestWordToMarkdown < Minitest::Test
   end
 
   should 'add spaces between bolded text and other text' do
-    validate_fixture 'text after bold', 'This is **bolded** and text.'
+    validate_fixture 'text after bold', '**This** is **bolded** _and_ text.'
   end
 
   unless Gem.win_platform?
