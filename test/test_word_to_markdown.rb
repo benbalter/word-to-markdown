@@ -63,6 +63,10 @@ class TestWordToMarkdown < Minitest::Test
     validate_fixture 'comma after bold', 'This is **bolded**, and text.'
   end
 
+  should 'add spaces between bolded text and other text' do
+    validate_fixture 'text after bold', '**This** is **bolded** _and_ text.'
+  end
+
   unless Gem.win_platform?
     should 'know the soffice version' do
       assert_match(/\d\.\d\.\d\.\d/, WordToMarkdown.soffice.version)
