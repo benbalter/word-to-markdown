@@ -23,8 +23,7 @@ class WordToMarkdown
   # Options to be passed to Reverse Markdown
   REVERSE_MARKDOWN_OPTIONS = {
     unknown_tags: :bypass,
-    github_flavored: true,
-    tag_border: ''
+    github_flavored: true
   }.freeze
 
   # Minimum version of LibreOffice Required
