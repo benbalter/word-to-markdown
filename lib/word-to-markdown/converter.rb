@@ -16,6 +16,8 @@ class WordToMarkdown
     # Unicode bullets to strip when processing
     UNICODE_BULLETS = ['○', 'o', '●', "\u2022", '\\p{C}'].freeze
 
+    LINE_BREAK_PLACEHOLDER = "LINEBREAKPLACEHOLDER"
+
     # @param document [WordToMarkdown::Document] The document to convert
     def initialize(document)
       @document = document
@@ -32,6 +34,7 @@ class WordToMarkdown
       # Tables
       remove_paragraphs_from_tables!
       semanticize_table_headers!
+      preserve_line_breaks_in_tables!
 
       # list items
       remove_paragraphs_from_list_items!
@@ -104,6 +107,17 @@ class WordToMarkdown
     # Remove top-level paragraphs from list items
     def remove_paragraphs_from_list_items!
       @document.tree.search('li p').each { |node| node.node_name = 'span' }
+    end
+
+    # Preserve line breaks in tables
+    # This prevents ReverseMarkdown from inserting newlines within a table
+    # which breaks the markdown table
+    # The placeholder is replace with a <br> tag in the final output
+    def preserve_line_breaks_in_tables!
+      @document.tree.search('tr br').each do |node|
+        node.node_name = 'span'
+        node.inner_html = LINE_BREAK_PLACEHOLDER
+      end
     end
 
     # Remove prepended unicode bullets from list items

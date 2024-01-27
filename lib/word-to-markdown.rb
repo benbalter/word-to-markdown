@@ -52,7 +52,7 @@ class WordToMarkdown
   # Helper method to return the document body, as markdown
   # @return [string] the document body, as markdown
   def to_s
-    document.to_s
+    document.to_s.gsub(WordToMarkdown::Converter::LINE_BREAK_PLACEHOLDER, "<br>")
   end
 
   class << self

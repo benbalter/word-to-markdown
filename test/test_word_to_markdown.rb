@@ -29,8 +29,18 @@ class TestWordToMarkdown < Minitest::Test
   end
 
   should 'parse tables' do
-    skip 'Figure out why there are so many new lines'
-    validate_fixture 'table', "| **Foo** | **Bar** |\n| --- | --- |\n| One | Two |\n| Three | Four |"
+    validate_fixture 'table', "| **Foo**| **Bar**|\n| --- | --- |\n| One | Two |\n| Three | Four |"
+  end
+
+  should 'parse tables with newlines' do
+    expected = <<-DOC.chomp
+| **Foo**| **Bar**|
+| --- | --- |
+| One | Two |
+| Three | Four |
+| Five<br>Six<br>Seven | Row<br><br>With<br><br> Newlines |
+DOC
+    validate_fixture 'table-with-newlines', expected
   end
 
   should 'accept string input' do
