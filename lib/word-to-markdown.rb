@@ -14,6 +14,7 @@ require 'open3'
 require_relative 'word-to-markdown/version'
 require_relative 'word-to-markdown/document'
 require_relative 'word-to-markdown/converter'
+require_relative 'word-to-markdown/pandoc-converter'
 require_relative 'nokogiri/xml/element'
 require_relative 'cliver/dependency_ext'
 
@@ -43,9 +44,15 @@ class WordToMarkdown
   # @param path [string] Path to the Word document
   # @param tmpdir [string] Path to a working directory to use
   # @return [WordToMarkdown] WordToMarkdown object with the converted document
-  def initialize(path, tmpdir = nil)
+  def initialize(path, tmpdir = nil, use_pandoc = false)
     @document = WordToMarkdown::Document.new path, tmpdir
-    @converter = WordToMarkdown::Converter.new @document
+
+    @converter = if use_pandoc
+                   WordToMarkdown::PandocConverter.new @document
+                 else
+                   WordToMarkdown::Converter.new @document
+                 end
+
     converter.convert!
   end
 

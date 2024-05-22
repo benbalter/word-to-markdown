@@ -18,7 +18,12 @@ def fixture_path(fixture = '')
 end
 
 def validate_fixture(fixture, expected)
-  assert_equal expected, WordToMarkdown.new(fixture_path(fixture)).to_s
+  path = fixture_path(fixture)
+  old = WordToMarkdown.new(path).to_s
+  assert_equal expected, old, "LibreOffice"
+
+  new = WordToMarkdown.new(path, nil, true).to_s
+  assert_equal expected, new, "Pandoc"
 end
 
 def stub_doc(html)
