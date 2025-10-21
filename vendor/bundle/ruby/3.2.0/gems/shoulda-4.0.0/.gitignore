@@ -1,0 +1,13 @@
+*.swo
+*.swp
+.DS_Store
+.byebug_history
+.bundle
+.svn/
+Gemfile.lock
+coverage
+doc
+pkg
+tags
+test/*/log/*.log
+tmp

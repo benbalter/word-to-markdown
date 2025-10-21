@@ -1,0 +1,10 @@
+.bundle
+vendor/ruby
+vendor/cache
+doc
+coverage
+pkg
+*.swp
+*.swo
+tags
+tmp
