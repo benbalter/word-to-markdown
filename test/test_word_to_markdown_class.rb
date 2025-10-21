@@ -84,12 +84,18 @@ class TestWordToMarkdownClass < Minitest::Test
   end
 
   should 'have soffice dependency' do
+    # Reset cached soffice to get a fresh instance for this test
+    WordToMarkdown.instance_variable_set(:@soffice, nil)
+    
     soffice = WordToMarkdown.soffice
     
     assert_instance_of Cliver::Dependency, soffice
   end
 
   should 'cache soffice dependency' do
+    # Reset cached soffice to get a fresh instance for this test
+    WordToMarkdown.instance_variable_set(:@soffice, nil)
+    
     soffice1 = WordToMarkdown.soffice
     soffice2 = WordToMarkdown.soffice
     

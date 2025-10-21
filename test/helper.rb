@@ -18,10 +18,16 @@ require 'word-to-markdown'
 module GlobalStubs
   def setup
     super if defined?(super)
-    # Stub soffice methods globally for all tests
-    WordToMarkdown.soffice.stubs(:open?).returns(false)
-    WordToMarkdown.soffice.stubs(:path).returns('/usr/bin/soffice')
-    WordToMarkdown.soffice.stubs(:major_version).returns('6')
+    # Skip stubbing for tests that check the soffice object itself
+    return if self.class.name == 'TestWordToMarkdownClass' && 
+              (self.name.include?('soffice dependency') || self.name.include?('cache soffice'))
+    
+    # Stub soffice methods if the object has been created
+    if WordToMarkdown.instance_variable_defined?(:@soffice) && (soffice = WordToMarkdown.instance_variable_get(:@soffice))
+      soffice.stubs(:open?).returns(false)
+      soffice.stubs(:path).returns('/usr/bin/soffice')
+      soffice.stubs(:major_version).returns('6')
+    end
   end
 end
 
