@@ -8,5 +8,5 @@ require './lib/word-to-markdown'
 
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_word_to_markdown*.rb'
+  test.pattern = 'test/**/test_*.rb'
 end

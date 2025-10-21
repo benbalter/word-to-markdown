@@ -22,8 +22,12 @@ def validate_fixture(fixture, expected)
 end
 
 def stub_doc(html)
+  # Stub major_version and raw_html before creating the document
+  WordToMarkdown.soffice.stubs(:major_version).returns('6')
+  WordToMarkdown.soffice.stubs(:open?).returns(false)
+  WordToMarkdown::Document.any_instance.stubs(:raw_html).returns(html)
+  
   doc = WordToMarkdown.new 'test/fixtures/em.docx'
-  doc.document.stubs(:raw_html).returns(html)
   tree = Nokogiri::HTML(doc.document.send(:normalized_html))
   doc.document.stubs(:tree).returns(tree)
   doc
