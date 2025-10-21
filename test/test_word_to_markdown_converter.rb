@@ -89,10 +89,12 @@ class TestWordToMarkdownConverter < Minitest::Test
     assert_equal 'h1', doc.converter.guess_heading(element)
   end
 
-  should 'return nil for nil font size' do
+  should 'return nil for elements without large font size' do
     doc = stub_doc '<span>Regular text</span>'
     element = doc.document.tree.css('span').first
     
+    # Elements without explicit font-size get DEFAULT_FONT_SIZE (12.0)
+    # which is below MIN_HEADING_SIZE (20), so should return nil
     assert_nil doc.converter.guess_heading(element)
   end
 

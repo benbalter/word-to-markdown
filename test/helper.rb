@@ -18,6 +18,10 @@ def fixture_path(fixture = '')
 end
 
 def validate_fixture(fixture, expected)
+  # Stub soffice to prevent "already running" errors in tests
+  WordToMarkdown.soffice.stubs(:open?).returns(false)
+  WordToMarkdown.soffice.stubs(:path).returns('/usr/bin/soffice')
+  WordToMarkdown.soffice.stubs(:major_version).returns('6')
   assert_equal expected, WordToMarkdown.new(fixture_path(fixture)).to_s
 end
 
