@@ -3,10 +3,19 @@
 
 # Benchmark script to compare performance of optimized code
 # This script is for development purposes only
+# rubocop:disable Metrics/MethodLength, Metrics/BlockLength
 
 require 'benchmark'
 require 'bundler/setup'
 require_relative '../lib/word-to-markdown'
+
+# Extract font size from element style attribute
+def extract_font_size(element)
+  match = element['style']&.match(/font-size:\s*(\d+)/)
+  return nil unless match
+
+  match[1].to_f
+end
 
 # Mock document HTML with many styled elements
 def create_test_html
@@ -56,11 +65,11 @@ Benchmark.bmbm do |x|
   tree = Nokogiri::HTML(html)
 
   x.report('CSS selector (td > p):') do
-    1000.times { tree.css('td > p').each { |n| } }
+    1000.times { tree.css('td > p').to_a }
   end
 
   x.report('CSS selector (td p):') do
-    1000.times { tree.css('td p').each { |n| } }
+    1000.times { tree.css('td p').to_a }
   end
 
   x.report('Process styled elements (single pass):') do
@@ -68,11 +77,11 @@ Benchmark.bmbm do |x|
       headings = []
       sizes = []
       tree.css('[style]').each do |element|
-        font_size = element['style']&.match(/font-size:\s*(\d+)/)&.[](1)&.to_f
-        unless font_size.nil?
-          sizes.push font_size.round(-1)
-          headings.push element if font_size >= 20
-        end
+        font_size = extract_font_size(element)
+        next if font_size.nil?
+
+        sizes.push font_size.round(-1)
+        headings.push element if font_size >= 20
       end
     end
   end
@@ -82,14 +91,14 @@ Benchmark.bmbm do |x|
       # First pass for headings
       headings = []
       tree.css('[style]').each do |element|
-        font_size = element['style']&.match(/font-size:\s*(\d+)/)&.[](1)&.to_f
+        font_size = extract_font_size(element)
         headings.push element if !font_size.nil? && font_size >= 20
       end
 
       # Second pass for sizes
       sizes = []
       tree.css('[style]').each do |element|
-        font_size = element['style']&.match(/font-size:\s*(\d+)/)&.[](1)&.to_f
+        font_size = extract_font_size(element)
         sizes.push font_size.round(-1) unless font_size.nil?
       end
     end
@@ -103,3 +112,5 @@ puts '  2. Combining multiple DOM traversals into a single pass'
 puts
 puts 'These optimizations reduce redundant DOM traversals and improve'
 puts 'overall conversion performance, especially for large documents.'
+
+# rubocop:enable Metrics/MethodLength, Metrics/BlockLength

@@ -57,15 +57,13 @@ class WordToMarkdown
     def process_styled_elements
       headings = []
       sizes = []
-
       @document.tree.css('[style]').each do |element|
         font_size = element.font_size
-        unless font_size.nil?
-          sizes.push font_size.round(-1)
-          headings.push element if font_size >= MIN_HEADING_SIZE
-        end
-      end
+        next if font_size.nil?
 
+        sizes.push font_size.round(-1)
+        headings.push element if font_size >= MIN_HEADING_SIZE
+      end
       @implicit_headings = headings
       @font_sizes = sizes.uniq.sort.extend(DescriptiveStatistics)
     end
