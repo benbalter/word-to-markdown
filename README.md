@@ -1,5 +1,8 @@
 # Word to Markdown converter
 
+> [!IMPORTANT]
+> **Looking for the latest and greatest?** Check out [**word-to-markdown-js**](https://github.com/benbalter/word-to-markdown-js), the newer, better successor to this project. It's a modern, actively maintained rewrite and is recommended for new projects. This Ruby gem remains available for existing users.
+
 A Ruby gem to liberate content from [the jail that is Word documents](http://ben.balter.com/2012/10/19/we-ve-been-trained-to-make-paper/#jailbreaking-content)
 
 [![CI](https://github.com/benbalter/word-to-markdown/actions/workflows/ci.yml/badge.svg)](https://github.com/benbalter/word-to-markdown/actions/workflows/ci.yml) [![Gem Version](https://badge.fury.io/rb/word-to-markdown.png)](http://badge.fury.io/rb/word-to-markdown) [![Inline docs](http://inch-ci.org/github/benbalter/word-to-markdown.png)](http://inch-ci.org/github/benbalter/word-to-markdown) [![Build status](https://ci.appveyor.com/api/projects/status/x2gnsfvli3q47a2e/branch/master?svg=true)](https://ci.appveyor.com/project/benbalter/word-to-markdown/branch/master) [![Maintainability](https://api.codeclimate.com/v1/badges/aae0d67ea7db185f1595/maintainability)](https://codeclimate.com/github/benbalter/word-to-markdown/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/aae0d67ea7db185f1595/test_coverage)](https://codeclimate.com/github/benbalter/word-to-markdown/test_coverage)
