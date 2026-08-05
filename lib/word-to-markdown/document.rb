@@ -7,6 +7,7 @@ class WordToMarkdown
     class ConversionError < StandardError; end
 
     attr_reader :path, :tmpdir
+    attr_writer :markdown, :raw_html
 
     # @param path [string] Path to the Word document
     # @param tmpdir [string] Path to a working directory to use
