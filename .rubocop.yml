@@ -1,17 +1,22 @@
 inherit_from: .rubocop_todo.yml
 
-require:
+plugins:
   - rubocop-performance
   - rubocop-minitest
 
 AllCops:
   NewCops: enable
+  TargetRubyVersion: 3.2
 
 Style/Documentation:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Enabled: false
 
 Naming/FileName:
+  Enabled: false
+
+# Development dependencies are intentionally declared in the gemspec.
+Gemspec/DevelopmentDependencies:
   Enabled: false
