@@ -13,5 +13,5 @@ if ARGV[0] == '--version'
   puts "LibreOffice v#{WordToMarkdown.soffice.version}" unless Gem.win_platform?
 else
   doc = WordToMarkdown.new ARGV[0]
-  puts doc.to_s
+  puts doc
 end

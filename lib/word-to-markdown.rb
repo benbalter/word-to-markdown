@@ -100,7 +100,7 @@ class WordToMarkdown
     #    and will shell out to `soffice.exe --version`
     # In order to support Windows, don't pass *any* version requirement to Cliver
     def soffice_dependency_args
-      args = [path: PATHS.join(File::PATH_SEPARATOR)]
+      args = [{ path: PATHS.join(File::PATH_SEPARATOR) }]
       if Gem.win_platform?
         args
       else
