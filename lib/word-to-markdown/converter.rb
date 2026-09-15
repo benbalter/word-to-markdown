@@ -124,7 +124,7 @@ class WordToMarkdown
 
     # Remvoe whitespace from list items
     def remove_whitespace_from_list_items!
-      @document.tree.search('li span').each { |span| span.inner_html.strip! }
+      @document.tree.search('li span').each { |span| span.content = span.content.strip }
     end
 
     # Convert table headers to `th`s2

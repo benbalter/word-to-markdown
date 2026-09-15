@@ -13,6 +13,29 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'word-to-markdown'
 
+# Global stubbing to prevent LibreOffice calls in tests
+# These stubs allow tests to run without LibreOffice installed
+module GlobalStubs
+  def setup
+    super if defined?(super)
+    # Skip stubbing for tests that check the soffice object itself
+    return if self.class.name == 'TestWordToMarkdownClass' && 
+              (self.name.include?('soffice dependency') || self.name.include?('cache soffice'))
+    
+    # Stub soffice methods if the object has been created
+    if WordToMarkdown.instance_variable_defined?(:@soffice) && (soffice = WordToMarkdown.instance_variable_get(:@soffice))
+      soffice.stubs(:open?).returns(false)
+      soffice.stubs(:path).returns('/usr/bin/soffice')
+      soffice.stubs(:major_version).returns('6')
+    end
+  end
+end
+
+# Include global stubs in Minitest::Test
+class Minitest::Test
+  prepend GlobalStubs
+end
+
 def fixture_path(fixture = '')
   File.expand_path "fixtures/#{fixture}.docx", File.dirname(__FILE__)
 end
@@ -22,8 +45,10 @@ def validate_fixture(fixture, expected)
 end
 
 def stub_doc(html)
+  # Stub raw_html before creating the document
+  WordToMarkdown::Document.any_instance.stubs(:raw_html).returns(html)
+  
   doc = WordToMarkdown.new 'test/fixtures/em.docx'
-  doc.document.stubs(:raw_html).returns(html)
   tree = Nokogiri::HTML(doc.document.send(:normalized_html))
   doc.document.stubs(:tree).returns(tree)
   doc
