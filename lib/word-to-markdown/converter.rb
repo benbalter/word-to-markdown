@@ -42,24 +42,30 @@ class WordToMarkdown
 
     # @return [Array<Nokogiri::Node>] Return an array of Nokogiri Nodes that are implicit headings
     def implicit_headings
-      @implicit_headings ||= begin
-        headings = []
-        @document.tree.css('[style]').each do |element|
-          headings.push element unless element.font_size.nil? || element.font_size < MIN_HEADING_SIZE
-        end
-        headings
-      end
+      process_styled_elements unless @implicit_headings
+      @implicit_headings
     end
 
     # @return [Array<Integer>] An array of font-sizes for implicit headings in the document
     def font_sizes
-      @font_sizes ||= begin
-        sizes = []
-        @document.tree.css('[style]').each do |element|
-          sizes.push element.font_size.round(-1) unless element.font_size.nil?
-        end
-        sizes.uniq.sort.extend(DescriptiveStatistics)
+      process_styled_elements unless @font_sizes
+      @font_sizes
+    end
+
+    # Process styled elements once to populate both implicit_headings and font_sizes
+    # This optimization combines two separate iterations into one
+    def process_styled_elements
+      headings = []
+      sizes = []
+      @document.tree.css('[style]').each do |element|
+        font_size = element.font_size
+        next if font_size.nil?
+
+        sizes.push font_size.round(-1)
+        headings.push element if font_size >= MIN_HEADING_SIZE
       end
+      @implicit_headings = headings
+      @font_sizes = sizes.uniq.sort.extend(DescriptiveStatistics)
     end
 
     # Given a Nokogiri node, guess what heading it represents, if any
@@ -98,38 +104,46 @@ class WordToMarkdown
 
     # Remove top-level paragraphs from table cells
     def remove_paragraphs_from_tables!
-      @document.tree.search('td p').each { |node| node.node_name = 'span' }
+      @document.tree.css('td > p').each { |node| node.node_name = 'span' }
     end
 
     # Remove top-level paragraphs from list items
     def remove_paragraphs_from_list_items!
-      @document.tree.search('li p').each { |node| node.node_name = 'span' }
+      @document.tree.css('li > p').each { |node| node.node_name = 'span' }
     end
 
     # Remove prepended unicode bullets from list items
     def remove_unicode_bullets_from_list_items!
-      path = WordToMarkdown.soffice.major_version == '5' ? 'li span span' : 'li span'
-      @document.tree.search(path).each do |span|
+      list_item_spans.each do |span|
         span.inner_html = span.inner_html.gsub(/^([#{UNICODE_BULLETS.join}]+)/, '')
       end
     end
 
     # Remove prepended numbers from list items
     def remove_numbering_from_list_items!
-      path = WordToMarkdown.soffice.major_version == '5' ? 'li span span' : 'li span'
-      @document.tree.search(path).each do |span|
+      list_item_spans.each do |span|
         span.inner_html = span.inner_html.gsub(/^[a-zA-Z0-9]+\./m, '')
       end
     end
 
     # Remvoe whitespace from list items
     def remove_whitespace_from_list_items!
-      @document.tree.search('li span').each { |span| span.inner_html.strip! }
+      @document.tree.css('li span').each { |span| span.inner_html.strip! }
+    end
+
+    private
+
+    # Memoize the list item span selector to avoid repeated major version checks
+    def list_item_spans
+      @list_item_spans ||= begin
+        path = WordToMarkdown.soffice.major_version == '5' ? 'li span span' : 'li span'
+        @document.tree.css(path)
+      end
     end
 
     # Convert table headers to `th`s2
     def semanticize_table_headers!
-      @document.tree.search('table tr:first td').each { |node| node.node_name = 'th' }
+      @document.tree.css('table tr:first-child > td').each { |node| node.node_name = 'th' }
     end
 
     # Try to guess heading where implicit bassed on font size
