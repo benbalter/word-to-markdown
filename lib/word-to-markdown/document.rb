@@ -12,8 +12,10 @@ class WordToMarkdown
     # @param tmpdir [string] Path to a working directory to use
     def initialize(path, tmpdir = nil)
       @path = File.expand_path path, Dir.pwd
-      @tmpdir = tmpdir || Dir.mktmpdir
       raise NotFoundError, "File #{@path} does not exist" unless File.exist?(@path)
+
+      @own_tmpdir = tmpdir.nil?
+      @tmpdir = tmpdir || Dir.mktmpdir
     end
 
     # @return [String] the document's extension
@@ -100,8 +102,16 @@ class WordToMarkdown
 
         html = File.read dest_path
         File.delete dest_path
+        remove_tmpdir
         html
       end
+    end
+
+    # Remove the working directory if we created it and nothing else is in it.
+    # Non-empty directories are kept, since LibreOffice may have written
+    # images there that the markdown references.
+    def remove_tmpdir
+      Dir.rmdir(tmpdir) if @own_tmpdir && Dir.empty?(tmpdir)
     end
 
     # @return [String] the LibreOffice filter to use for conversion

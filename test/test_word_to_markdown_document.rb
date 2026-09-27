@@ -35,6 +35,18 @@ class TestWordToMarkdownDocument < Minitest::Test
     assert_equal "foo\n\nbar", scrub_whitespace("foo\n\n \n\nbar")
   end
 
+  should 'remove the temporary directory it created' do
+    doc = WordToMarkdown.new fixture_path('em')
+
+    refute Dir.exist?(doc.document.tmpdir)
+  end
+
+  should 'not create a temporary directory for a missing file' do
+    Dir.expects(:mktmpdir).never
+
+    assert_raises(WordToMarkdown::Document::NotFoundError) { WordToMarkdown::Document.new 'missing.docx' }
+  end
+
   should 'strip unicode breaks' do
     assert_equal '', scrub_whitespace("\u00A0")
   end

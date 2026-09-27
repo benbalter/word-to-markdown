@@ -10,6 +10,13 @@ class TestWordToMarkdownCli < Minitest::Test
     assert_includes(output, 'Usage:')
   end
 
+  should 'exit successfully for --help' do
+    output, status = Open3.capture2e 'bundle', 'exec', 'w2m', '--help'
+
+    assert_predicate(status, :success?)
+    assert_includes(output, 'Usage:')
+  end
+
   should 'convert a document' do
     output, status = Open3.capture2e 'bundle', 'exec', 'w2m', fixture_path('em')
 
