@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+
 jobs:
   test:
 
@@ -15,15 +18,16 @@ jobs:
         ruby-version: ['3.2', '3.3', '3.4']
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
     - name: Install Libreoffice
-      run: | 
-        sudo add-apt-repository ppa:libreoffice/ppa
+      run: |
+        sudo add-apt-repository -y ppa:libreoffice/ppa
+        sudo apt-get update
         sudo apt-get install -y --no-install-recommends libreoffice-writer
     - name: Run tests
       run: script/cibuild
