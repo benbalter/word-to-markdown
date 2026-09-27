@@ -21,7 +21,7 @@ class WordToMarkdown
       File.extname path
     end
 
-    # @return [Nokigiri::Document]
+    # @return [Nokogiri::Document]
     def tree
       @tree ||= begin
         tree = Nokogiri::HTML(normalized_html)
