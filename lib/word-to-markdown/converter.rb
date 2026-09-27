@@ -18,10 +18,11 @@ class WordToMarkdown
 
     # Leading bullets to strip from list items. A plain "o" only counts as a
     # bullet when followed by whitespace, so words like "orange" survive.
-    BULLET_REGEX = /\A(?:[#{UNICODE_BULLETS.join}]|o(?=[[:space:]]))+/
+    BULLET_REGEX = /\A(?:[#{UNICODE_BULLETS.join}]|o(?=[[:space:]]))+[[:space:]]*/
 
-    # Leading list numbering to strip, e.g., "1.", "a.", or "iv."
-    NUMBERING_REGEX = /\A(?:\d+|[a-zA-Z]|[ivxlcdm]+|[IVXLCDM]+)\.(?=[[:space:]]|\z)/
+    # Leading list numbering to strip, e.g., "1.", "a.", or "iv.", along with
+    # any whitespace (including non-breaking spaces) that follows it
+    NUMBERING_REGEX = /\A(?:\d+|[a-zA-Z]|[ivxlcdm]+|[IVXLCDM]+)\.(?:[[:space:]]+|\z)/
 
     # @param document [WordToMarkdown::Document] The document to convert
     def initialize(document)

@@ -102,8 +102,9 @@ class WordToMarkdown
 
         html = File.read dest_path
         File.delete dest_path
-        remove_tmpdir
         html
+      ensure
+        remove_tmpdir
       end
     end
 

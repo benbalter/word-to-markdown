@@ -39,6 +39,15 @@ class TestWordToMarkdownListCleanup < Minitest::Test
     assert_equal '- Item', convert('<ul><li><p>o Item</p></li></ul>')
   end
 
+  should 'strip bullets and numbering followed by non-breaking spaces or tabs' do
+    ['o&nbsp;Item', "o\u00A0Item", "o\tItem"].each do |item|
+      assert_equal '- Item', convert("<ul><li><p>#{item}</p></li></ul>")
+    end
+    ['1.&nbsp;Item', "1.\u00A0Item"].each do |item|
+      assert_equal '1. Item', convert("<ol><li><p>#{item}</p></li></ol>")
+    end
+  end
+
   should 'not strip leading o from list item text' do
     assert_equal '- orange', convert('<ul><li><p>orange</p></li></ul>')
   end
