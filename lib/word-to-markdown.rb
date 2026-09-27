@@ -34,6 +34,7 @@ class WordToMarkdown
     '*', # Sub'd for ENV["PATH"]
     '~/Applications/LibreOffice.app/Contents/MacOS',
     '/Applications/LibreOffice.app/Contents/MacOS',
+    '/Program Files/LibreOffice/program',
     '/Program Files/LibreOffice 5/program',
     '/Program Files (x86)/LibreOffice 4/program'
   ].freeze
@@ -58,7 +59,7 @@ class WordToMarkdown
   class << self
     # Run an soffice command
     #
-    # @param args [string] one or more arguments to pass to the sofice command
+    # @param args [string] one or more arguments to pass to the soffice command
     # @return [string] the command output
     def run_command(*args)
       raise 'LibreOffice already running' if soffice.open?
@@ -95,7 +96,7 @@ class WordToMarkdown
     private
 
     # Workaround for two upstream bugs:
-    # 1. `soffice.exe --version` on windows opens a popup and retuns a null string when manually closed
+    # 1. `soffice.exe --version` on windows opens a popup and returns a null string when manually closed
     # 2. Even if the second argument to Cliver is nil, Cliver thinks there's a requirement
     #    and will shell out to `soffice.exe --version`
     # In order to support Windows, don't pass *any* version requirement to Cliver

@@ -12,8 +12,10 @@ class WordToMarkdown
     # @param tmpdir [string] Path to a working directory to use
     def initialize(path, tmpdir = nil)
       @path = File.expand_path path, Dir.pwd
-      @tmpdir = tmpdir || Dir.mktmpdir
       raise NotFoundError, "File #{@path} does not exist" unless File.exist?(@path)
+
+      @own_tmpdir = tmpdir.nil?
+      @tmpdir = tmpdir || Dir.mktmpdir
     end
 
     # @return [String] the document's extension
@@ -21,7 +23,7 @@ class WordToMarkdown
       File.extname path
     end
 
-    # @return [Nokigiri::Document]
+    # @return [Nokogiri::Document]
     def tree
       @tree ||= begin
         tree = Nokogiri::HTML(normalized_html)
@@ -79,7 +81,7 @@ class WordToMarkdown
       string.gsub!('&nbsp;', ' ')       # HTML encoded spaces
       string.sub!(/\A[[:space:]]+/, '') # document leading whitespace
       string.sub!(/[[:space:]]+\z/, '') # document trailing whitespace
-      string.gsub!(/([ ]+)$/, '')       # line trailing whitespace
+      string.gsub!(/( +)$/, '')         # line trailing whitespace
       string.gsub!("\n\n\n\n", "\n\n")  # Quadruple line breaks
       string.delete!(' ')               # Unicode non-breaking spaces, injected as tabs
       string.gsub!(/\*\*\ +(?!\*|_)([[:punct:]])/, '**\1') # Remove extra space after bold
@@ -101,7 +103,16 @@ class WordToMarkdown
         html = File.read dest_path
         File.delete dest_path
         html
+      ensure
+        remove_tmpdir
       end
+    end
+
+    # Remove the working directory if we created it and nothing else is in it.
+    # Non-empty directories are kept, since LibreOffice may have written
+    # images there that the markdown references.
+    def remove_tmpdir
+      Dir.rmdir(tmpdir) if @own_tmpdir && Dir.empty?(tmpdir)
     end
 
     # @return [String] the LibreOffice filter to use for conversion

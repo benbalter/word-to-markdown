@@ -23,3 +23,40 @@ class TestWordToMarkdownLists < Minitest::Test
     validate_fixture 'list-with-links', "[word-to-markdown](https://github.com/benbalter/word-to-markdown)\n\n- [word-to-markdown](https://github.com/benbalter/word-to-markdown)"
   end
 end
+
+class TestWordToMarkdownListCleanup < Minitest::Test
+  def convert(html)
+    doc = stub_doc html
+    doc.converter.convert!
+    doc.to_s
+  end
+
+  should 'strip unicode bullets from list items' do
+    assert_equal '- Item', convert('<ul><li><p>● Item</p></li></ul>')
+  end
+
+  should 'strip letter o bullets from list items' do
+    assert_equal '- Item', convert('<ul><li><p>o Item</p></li></ul>')
+  end
+
+  should 'strip bullets and numbering followed by non-breaking spaces or tabs' do
+    ['o&nbsp;Item', "o\u00A0Item", "o\tItem"].each do |item|
+      assert_equal '- Item', convert("<ul><li><p>#{item}</p></li></ul>")
+    end
+    ['1.&nbsp;Item', "1.\u00A0Item"].each do |item|
+      assert_equal '1. Item', convert("<ol><li><p>#{item}</p></li></ol>")
+    end
+  end
+
+  should 'not strip leading o from list item text' do
+    assert_equal '- orange', convert('<ul><li><p>orange</p></li></ul>')
+  end
+
+  should 'strip numbering from list items' do
+    assert_equal '1. Item', convert('<ol><li><p>1. Item</p></li></ol>')
+  end
+
+  should 'not strip abbreviations from list item text' do
+    assert_equal '1. Dr. Who', convert('<ol><li><p>Dr. Who</p></li></ol>')
+  end
+end

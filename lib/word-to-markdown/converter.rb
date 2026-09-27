@@ -7,14 +7,22 @@ class WordToMarkdown
     # Number of headings to guess, e.g., h6
     HEADING_DEPTH = 6
 
-    # Percentile step for eaceh eheading
+    # Percentile step for each heading
     HEADING_STEP = 100 / HEADING_DEPTH
 
     # Minimum heading size
     MIN_HEADING_SIZE = 20
 
     # Unicode bullets to strip when processing
-    UNICODE_BULLETS = ['○', 'o', '●', "\u2022", '\\p{C}'].freeze
+    UNICODE_BULLETS = ['○', '●', "\u2022", '\\p{C}'].freeze
+
+    # Leading bullets to strip from list items. A plain "o" only counts as a
+    # bullet when followed by whitespace, so words like "orange" survive.
+    BULLET_REGEX = /\A(?:[#{UNICODE_BULLETS.join}]|o(?=[[:space:]]))+[[:space:]]*/
+
+    # Leading list numbering to strip, e.g., "1.", "a.", or "iv.", along with
+    # any whitespace (including non-breaking spaces) that follows it
+    NUMBERING_REGEX = /\A(?:\d+|[a-zA-Z]|[ivxlcdm]+|[IVXLCDM]+)\.(?:[[:space:]]+|\z)/
 
     # @param document [WordToMarkdown::Document] The document to convert
     def initialize(document)
@@ -64,7 +72,7 @@ class WordToMarkdown
 
     # Given a Nokogiri node, guess what heading it represents, if any
     #
-    # @param node [Nokigiri::Node] the nokigiri node
+    # @param node [Nokogiri::Node] the nokogiri node
     # @return [String, nil] the heading tag (e.g., H1), or nil
     def guess_heading(node)
       return nil if node.font_size.nil?
@@ -110,7 +118,7 @@ class WordToMarkdown
     def remove_unicode_bullets_from_list_items!
       path = WordToMarkdown.soffice.major_version == '5' ? 'li span span' : 'li span'
       @document.tree.search(path).each do |span|
-        span.inner_html = span.inner_html.gsub(/^([#{UNICODE_BULLETS.join}]+)/, '')
+        span.inner_html = span.inner_html.sub(BULLET_REGEX, '')
       end
     end
 
@@ -118,21 +126,21 @@ class WordToMarkdown
     def remove_numbering_from_list_items!
       path = WordToMarkdown.soffice.major_version == '5' ? 'li span span' : 'li span'
       @document.tree.search(path).each do |span|
-        span.inner_html = span.inner_html.gsub(/^[a-zA-Z0-9]+\./m, '')
+        span.inner_html = span.inner_html.sub(NUMBERING_REGEX, '')
       end
     end
 
-    # Remvoe whitespace from list items
+    # Remove whitespace from list items
     def remove_whitespace_from_list_items!
-      @document.tree.search('li span').each { |span| span.inner_html.strip! }
+      @document.tree.search('li span').each { |span| span.inner_html = span.inner_html.strip }
     end
 
-    # Convert table headers to `th`s2
+    # Convert table headers to `th`s
     def semanticize_table_headers!
       @document.tree.search('table tr:first td').each { |node| node.node_name = 'th' }
     end
 
-    # Try to guess heading where implicit bassed on font size
+    # Try to guess heading where implicit based on font size
     def semanticize_headings!
       implicit_headings.each do |element|
         heading = guess_heading element
