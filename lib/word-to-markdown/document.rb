@@ -90,8 +90,7 @@ class WordToMarkdown
 
     # @return [String] the path to the intermediary HTML document
     def dest_path
-      dest_filename = File.basename(path).gsub(/#{Regexp.escape(extension)}$/, '.html')
-      File.expand_path(dest_filename, tmpdir)
+      File.expand_path("#{File.basename(path, '.*')}.html", tmpdir)
     end
 
     # @return [String] the unnormalized HTML representation

@@ -66,7 +66,7 @@ class WordToMarkdown
         @document.tree.css('[style]').each do |element|
           sizes.push element.font_size.round(-1) unless element.font_size.nil?
         end
-        sizes.uniq.sort.extend(DescriptiveStatistics)
+        sizes.uniq.sort
       end
     end
 
@@ -90,7 +90,23 @@ class WordToMarkdown
     #
     # @return [Integer] the minimum font size
     def h(num)
-      font_sizes.percentile(((HEADING_DEPTH - 1) - num) * HEADING_STEP)
+      self.class.percentile(font_sizes, ((HEADING_DEPTH - 1) - num) * HEADING_STEP)
+    end
+
+    # Linearly interpolated percentile, matching the algorithm used by the
+    # descriptive_statistics gem (v2.5.1) that this replaces
+    #
+    # @param values [Array<Numeric>] the values
+    # @param pct [Numeric] the percentile, from 0 to 100
+    #
+    # @return [Float, nil] the percentile, or nil if values is empty
+    def self.percentile(values, pct)
+      sorted = values.map(&:to_f).sort
+      rank = pct / 100.0 * (sorted.size - 1)
+      lower, upper = sorted[rank.floor, 2]
+      return lower if upper.nil? # empty or single-element collection, or the 100th percentile
+
+      lower + ((upper - lower) * (rank - rank.floor))
     end
 
     # Convert span-based font styles to `strong`s and `em`s

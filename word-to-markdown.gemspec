@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.2'
 
   s.add_dependency('cliver', '~> 0.3')
-  s.add_dependency('descriptive_statistics', '~> 2.5')
   s.add_dependency('logger', '~> 1.4')
   s.add_dependency('nokogiri-styles', '~> 0.1')
   s.add_dependency('premailer', '~> 1.8')
