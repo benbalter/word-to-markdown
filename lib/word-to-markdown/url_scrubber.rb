@@ -20,6 +20,15 @@ class WordToMarkdown
     # Matches a URL scheme, e.g., "https:"
     SCHEME_REGEX = /\A([a-z][a-z0-9+.-]*):/i
 
+    # Matches a URL without a recognizable scheme whose first segment contains
+    # characters a Markdown renderer or browser may decode into a scheme
+    # separator, e.g., "javascript&colon;", "javascript&#58;", or "javascript\:"
+    AMBIGUOUS_REGEX = %r{\A[^/?#]*[:&\\]}
+
+    # Characters that could end or alter a Markdown link destination, which
+    # are percent-encoded in the URLs that are kept
+    DESTINATION_UNSAFE_CHARS = /[\x00-\x20\x7F()<>\[\]\\`"]/
+
     # Matches a data URI for an image
     DATA_IMAGE_REGEX = %r{\Adata:image/}i
 
@@ -30,28 +39,38 @@ class WordToMarkdown
       # @return [Nokogiri::HTML::Document] the scrubbed document
       def scrub!(tree)
         tree.css('a[href]').each do |node|
-          node.replace(node.children) unless safe_link?(node['href'])
+          safe_link?(node['href']) ? escape_attributes!(node, 'href') : node.replace(node.children)
         end
 
         tree.css('img[src]').each do |node|
-          node.remove unless safe_image?(node['src'])
+          safe_image?(node['src']) ? escape_attributes!(node, 'src') : node.remove
         end
 
         tree
+      end
+
+      # Percent-encode characters in a URL that could end or alter a Markdown link destination
+      #
+      # @param url [String] the URL
+      # @return [String] the escaped URL
+      def escape_destination(url)
+        url.gsub(DESTINATION_UNSAFE_CHARS) { |char| format('%%%02X', char.ord) }
       end
 
       # @param url [String] a link target
       # @return [Boolean] true if the URL is relative, a fragment, or has a permitted scheme
       def safe_link?(url)
         scheme = scheme(url)
-        scheme.nil? || SAFE_LINK_SCHEMES.include?(scheme)
+        scheme.nil? ? relative?(url) : SAFE_LINK_SCHEMES.include?(scheme)
       end
 
       # @param url [String] an image source
       # @return [Boolean] true if the URL is relative, a data:image/ URI, or has a permitted scheme
       def safe_image?(url)
         scheme = scheme(url)
-        scheme.nil? || SAFE_IMAGE_SCHEMES.include?(scheme) || normalize(url).match?(DATA_IMAGE_REGEX)
+        return relative?(url) if scheme.nil?
+
+        SAFE_IMAGE_SCHEMES.include?(scheme) || normalize(url).match?(DATA_IMAGE_REGEX)
       end
 
       # @param url [String] the URL
@@ -62,6 +81,22 @@ class WordToMarkdown
       end
 
       private
+
+      # Escape a kept link or image's URL and title so they can't break out
+      # of the Markdown link that ReverseMarkdown writes for them
+      #
+      # @param node [Nokogiri::XML::Element] the link or image
+      # @param attribute [String] the name of the URL attribute
+      def escape_attributes!(node, attribute)
+        node[attribute] = escape_destination(node[attribute])
+        node['title'] = node['title'].tr('"', "'") if node['title']
+      end
+
+      # @param url [String] a URL without a scheme
+      # @return [Boolean] true if the URL is a relative path or fragment that can't be decoded into one with a scheme
+      def relative?(url)
+        !normalize(url).match?(AMBIGUOUS_REGEX)
+      end
 
       # Normalize a URL the way a browser does before parsing its scheme
       #
