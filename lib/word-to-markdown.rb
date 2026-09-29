@@ -11,6 +11,7 @@ require 'cliver'
 require 'open3'
 
 require_relative 'word-to-markdown/version'
+require_relative 'word-to-markdown/url_scrubber'
 require_relative 'word-to-markdown/document'
 require_relative 'word-to-markdown/converter'
 require_relative 'nokogiri/xml/element'

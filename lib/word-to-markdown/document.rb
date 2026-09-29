@@ -34,6 +34,7 @@ class WordToMarkdown
 
     # @return [String] the html representation of the document
     def html
+      UrlScrubber.scrub!(tree)
       tree.to_html.gsub("</li>\n", '</li>')
     end
 
