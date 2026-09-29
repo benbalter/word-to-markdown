@@ -70,6 +70,14 @@ $ w2m path/to/document.docx
 
 Word-to-markdown requires `soffice` a command line interface to LibreOffice that works on Linux, Mac, and Windows. To install soffice, see [the LibreOffice documentation](https://www.libreoffice.org/get-help/install-howto/).
 
+Word-to-markdown only accepts Word documents (`.docx` and `.doc`), identified by their contents rather than their file extension. Other files, including those LibreOffice could otherwise open, such as HTML, ODT, or RTF, raise `WordToMarkdown::Document::UnsupportedFormatError`.
+
+LibreOffice is killed if a conversion takes longer than 60 seconds, raising `WordToMarkdown::TimeoutError`. To change the limit, set `WordToMarkdown.timeout = 120` or the `WORD_TO_MARKDOWN_TIMEOUT` environment variable.
+
+### Converting untrusted documents
+
+Word documents can link to remote resources, such as images, which LibreOffice fetches while converting the document. If you convert documents from untrusted sources (for example, files uploaded to a web service), run the conversion without network access, such as in a container or sandbox with no outbound network, so that a document can't make requests to internal services or other hosts on your behalf.
+
 ## Testing
 
 ```

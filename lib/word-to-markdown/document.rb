@@ -6,13 +6,18 @@ class WordToMarkdown
 
     class ConversionError < StandardError; end
 
-    attr_reader :path, :tmpdir
+    class UnsupportedFormatError < StandardError; end
+
+    attr_reader :path, :tmpdir, :import_filter
 
     # @param path [string] Path to the Word document
     # @param tmpdir [string] Path to a working directory to use
     def initialize(path, tmpdir = nil)
       @path = File.expand_path path, Dir.pwd
       raise NotFoundError, "File #{@path} does not exist" unless File.exist?(@path)
+
+      @import_filter = InputFormat.filter_for(@path)
+      raise UnsupportedFormatError, "File #{@path} is not a Word document (.docx or .doc)" if @import_filter.nil?
 
       @own_tmpdir = tmpdir.nil?
       @tmpdir = tmpdir || Dir.mktmpdir
@@ -97,7 +102,7 @@ class WordToMarkdown
     # @return [String] the unnormalized HTML representation
     def raw_html
       @raw_html ||= begin
-        WordToMarkdown.run_command '--headless', '--convert-to', filter, path, '--outdir', tmpdir
+        WordToMarkdown.run_command '--headless', "--infilter=#{import_filter}", '--convert-to', filter, path, '--outdir', tmpdir
         raise ConversionError, "Failed to convert #{path}" unless File.exist?(dest_path)
 
         html = File.read dest_path
@@ -115,7 +120,7 @@ class WordToMarkdown
       Dir.rmdir(tmpdir) if @own_tmpdir && Dir.empty?(tmpdir)
     end
 
-    # @return [String] the LibreOffice filter to use for conversion
+    # @return [String] the LibreOffice filter to use for export
     def filter
       if WordToMarkdown.soffice.major_version == '5'
         'html:XHTML Writer File:UTF8'
