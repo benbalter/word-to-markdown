@@ -5,10 +5,6 @@
 # Configuration for update-docs - https://github.com/behaviorbot/update-docs
 updateDocsComment: "Thanks for the pull request! If you are making any changes to the user-facing functionality, please be sure to update the documentation in the `README` or `docs/` folder alongside your change. :heart:"
 
-# Configuration for request-info - https://github.com/behaviorbot/request-info
-requestInfoReplyComment: Thanks for this. Do you mind providing a bit more information about what problem you're trying to solve?
-requestInfoLabelToAdd: more-information-needed
-
 # Configuration for new-issue-welcome - https://github.com/behaviorbot/new-issue-welcome
 #newIssueWelcomeComment: >
 #  Welcome!
