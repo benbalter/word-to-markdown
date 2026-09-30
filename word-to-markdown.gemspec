@@ -4,7 +4,7 @@ require File.expand_path('lib/word-to-markdown/version', __dir__)
 
 Gem::Specification.new do |s|
   s.name = 'word-to-markdown'
-  s.summary = 'Ruby Gem to convert Word documents to markdown'
+  s.summary = 'Ruby gem to convert Microsoft Word (.docx) documents to Markdown'
   s.description = 'Ruby Gem to convert Word documents to markdown.'
   s.version = WordToMarkdown::VERSION
   s.authors = ['Ben Balter']
@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rubocop-performance', '~> 1.5')
   s.add_development_dependency('shoulda', '~> 4.0')
   s.metadata['rubygems_mfa_required'] = 'true'
+  s.metadata['homepage_uri'] = 'https://github.com/benbalter/word-to-markdown'
   s.metadata['source_code_uri'] = 'https://github.com/benbalter/word-to-markdown'
   s.metadata['bug_tracker_uri'] = 'https://github.com/benbalter/word-to-markdown/issues'
   s.metadata['changelog_uri'] = 'https://github.com/benbalter/word-to-markdown/releases'
