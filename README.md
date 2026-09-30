@@ -19,7 +19,7 @@ A Ruby gem to liberate content from [the jail that is Word documents](https://be
 
 ## Just want to convert a Microsoft Word (or Google) document to Markdown?
 
-You can use this **[hosted service](https://word2md.com/)** (or check out [its source](https://github.com/benbalter/word-to-markdown-server)).
+You can use this **[hosted service](https://word2md.com/)** (or check out [its source](https://github.com/benbalter/word-to-markdown-js)).
 
 ## Install
 
@@ -96,4 +96,4 @@ docker compose run --rm app bundle exec w2m test/fixtures/em.docx
 
 ## Hosted service
 
-[Word-to-markdown-server](https://github.com/benbalter/word-to-markdown-server) contains a lightweight server for converting Word Documents as a service. A live version runs at [word2md.com](https://word2md.com).
+A hosted converter runs at [word2md.com](https://word2md.com), powered by [word-to-markdown-js](https://github.com/benbalter/word-to-markdown-js). The previous Ruby-based [word-to-markdown-server](https://github.com/benbalter/word-to-markdown-server) is archived.
