@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class WordToMarkdown
-  VERSION = '1.1.9'
+  VERSION = '1.2.0'
 end
