@@ -7,10 +7,6 @@ Word to Markdown is a Ruby gem and `w2m` CLI that converts Word documents to Mar
 - [`script/bootstrap`](script/bootstrap) runs `bundle install`.
 - [`script/cibuild`](script/cibuild) runs the tests, RuboCop and a gem build. It's what CI runs, so run it before committing. The tests need LibreOffice (`soffice`) installed; without it, use the Docker setup in the [README](README.md#docker).
 
-## Generated files
-
-[`.github/stale.yml`](.github/stale.yml) and [`.github/no-response.yml`](.github/no-response.yml) were once synced from benbalter/shared-community-files, now [benbalter/.github](https://github.com/benbalter/.github). That sync was retired in [benbalter/.github#8](https://github.com/benbalter/.github/pull/8), so edit them here.
-
 ## Releasing
 
 There's no release script or workflow. A release is a "Release X.Y.Z" commit that bumps [`lib/word-to-markdown/version.rb`](lib/word-to-markdown/version.rb), a `vX.Y.Z` tag, a GitHub Release with generated notes, and the gem pushed to [RubyGems](https://rubygems.org/gems/word-to-markdown).
