@@ -9,7 +9,7 @@ Word to Markdown is a Ruby gem and `w2m` CLI that converts Word documents to Mar
 
 ## Generated files
 
-[`.github/config.yml`](.github/config.yml), [`.github/stale.yml`](.github/stale.yml) and [`.github/no-response.yml`](.github/no-response.yml) are synced from [benbalter/shared-community-files](https://github.com/benbalter/shared-community-files). Change them there, or the next sync overwrites the edit.
+[`.github/stale.yml`](.github/stale.yml) and [`.github/no-response.yml`](.github/no-response.yml) were once synced from benbalter/shared-community-files, now [benbalter/.github](https://github.com/benbalter/.github). That sync was retired in [benbalter/.github#8](https://github.com/benbalter/.github/pull/8), so edit them here.
 
 ## Releasing
 
