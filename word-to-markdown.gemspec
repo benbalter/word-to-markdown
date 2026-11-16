@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency('logger', '~> 1.4')
   s.add_dependency('nokogiri-styles', '~> 0.1')
   s.add_dependency('premailer', '~> 1.8')
-  s.add_dependency('reverse_markdown', '>= 1', '< 3')
+  s.add_dependency('reverse_markdown', '>= 1', '< 4')
   s.add_dependency('sys-proctable', '~> 1.3')
 
   s.add_development_dependency('minitest', '>= 5', '< 7')
